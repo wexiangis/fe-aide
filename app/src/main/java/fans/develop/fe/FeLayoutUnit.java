@@ -112,12 +112,14 @@ public class FeLayoutUnit extends FeLayout {
     /*
         清所有人物选中状态
      */
-    public void cleanSelect(){
+    public void selectView(FeViewUnit target){
         FeViewUnit viewUnit;
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
             viewUnit = (FeViewUnit)getChildAt(i);
-            if (viewUnit.getAnimMode() == 1)
+            if(viewUnit == target)
+                viewUnit.setAnimMode(1);
+            else if (viewUnit.getAnimMode() == 1)
                 viewUnit.setAnimMode(0);
         }
     }
@@ -126,10 +128,8 @@ public class FeLayoutUnit extends FeLayout {
         接收点击事件
      */
     public void click(float x, float y){
-        //清所有人物选中动画
-        cleanSelect();
         //目标人物选中
-        sectionCallback.getSectionUnit().selectView.setAnimMode(1);
+        selectView(sectionCallback.getSectionUnit().selectView);
         //输入坐标求格子位置,更新人物选中点信息
         sectionCallback.getSectionMap().getRectByLocation(x, y, sectionCallback.getSectionUnit().selectSite);
         //选中人物太过靠近边界,挪动地图
