@@ -78,7 +78,7 @@ public class FeSectionOperation {
                 int xGridErr = 0, yGridErr = 0;
                 //横向拖动是否满一格像素,是就拖动一格
                 if (Math.abs(xErr) > sectionCallback.getSectionMap().xGridPixel) {
-                    xGridErr = xErr > 0 ? (1) : (-1);
+                    xGridErr = xErr < 0 ? (1) : (-1);
                     //更新坐标
                     tDownX = tMoveX;
                     //置标记
@@ -86,7 +86,7 @@ public class FeSectionOperation {
                 }
                 //纵向拖动是否满一格像素,是就拖动一格
                 if (Math.abs(yErr) > sectionCallback.getSectionMap().yGridPixel) {
-                    yGridErr = yErr > 0 ? (1) : (-1);
+                    yGridErr = yErr < 0 ? (1) : (-1);
                     //更新坐标
                     tDownY = tMoveY;
                     //置标记
