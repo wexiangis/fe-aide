@@ -18,22 +18,16 @@ public class FeViewMapInfo extends FeView {
 
     //背景框图片
     private Bitmap bitmapInfo;
-
     //背景框图片源和输出位置
     private Rect rectSrcInfo, rectDistInfo;
-
     //打印信息的大致输出范围
     private Rect rectPaintInfo;
-
     //背景框图片,地图类型,参数 画笔
     private Paint paintBitmap, paintInfoName, paintInfoParam;
-    //
+    //像素比例
     private float pixelPowInfo;
+    //是否绘制了图片?没有则不参与 checkHit()
     private boolean drawInfo = false;
-
-    public void onDestory(){
-        ;
-    }
 
     public FeViewMapInfo(Context context, FeSectionCallback sectionCallback) {
         super(context);
@@ -95,8 +89,11 @@ public class FeViewMapInfo extends FeView {
 
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));//抗锯齿
 
+        //选中地图位置
+        FeInfoGrid mapSite = sectionCallback.getSectionMap().selectSite;
+
         //图像位置自动调整
-        if(sectionCallback.getSectionMap().selectSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
+        if(mapSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
             rectDistInfo.left = (int)(sectionCallback.getSectionMap().xGridPixel/4);
             rectDistInfo.right = (int)(sectionCallback.getSectionMap().xGridPixel/4 + bitmapInfo.getWidth()*pixelPowInfo);
         }else{ //放到右边
@@ -111,9 +108,7 @@ public class FeViewMapInfo extends FeView {
             drawInfo = true;
             canvas.drawBitmap(bitmapInfo, rectSrcInfo, rectDistInfo, paintBitmap);
             //选中方格会提供一个序号,用来检索地图类型信息
-            int mapInfoOrder = sectionCallback.getSectionMap().mapInfo.grid
-                    [sectionCallback.getSectionMap().selectSite.point[1]]
-                    [sectionCallback.getSectionMap().selectSite.point[0]];
+            int mapInfoOrder = sectionCallback.getSectionMap().mapInfo.grid[mapSite.point[1]][mapSite.point[0]];
             //填地形信息
             canvas.drawText(
                     sectionCallback.getSectionMap().mapInfo.name[mapInfoOrder],
@@ -146,4 +141,9 @@ public class FeViewMapInfo extends FeView {
             drawInfo = false;
     }
 
+    /* ---------- abstract interface ---------- */
+
+    public void onDestory(){
+        ;
+    }
 }

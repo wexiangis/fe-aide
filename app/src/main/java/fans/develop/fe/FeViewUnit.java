@@ -19,7 +19,6 @@ public class FeViewUnit extends FeView {
 
     //动画相对地图的偏移量
     private float leftMargin = 0, topMargin = 0;
-
     //每帧图片实际高度
     private int frameHeight = 56;
     //人物唯一id
@@ -28,24 +27,20 @@ public class FeViewUnit extends FeView {
     private int animMode = 0, colorMode = 0;
     //当前人物所在格子
     public int gridX = 0, gridY = 0;
-
     //根据动画模式0~5,图像胶片上移帧数
     private final int[] frameSkipByAnimMode = new int[]{15, 12, 8, 4, 0, 0};
-
     //画图
     private Paint paint = new Paint();
-
     //原始图片
     private Bitmap bitmap = null;
+    //用来翻转图片的矩阵(左跑和右跑用的同一个动画)
     private Matrix matrix = new Matrix();
-
     //扣取图片位置
     private Rect bitmapBody = new Rect(0,0,0,0);
-
-    public void onDestory(){
-        //解除心跳注册
-        sectionCallback.removeHeartUnit(heartUnit);
-    }
+    //当前人物在地图中的位置
+    private FeInfoGrid site;
+    //动画输出位置
+    private Rect bitmapDist = new Rect(0,0,0,0);
 
     /*
         id: 人物唯一id
@@ -156,6 +151,10 @@ public class FeViewUnit extends FeView {
         return animMode;
     }
 
+    public FeInfoGrid getSite(){
+        return site;
+    }
+
     //根据动画模式,切换心跳类型
     private void upgradeHeartType(int animMode){
         if(animMode == 0)
@@ -179,10 +178,6 @@ public class FeViewUnit extends FeView {
         }
     });
 
-    //临时参数
-    public FeInfoGrid site;//当前人物在地图中的位置
-    private Rect bitmapDist = new Rect(0,0,0,0);//动画输出位置
-
     //绘图回调
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -205,5 +200,11 @@ public class FeViewUnit extends FeView {
         return false;
     }
 
+    /* ---------- abstract interface ---------- */
+
+    public void onDestory(){
+        //解除心跳注册
+        sectionCallback.removeHeartUnit(heartUnit);
+    }
 }
 

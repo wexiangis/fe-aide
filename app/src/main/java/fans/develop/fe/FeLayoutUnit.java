@@ -131,22 +131,19 @@ public class FeLayoutUnit extends FeLayout {
         //目标人物选中
         selectView(sectionCallback.getSectionUnit().selectView);
         //输入坐标求格子位置,更新人物选中点信息
-        sectionCallback.getSectionMap().getRectByLocation(x, y, sectionCallback.getSectionUnit().selectSite);
+        FeInfoGrid site = sectionCallback.getSectionUnit().selectView.getSite();
+        sectionCallback.getSectionMap().getRectByLocation(x, y, site);
         //选中人物太过靠近边界,挪动地图
-        if(!sectionCallback.getSectionMap().srcGridCenter.contains(
-            sectionCallback.getSectionUnit().selectSite.point[0],
-            sectionCallback.getSectionUnit().selectSite.point[1])){
+        if(!sectionCallback.getSectionMap().srcGridCenter.contains(site.point[0], site.point[1])){
             //移至居中
-            // sectionCallback.getLayoutMap().moveCenter(
-            //     sectionCallback.getSectionUnit().selectSite.point[0],
-            //     sectionCallback.getSectionUnit().selectSite.point[1]);
+            // sectionCallback.getLayoutMap().moveCenter(site.point[0], site.point[1]);
             //移至包含
-            sectionCallback.getLayoutMap().moveInclude(
-                sectionCallback.getSectionUnit().selectSite.point[0],
-                sectionCallback.getSectionUnit().selectSite.point[1]);
+            sectionCallback.getLayoutMap().moveInclude(site.point[0], site.point[1]);
         }
         //刷新动画状态
         refresh();
+        //置标志
+        sectionCallback.onUnitSelect(true);
     }
 
     /* ---------- abstract interface ---------- */

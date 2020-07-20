@@ -11,16 +11,15 @@ import android.graphics.Paint;
 public class FeViewMark extends FeView {
 
     private FeSectionCallback sectionCallback;
-    private Paint paint;
-	
-    private int colorMode;
-	private int xGrid, yGrid;
-	private FeInfoGrid gridInfo;
 
-    public void onDestory(){
-        //解除心跳注册
-        sectionCallback.removeHeartUnit(heartUnit);
-    }
+    //画笔
+    private Paint paint;
+	//颜色模式
+    private int colorMode;
+    //所在格
+    private int xGrid, yGrid;
+    //在地图中的位置
+	private FeInfoGrid gridInfo;
 
     /*
         colorMode: 0/蓝色 1/红色 2/绿色
@@ -75,5 +74,12 @@ public class FeViewMark extends FeView {
             paint.setShader(sectionCallback.getSectionShader().getShaderG());
 
         canvas.drawPath(gridInfo.path, paint);
+    }
+
+    /* ---------- abstract interface ---------- */
+
+    public void onDestory(){
+        //解除心跳注册
+        sectionCallback.removeHeartUnit(heartUnit);
     }
 }

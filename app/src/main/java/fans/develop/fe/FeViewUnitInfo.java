@@ -21,13 +21,10 @@ public class FeViewUnitInfo extends FeView {
     private Bitmap bitmapHead, bitmapHeadBg;
     //头像背景框,头像,参数文字画笔
     private Paint paintHeadBg, paintHead, paintParam;
-    //
+    //像素比例
     private float pixelPowHead;
+    //是否绘制了图片?没有则不参与 checkHit()
     private boolean drawHead = false;
-
-    public void onDestory(){
-        ;
-    }
 
     public FeViewUnitInfo(Context context, FeSectionCallback sectionCallback){
         super(context);
@@ -74,8 +71,11 @@ public class FeViewUnitInfo extends FeView {
             return;
         }
 
+        //选中人物位置
+        FeInfoGrid unitSite = sectionCallback.getSectionUnit().selectView.getSite();
+
         //图像位置自动调整
-        if(sectionCallback.getSectionUnit().selectSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
+        if(sectionCallback.unitSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
             rectDistHeadBg.left = (int)(sectionCallback.getSectionMap().xGridPixel/4);
             rectDistHeadBg.right = (int)(sectionCallback.getSectionMap().xGridPixel/4 + bitmapHeadBg.getWidth()*pixelPowHead);
         }else{ //放到右边
@@ -85,10 +85,10 @@ public class FeViewUnitInfo extends FeView {
 
         //画人物头像
         if(!sectionCallback.onMapHit() ||
-            sectionCallback.getSectionUnit().selectSite.rect.left > sectionCallback.getSectionMap().screenWidth ||
-            sectionCallback.getSectionUnit().selectSite.rect.right < 0 ||
-            sectionCallback.getSectionUnit().selectSite.rect.top > sectionCallback.getSectionMap().screenHeight ||
-            sectionCallback.getSectionUnit().selectSite.rect.bottom < 0){
+            sectionCallback.unitSite.rect.left > sectionCallback.getSectionMap().screenWidth ||
+            sectionCallback.unitSite.rect.right < 0 ||
+            sectionCallback.unitSite.rect.top > sectionCallback.getSectionMap().screenHeight ||
+            sectionCallback.unitSite.rect.bottom < 0){
             drawHead = false;
         }else {
             drawHead = true;
@@ -108,4 +108,9 @@ public class FeViewUnitInfo extends FeView {
         }
     }
 
+    /* ---------- abstract interface ---------- */
+
+    public void onDestory(){
+        ;
+    }
 }

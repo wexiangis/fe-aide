@@ -7,9 +7,6 @@ public class FeSectionUnit {
 
     // ----------- 选中信息 -----------
 
-    //当前选中的unit的位置
-    public FeInfoGrid selectSite = new FeInfoGrid();
-
     //当前选中的unit
     public FeViewUnit selectView = null;
 }
