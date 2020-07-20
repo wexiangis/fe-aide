@@ -373,5 +373,13 @@ public class FeLayoutSection extends FeLayout{
         public Boolean onUnitSelect(){
             return _onUnitSelect;
         }
+
+        private Boolean _onUnitMove = false;
+        public void onUnitMove(Boolean on){
+            _onUnitMove = on;
+        }
+        public Boolean onUnitMove(){
+            return _onUnitMove;
+        }
     };
 }

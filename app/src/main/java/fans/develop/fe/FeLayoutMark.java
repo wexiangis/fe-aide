@@ -84,10 +84,34 @@ public class FeLayoutMark extends FeLayout {
     public void markUnit(int id){
         if(!shaderHeartStartFlag)
             shaderHeartStart();
-        //计算范围
-        ;
+        //获得移动力
+        int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(id);
+        //中心坐标
+        int centerX = sectionCallback.getSectionUnit().selectView.getGridX();
+        int centerY = sectionCallback.getSectionUnit().selectView.getGridY();
+        //开出一个矩阵以覆盖移动范围
+        int gridSize = mov*2+1;
+        int[][] grid = new int[gridSize][gridSize];
+        //标记所有离中心距离小于等于mov的点
+        for(int xCount = 0, x = -mov; xCount < gridSize; xCount++, x++){
+            for(int yCount = 0, y = -mov; yCount < gridSize; yCount++, y++){
+                int absSum = Math.abs(x) + Math.abs(y);
+                if(absSum < mov)
+                    grid[xCount][yCount] = 1;
+                else if(absSum == mov)
+                    grid[xCount][yCount] = 2;
+            }
+        }
+        //左上角坐标
+        int xStart = centerX - mov;
+        int yStart = centerY - mov;
         //显示范围
-        addView(new FeViewMark(context, 1, 10, 10, sectionCallback));
+        for(int xCount = 0; xCount < gridSize; xCount++){
+            for(int yCount = 0; yCount < gridSize; yCount++){
+                if(grid[xCount][yCount] != 0)
+                    addView(new FeViewMark(context, grid[xCount][yCount] - 1, xCount + xStart, yCount + yStart, sectionCallback));
+            }
+        }
     }
 
     /*
@@ -101,7 +125,7 @@ public class FeLayoutMark extends FeLayout {
         关闭全部人物的mark范围
      */
     public void cleanAllUnit(){
-        this.removeAllViews();
+        removeAllViews();
     }
 
     /*
@@ -110,7 +134,15 @@ public class FeLayoutMark extends FeLayout {
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
     public void click(float x, float y, Boolean hitThis, int hitType){
-        ;
+        if(!hitType){
+            //人物二次选中,mark该人物行动范围
+            if(hitType == FeFlagHit.HIT_UNIT && sectionCallback.onUnitMove())
+                markUnit(sectionCallback.getSectionUnit().selectView.getId());
+            //清空
+            else
+                removeAllViews();
+            return;
+        }
     }
 
     /* ---------- abstract interface ---------- */

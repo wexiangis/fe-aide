@@ -112,13 +112,13 @@ public class FeLayoutUnit extends FeLayout {
     /*
         清所有人物选中状态
      */
-    public void selectView(FeViewUnit target){
+    public void setAnim(FeViewUnit target, int animMode){
         FeViewUnit viewUnit;
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
             viewUnit = (FeViewUnit)getChildAt(i);
             if(viewUnit == target)
-                viewUnit.setAnimMode(1);
+                viewUnit.setAnimMode(animMode);
             else if (viewUnit.getAnimMode() != 0)
                 viewUnit.setAnimMode(0);
         }
@@ -138,21 +138,27 @@ public class FeLayoutUnit extends FeLayout {
             return;
         }
         //目标人物选中
-        selectView(sectionCallback.getSectionUnit().selectView);
+        if(!sectionCallback.onUnitSelect()){
+            setAnim(sectionCallback.getSectionUnit().selectView, 1);
+            sectionCallback.onUnitSelect(true);
+        }
+        //二次选中
+        else{
+            setAnim(sectionCallback.getSectionUnit().selectView, 3);
+            sectionCallback.onUnitMove(true);
+        }
         //输入坐标求格子位置,更新人物选中点信息
         FeInfoGrid site = sectionCallback.getSectionUnit().selectView.getSite();
         sectionCallback.getSectionMap().getRectByLocation(x, y, site);
         //选中人物太过靠近边界,挪动地图
         if(!sectionCallback.getSectionMap().srcGridCenter.contains(site.point[0], site.point[1])){
             //移至居中
-            // sectionCallback.getLayoutMap().moveCenter(site.point[0], site.point[1]);
+            sectionCallback.getLayoutMap().moveCenter(site.point[0], site.point[1]);
             //移至包含
-            sectionCallback.getLayoutMap().moveInclude(site.point[0], site.point[1]);
+            // sectionCallback.getLayoutMap().moveInclude(site.point[0], site.point[1]);
         }
         //刷新动画状态
         refresh();
-        //置标志
-        sectionCallback.onUnitSelect(true);
     }
 
     /* ---------- abstract interface ---------- */

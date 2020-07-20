@@ -35,4 +35,6 @@ public interface FeSectionCallback{
     Boolean onMapHit();
     void onUnitSelect(Boolean on);
     Boolean onUnitSelect();
+    void onUnitMove(Boolean on);
+    Boolean onUnitMove();
 }

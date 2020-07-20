@@ -83,7 +83,7 @@ public class FeViewUnit extends FeView {
     }
 
     //人物id
-    public int id(){
+    public int getId(){
         return id;
     }
 
@@ -93,6 +93,13 @@ public class FeViewUnit extends FeView {
         gridY += y;
         leftMargin += x*sectionCallback.getSectionMap().xGridPixel;
         topMargin += y*sectionCallback.getSectionMap().yGridPixel;
+    }
+
+    public int getGridX(){
+        return gridX;
+    }
+    public int getGridY(){
+        return gridY;
     }
 
     //移动到方格
