@@ -53,10 +53,17 @@ public class FeViewMark extends FeView {
 		this.yGrid = yGrid;
 	}
 
+    public int getGridX(){
+        return gridX;
+    }
+    public int getGridY(){
+        return gridY;
+    }
+
     //动画心跳回调
     private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART, new FeHeartUnit.TimeOutTask(){
         public void run(int count){
-        FeViewMark.this.invalidate();
+            FeViewMark.this.invalidate();
         }
     });
 

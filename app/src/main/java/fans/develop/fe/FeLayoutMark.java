@@ -84,6 +84,9 @@ public class FeLayoutMark extends FeLayout {
     public void markUnit(int id){
         if(!shaderHeartStartFlag)
             shaderHeartStart();
+        if(sectionCallback.getSectionUnit() == null ||
+            sectionCallback.getSectionUnit().selectView == null)
+            return;
         //获得移动力
         int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(id);
         //中心坐标
@@ -134,13 +137,11 @@ public class FeLayoutMark extends FeLayout {
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
     public void click(float x, float y, Boolean hitThis, int hitType){
-        if(!hitType){
+        if(!hitThis){
+            removeAllViews();
             //人物二次选中,mark该人物行动范围
             if(hitType == FeFlagHit.HIT_UNIT && sectionCallback.onUnitMove())
                 markUnit(sectionCallback.getSectionUnit().selectView.getId());
-            //清空
-            else
-                removeAllViews();
             return;
         }
     }

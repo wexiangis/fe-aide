@@ -120,7 +120,6 @@ public class FeSectionOperation {
                 //清标记
                 sectionCallback.onMapMove(false);
                 sectionCallback.onMapHit(false);
-                sectionCallback.onUnitSelect(false);
 
                 //拖动结束
                 if(isMove){
