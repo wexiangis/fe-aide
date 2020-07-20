@@ -16,9 +16,9 @@ public class FeLayoutOpening extends FeLayout {
     //触屏事件回调函数
     private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
         public boolean onTouch(View v, MotionEvent event) {
-            //触屏UP时
+            //触屏UP时, 跳过openning动画
             if(event.getAction() == MotionEvent.ACTION_UP){
-				asyncTask.cancel(true);
+				asyncTask.cancel();
                 feData.flow.loadTheme();
 			}
             //不返回true的话ACTION_DOWN之后的事件都会被丢弃
@@ -116,7 +116,7 @@ public class FeLayoutOpening extends FeLayout {
 		return false;
 	}
 	public boolean onDestory(){
-		asyncTask.cancel(true);
+		asyncTask.cancel();
 		return true;
 	}
 	public void onReload(){

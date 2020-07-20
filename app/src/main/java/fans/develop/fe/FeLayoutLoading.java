@@ -16,28 +16,28 @@ public class FeLayoutLoading extends FeLayout{
     public static final int TYPE_NORMAL = 0;
 
 	/*
-		提前结束loading界面
+		提前结束loading界面, 即结束 DoInBackground
 	 */
-	public void cancel(boolean b){
-		asyncTask.cancel(b);
+	public void cancel(){
+		asyncTask.cancel(true);
 	}
 	
 	/*
-	 	检查结束标志
+	 	检查结束标志, 在 DoInBackground 中使用
 	 */
 	public boolean isCancelled(){
 		return asyncTask.isCancelled();
 	}
 	
     /*
-        进度设置接口(用户调用)
+        进度设置接口, 在 DoInBackground 中使用
      */
     public void setPercent(int percent){
         asyncTask.setPercent(percent);
     }
 
     /*
-        后台运行任务(用户实现,期间通过percent.set(xxx),告知UI进度情况)
+        后台运行任务
         返回: 成功返回null, 失败返回提示
      */
     public interface DoInBackground<U>{
@@ -45,21 +45,21 @@ public class FeLayoutLoading extends FeLayout{
     }
 
     /*
-        UI任务(用户实现)
+        UI任务
      */
     public interface DoInFinal<U>{
         public void run(U obj, String result);
     }
 
     /*
-        public 为了能在callback中调用
+        私有数据
      */
-    public Context context;
-    public FeAsyncTask asyncTask;
-    public int type;
-    public Object obj;
-    public FeLayoutLoading.DoInBackground doInBackground;
-    public FeLayoutLoading.DoInFinal doInFinal;
+    private Context context;
+    private FeAsyncTask asyncTask;
+    private int type;
+    private Object obj;
+    private FeLayoutLoading.DoInBackground doInBackground;
+    private FeLayoutLoading.DoInFinal doInFinal;
 
     /*
         type: 加载动画类型
