@@ -60,11 +60,13 @@ public class FeLayoutOpening extends FeLayout {
 					try{
 						for(int i = 0; i < 100; i++){
 							if(asyncTask.isCancelled())
-								return null;
+								return "break";
 							Thread.sleep(10);
 							asyncTask.setPercent(i);
 						}
-					}catch(java.lang.InterruptedException e) { }
+					}catch(java.lang.InterruptedException e) {
+						return "break";
+					}
 					return null;
 				}
 
@@ -79,7 +81,8 @@ public class FeLayoutOpening extends FeLayout {
 
 				@Override
 				public void onPostExecute(FeLayoutOpening layoutOpening, String result) {
-					feData.flow.loadTheme();
+					if(result != "break")
+						feData.flow.loadTheme();
 				}
 			});
 
