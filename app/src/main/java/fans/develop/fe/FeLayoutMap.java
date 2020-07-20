@@ -132,8 +132,15 @@ public class FeLayoutMap extends FeLayout {
 
     /*
         接收点击事件
+        hitThis: 点击目标为当前控件
+        hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y){
+    public void click(float x, float y, Boolean hitThis, int hitType){
+        //点击对象不是自己 或 点击的unit不是点一次点击操作
+        if(!hitThis && (hitType != FeFlagHit.HIT_UNIT ||
+            sectionCallback.getSectionUnit().selectView == null ||
+            sectionCallback.getSectionUnit().selectView.getAnimMode() > 1))
+            return;
         if(viewMap != null){
             //输入坐标求格子位置,更新地图选中点信息
             sectionCallback.getSectionMap().getRectByLocation(x, y, sectionCallback.getSectionMap().selectSite);

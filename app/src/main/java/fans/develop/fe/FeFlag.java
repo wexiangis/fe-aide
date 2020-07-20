@@ -21,6 +21,11 @@ public class FeFlag {
             return;
         array[type] = true;
     }
+    // 置标志,清除其它
+    public void setOnlyFlag(int type){
+        cleanFlagAll();
+        setFlag(type);
+    }
     // 查标志
     public boolean checkFlag(int type){
         if(array == null)

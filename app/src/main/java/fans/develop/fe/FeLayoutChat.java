@@ -29,8 +29,10 @@ public class FeLayoutChat extends FeLayout {
 
     /*
         接收点击事件
+        hitThis: 点击目标为当前控件
+        hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y){
+    public void click(float x, float y, Boolean hitThis, int hitType){
         ;
     }
 

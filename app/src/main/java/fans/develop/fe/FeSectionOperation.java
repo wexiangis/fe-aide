@@ -57,13 +57,9 @@ public class FeSectionOperation {
                 else if(flag.checkFlag(FeFlagHit.HIT_MAP_INFO)){
                     ;
                 }
-                else if(flag.checkFlag(FeFlagHit.HIT_UNIT)){
-                    ;
-                }
-                else if(flag.checkFlag(FeFlagHit.HIT_MARK)){
-                    ;
-                }
-                else if(flag.checkFlag(FeFlagHit.HIT_MAP)){
+                else if(flag.checkFlag(FeFlagHit.HIT_UNIT)
+                    || flag.checkFlag(FeFlagHit.HIT_MARK)
+                    || flag.checkFlag(FeFlagHit.HIT_MAP)){
                     flagMove.setFlag(FeFlagHit.HIT_MAP);
                 }
             }
@@ -135,29 +131,26 @@ public class FeSectionOperation {
                 else{
                     //检查点击都命中了谁?
                     FeFlagHit flag = sectionCallback.checkHit(tUpX, tUpY);
+                    int hitType = -1;
 
-                    //谁需要点击事件?
-                    if(flag.checkFlag(FeFlagHit.HIT_SYS_MENU)){
-                        sectionCallback.getLayoutSysMenu().click(tUpX, tUpY);
-                    }
-                    else if(flag.checkFlag(FeFlagHit.HIT_CHAT)){
-                        sectionCallback.getLayoutChat().click(tUpX, tUpY);
-                    }
-                    else if(flag.checkFlag(FeFlagHit.HIT_UNIT_MENU)){
-                        sectionCallback.getLayoutUnitMenu().click(tUpX, tUpY);
-                    }
-                    else if(flag.checkFlag(FeFlagHit.HIT_MAP_INFO)){
-                        sectionCallback.getLayoutMapInfo().click(tUpX, tUpY);
-                    }
-                    else if(flag.checkFlag(FeFlagHit.HIT_UNIT)){
-                        sectionCallback.getLayoutUnit().click(tUpX, tUpY);
-                    }
-                    else if(flag.checkFlag(FeFlagHit.HIT_MARK)){
-                        sectionCallback.getLayoutMark().click(tUpX, tUpY);
-                    }
-                    else if(flag.checkFlag(FeFlagHit.HIT_MAP)){
-                        sectionCallback.getLayoutMap().click(tUpX, tUpY);
-                    }
+                    //按优先级选定唯一点击对象
+                    if(flag.checkFlag(FeFlagHit.HIT_SYS_MENU)) hitType = FeFlagHit.HIT_SYS_MENU;
+                    else if(flag.checkFlag(FeFlagHit.HIT_CHAT)) hitType = FeFlagHit.HIT_CHAT;
+                    else if(flag.checkFlag(FeFlagHit.HIT_UNIT_MENU)) hitType = FeFlagHit.HIT_UNIT_MENU;
+                    else if(flag.checkFlag(FeFlagHit.HIT_MAP_INFO)) hitType = FeFlagHit.HIT_MAP_INFO;
+                    else if(flag.checkFlag(FeFlagHit.HIT_UNIT)) hitType = FeFlagHit.HIT_UNIT;
+                    else if(flag.checkFlag(FeFlagHit.HIT_MARK)) hitType = FeFlagHit.HIT_MARK;
+                    else if(flag.checkFlag(FeFlagHit.HIT_MAP)) hitType = FeFlagHit.HIT_MAP;
+                    flag.setOnlyFlag(hitType);
+
+                    //即使没有被选中,也会得到一个非己点击事件,用来清除原点击状态
+                    sectionCallback.getLayoutSysMenu().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_SYS_MENU), hitType);
+                    sectionCallback.getLayoutChat().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_CHAT), hitType);
+                    sectionCallback.getLayoutUnitMenu().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_UNIT_MENU), hitType);
+                    sectionCallback.getLayoutMapInfo().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_MAP_INFO), hitType);
+                    sectionCallback.getLayoutUnit().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_UNIT), hitType);
+                    sectionCallback.getLayoutMark().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_MARK), hitType);
+                    sectionCallback.getLayoutMap().click(tUpX, tUpY, flag.checkFlag(FeFlagHit.HIT_MAP), hitType);
                 }
 
                 //清标记

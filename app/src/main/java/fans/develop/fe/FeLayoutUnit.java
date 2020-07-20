@@ -119,17 +119,24 @@ public class FeLayoutUnit extends FeLayout {
             viewUnit = (FeViewUnit)getChildAt(i);
             if(viewUnit == target)
                 viewUnit.setAnimMode(1);
-            else if (viewUnit.getAnimMode() == 1)
+            else if (viewUnit.getAnimMode() != 0)
                 viewUnit.setAnimMode(0);
         }
     }
 
     /*
         接收点击事件
+        hitThis: 点击目标为当前控件
+        hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y){
+    public void click(float x, float y, Boolean hitThis, int hitType){
         if(sectionCallback.getSectionUnit().selectView == null)
             return;
+        //点击非己,清选中状态
+        if(!hitThis){
+            sectionCallback.getSectionUnit().selectView.setAnimMode(0);
+            return;
+        }
         //目标人物选中
         selectView(sectionCallback.getSectionUnit().selectView);
         //输入坐标求格子位置,更新人物选中点信息
