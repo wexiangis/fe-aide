@@ -15,10 +15,6 @@ public class FeViewMap extends FeView {
 
     //地图移动格子数
     private int xGridErr = 0, yGridErr = 0;
-    //触屏按下时记录坐标
-    private float tDownX, tDownY;
-    //分辨移动事件还是点击事件
-    private boolean isMove = false;
     //画笔
     private Paint paintMap;
 

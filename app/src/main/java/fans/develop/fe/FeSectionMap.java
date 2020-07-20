@@ -48,12 +48,8 @@ public class FeSectionMap {
         //屏幕长、高格子数适配屏幕分辨率,得到地图实际显示长高(width、height)
         init(screenWidth, screenHeight, mapInfo.xGrid, mapInfo.yGrid, mapInfo.pixelPerGrid);
         //xp、yp分别为xy缩放比例(原始长、高缩放到实际显示长、高)
-        float xp = (float)width/mapInfo.bitmap.getWidth()/2;
-        if(xp > 1.5f)
-            xp = 1.5f;
-        float yp = (float)height/mapInfo.bitmap.getHeight()/2;
-        if(yp > 1.5f)
-            yp = 1.5f;
+        float xp = (float)width/mapInfo.bitmap.getWidth();
+        float yp = (float)height/mapInfo.bitmap.getHeight();
         //用缩放后的矩阵初始化bitmap,缩放效果较好
         matrix.postScale(xp, yp);
         bitmap = Bitmap.createBitmap(mapInfo.bitmap, 0, 0,
