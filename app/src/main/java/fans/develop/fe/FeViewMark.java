@@ -70,16 +70,16 @@ public class FeViewMark extends FeView {
     //绘图回调
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-
+        //求格子位置
 		sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, gridInfo);
-
+        //按颜色取渲染
         if(colorMode == 0)
             paint.setShader(sectionCallback.getSectionShader().getShaderB());
         else if(colorMode == 1)
             paint.setShader(sectionCallback.getSectionShader().getShaderR());
         else
             paint.setShader(sectionCallback.getSectionShader().getShaderG());
-
+        //画填充多边形
         canvas.drawPath(gridInfo.path, paint);
     }
 

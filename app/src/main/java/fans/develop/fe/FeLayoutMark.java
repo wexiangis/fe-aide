@@ -88,7 +88,7 @@ public class FeLayoutMark extends FeLayout {
             sectionCallback.getSectionUnit().selectView == null)
             return;
         //获得移动力
-        int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(id);
+        int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(id) + 1;
         //中心坐标
         int centerX = sectionCallback.getSectionUnit().selectView.getGridX();
         int centerY = sectionCallback.getSectionUnit().selectView.getGridY();

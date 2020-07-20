@@ -255,39 +255,43 @@ public class FeSectionMap {
 
     //输入格子求位置
     public void getRectByGrid(int xG, int yG, FeInfoGrid fig){
+        //多边形路径缩进(显示移动范围的网格相邻缝隙大小)
+        int edge = 1;
+        //默认值
         fig.point[0] = xG;
         fig.point[1] = yG;
-        //
+        fig.path.reset();
+        //在屏幕范围内
         if(xG >= srcGridXStart &&
                 xG < srcGridXStart + srcGridX &&
                 yG >= srcGridYStart &&
                 yG < srcGridYStart + srcGridY)
         {
+            //屏幕棋盘格子所在坐标
             int x = xG - srcGridXStart;
             int y = yG - srcGridYStart;
-            //
+            //取矩阵
             fig.rect.top = (int)(srcGridLine[y][1] - srcGridLine[y][0]);
             fig.rect.bottom = (int)(srcGridLine[y][1]);
             fig.rect.left = (int)(x*srcGridLine[y][3] - srcGridLine[y][2]);
             fig.rect.right = (int)(fig.rect.left + srcGridLine[y][3]);
-            //
-            fig.path.reset();
-            //
+            //取多边形路径
             if(y == 0){
-                fig.path.moveTo(x * screenWidth / srcGridX, 0);
-                fig.path.lineTo((x + 1) * screenWidth / srcGridX, 0);
+                fig.path.moveTo(x * screenWidth / srcGridX + edge, 0 + edge);
+                fig.path.lineTo((x + 1) * screenWidth / srcGridX - edge, 0 + edge);
             }else{
                 fig.path.moveTo(
-                        x * srcGridLine[y-1][3] - srcGridLine[y-1][2],
-                        srcGridLine[y-1][1]);
+                        x * srcGridLine[y-1][3] - srcGridLine[y-1][2] + edge,
+                        srcGridLine[y-1][1] + edge);
                 fig.path.lineTo(
-                        (x + 1) * srcGridLine[y-1][3] - srcGridLine[y-1][2],
-                        srcGridLine[y-1][1]);
+                        (x + 1) * srcGridLine[y-1][3] - srcGridLine[y-1][2] - edge,
+                        srcGridLine[y-1][1] + edge);
             }
-            fig.path.lineTo(fig.rect.right, fig.rect.bottom);
-            fig.path.lineTo(fig.rect.left, fig.rect.bottom);
+            fig.path.lineTo(fig.rect.right - 1, fig.rect.bottom - edge);
+            fig.path.lineTo(fig.rect.left + 1, fig.rect.bottom - edge);
             fig.path.close();
         }
+        //不在屏幕范围内
         else{
             fig.rect.left = (int)(-xGridPixel)*2;
             fig.rect.right = (int)(-xGridPixel);

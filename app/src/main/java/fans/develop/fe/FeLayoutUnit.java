@@ -162,9 +162,9 @@ public class FeLayoutUnit extends FeLayout {
         //选中人物太过靠近边界,挪动地图
         if(!sectionCallback.getSectionMap().srcGridCenter.contains(site.point[0], site.point[1])){
             //移至居中
-            sectionCallback.getLayoutMap().moveCenter(site.point[0], site.point[1]);
+            // sectionCallback.getLayoutMap().moveCenter(site.point[0], site.point[1]);
             //移至包含
-            // sectionCallback.getLayoutMap().moveInclude(site.point[0], site.point[1]);
+            sectionCallback.getLayoutMap().moveInclude(site.point[0], site.point[1]);
         }
         //刷新动画状态
         refresh();
