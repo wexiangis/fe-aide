@@ -128,6 +128,8 @@ public class FeLayoutUnit extends FeLayout {
         接收点击事件
      */
     public void click(float x, float y){
+        if(sectionCallback.getSectionUnit().selectView == null)
+            return;
         //目标人物选中
         selectView(sectionCallback.getSectionUnit().selectView);
         //输入坐标求格子位置,更新人物选中点信息

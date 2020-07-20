@@ -72,10 +72,12 @@ public class FeViewUnitInfo extends FeView {
         }
 
         //选中人物位置
+        if(sectionCallback.getSectionUnit().selectView == null)
+            return;
         FeInfoGrid unitSite = sectionCallback.getSectionUnit().selectView.getSite();
 
         //图像位置自动调整
-        if(sectionCallback.unitSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
+        if(unitSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
             rectDistHeadBg.left = (int)(sectionCallback.getSectionMap().xGridPixel/4);
             rectDistHeadBg.right = (int)(sectionCallback.getSectionMap().xGridPixel/4 + bitmapHeadBg.getWidth()*pixelPowHead);
         }else{ //放到右边
@@ -85,10 +87,10 @@ public class FeViewUnitInfo extends FeView {
 
         //画人物头像
         if(!sectionCallback.onMapHit() ||
-            sectionCallback.unitSite.rect.left > sectionCallback.getSectionMap().screenWidth ||
-            sectionCallback.unitSite.rect.right < 0 ||
-            sectionCallback.unitSite.rect.top > sectionCallback.getSectionMap().screenHeight ||
-            sectionCallback.unitSite.rect.bottom < 0){
+            unitSite.rect.left > sectionCallback.getSectionMap().screenWidth ||
+            unitSite.rect.right < 0 ||
+            unitSite.rect.top > sectionCallback.getSectionMap().screenHeight ||
+            unitSite.rect.bottom < 0){
             drawHead = false;
         }else {
             drawHead = true;
