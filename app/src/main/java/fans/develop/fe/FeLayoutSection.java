@@ -267,25 +267,25 @@ public class FeLayoutSection extends FeLayout{
             flag.cleanFlagAll();
             //点击:系统菜单中?
             if(layoutSysMenu.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.SYS_MENU);
+                flag.setFlag(FeFlagHit.HIT_SYS_MENU);
             //点击:正在对话?
             if(layoutChat.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.CHAT);
+                flag.setFlag(FeFlagHit.HIT_CHAT);
             //点击:人物菜单中?
             if(layoutUnitMenu.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.UNIT_MENU);
+                flag.setFlag(FeFlagHit.HIT_UNIT_MENU);
             //点击:标记格
             if(layoutMark.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.MARK);
+                flag.setFlag(FeFlagHit.HIT_MARK);
             //点击:选中人物?
             if(layoutUnit.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.UNIT);
+                flag.setFlag(FeFlagHit.HIT_UNIT);
             //点击:地图信息?
             if(layoutMapInfo.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.MAP_INFO);
+                flag.setFlag(FeFlagHit.HIT_MAP_INFO);
             //点击:地图?
             if(layoutMap.checkHit(x, y))
-                flag.setFlag(FeFlagHit.TYPE.MAP);
+                flag.setFlag(FeFlagHit.HIT_MAP);
             //debug
             // dbTouchXY.setText(String.format("Touch XY: %.2f, %.2f", x, y));
             // dbTouchGridXY.setText(String.format("Touch Grid XY: %d, %d", sectionMap.selectSite.point[0], sectionMap.selectSite.point[1]));
