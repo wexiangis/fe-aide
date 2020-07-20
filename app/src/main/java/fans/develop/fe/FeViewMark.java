@@ -54,10 +54,10 @@ public class FeViewMark extends FeView {
 	}
 
     public int getGridX(){
-        return gridX;
+        return xGrid;
     }
     public int getGridY(){
-        return gridY;
+        return yGrid;
     }
 
     //动画心跳回调
