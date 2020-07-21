@@ -121,7 +121,7 @@ public class FeViewUnit extends FeView {
         }
     }
     
-    //读颜色模式
+    //读颜色模式: 0/原色 1/绿色 2/红色 3/灰色 4/橙色 5/紫色 6/不蓝不绿
     public int getColorMode(){
         return colorMode;
     }
