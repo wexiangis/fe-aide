@@ -48,8 +48,7 @@ public class FeViewUnit extends FeView {
         gridX, gridY: 所在格子
      */
     public FeViewUnit(Context context, 
-        int id, int gridX, int gridY, 
-        FeAnim anim, FeCamp camp,
+        int id, int gridX, int gridY, FeCamp camp,
         FeSectionCallback sectionCallback)
     {
         super(context);
@@ -63,7 +62,7 @@ public class FeViewUnit extends FeView {
         bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp);
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
-        setAnim(anim);
+        setAnim(FeAnim.STAY);
         //参数备份
         this.camp = camp;
         this.id = id;
@@ -73,7 +72,7 @@ public class FeViewUnit extends FeView {
         moveGridTo(gridX, gridY);
         //图片扣取位置计算
         bitmapBody.left = 0;
-        bitmapBody.top = frameHeight*frameSkipByAnimMode[anim.ordinal()];
+        bitmapBody.top = frameHeight*frameSkipByAnimMode[this.anim.ordinal()];
         bitmapBody.right = bitmap.getWidth();
         bitmapBody.bottom = bitmapBody.top + frameHeight;
         //引入心跳

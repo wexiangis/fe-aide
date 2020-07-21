@@ -45,7 +45,7 @@ public class FeLayoutUnit extends FeLayout {
         人员增删
      */
     public void addUnit(int id, int y, int x, FeCamp camp){
-        addView(new FeViewUnit(context, id, x, y, 0, camp, sectionCallback));
+        addView(new FeViewUnit(context, id, x, y, camp, sectionCallback));
     }
     public void removeUnit(int id){
         ;
@@ -140,7 +140,7 @@ public class FeLayoutUnit extends FeLayout {
         //点击非己,清选中状态
         if(!hitThis){
 			if(sectionCallback.getSectionUnit().selectView != null)
-                sectionCallback.getSectionUnit().selectView.setAnim(0);
+                sectionCallback.getSectionUnit().selectView.setAnim(FeAnim.STAY);
             hitViewUnit = null;
             sectionCallback.onUnitSelect(false);
             sectionCallback.onUnitMove(false);
