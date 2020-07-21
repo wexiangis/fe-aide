@@ -148,7 +148,7 @@ public class FeLayoutSection extends FeLayout{
                                     sxData.saveCache.unit.getId(i),
                                     sxData.saveCache.unit.getX(i),
                                     sxData.saveCache.unit.getY(i),
-                                    sxData.saveCache.unit.getCamp(i));
+                                    FeCamp.values()[sxData.saveCache.unit.getCamp(i)]);
                             }
 
                             layoutLoading.setPercent(75);//百分比进度

@@ -24,7 +24,8 @@ public class FeViewUnit extends FeView {
     //人物唯一id
     private int id = 0;
     //动画模式和颜色模式
-    private int animMode = 0, colorMode = 0;
+    private FeAnim anim = FeAnim.STAY;
+    private FeCamp camp = FeCamp.BLUE;
     //当前人物所在格子
     public int gridX = 0, gridY = 0;
     //根据动画模式0~5,图像胶片上移帧数
@@ -44,12 +45,11 @@ public class FeViewUnit extends FeView {
 
     /*
         id: 人物唯一id
-        animMode: 0/待机 1/选中 2,3,4,5/上,下,左,右
-        colorMode: 0/原色 1/绿色 2/红色 3/灰色 4/橙色 5/紫色 6/不蓝不绿
+        gridX, gridY: 所在格子
      */
     public FeViewUnit(Context context, 
         int id, int gridX, int gridY, 
-        int animMode, int colorMode,
+        FeAnim anim, FeCamp camp,
         FeSectionCallback sectionCallback)
     {
         super(context);
@@ -60,12 +60,12 @@ public class FeViewUnit extends FeView {
 //        paint.setAntiAlias(true);
 //        paint.setBitmapFilter(true);
         //图片加载和颜色变换
-        bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), colorMode);
+        bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp.ordinal());
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
-        setAnimMode(animMode);
+        setAnim(anim);
         //参数备份
-        this.colorMode = colorMode;
+        this.camp = camp;
         this.id = id;
         //
         frameHeight = bitmap.getWidth();
@@ -73,7 +73,7 @@ public class FeViewUnit extends FeView {
         moveGridTo(gridX, gridY);
         //图片扣取位置计算
         bitmapBody.left = 0;
-        bitmapBody.top = frameHeight*frameSkipByAnimMode[this.animMode];
+        bitmapBody.top = frameHeight*frameSkipByAnimMode[anim.ordinal()];
         bitmapBody.right = bitmap.getWidth();
         bitmapBody.bottom = bitmapBody.top + frameHeight;
         //引入心跳
@@ -87,7 +87,7 @@ public class FeViewUnit extends FeView {
         return id;
     }
 
-    //移动方格
+    //方格位置
     public void setGrid(int x, int y){
         gridX += x;
         gridY += y;
@@ -110,66 +110,60 @@ public class FeViewUnit extends FeView {
         topMargin = y*sectionCallback.getSectionMap().yGridPixel;
     }
 
-    //颜色模式: 0/原色 1/绿色 2/红色 3/灰色 4/橙色 5/紫色 6/不蓝不绿
-    public void setColorMode(int colorMode){
-        if(this.colorMode != colorMode) {
+    //阵营
+    public void setCamp(FeCamp camp){
+        if(this.camp != camp) {
             synchronized (paint) {
                 bitmap.recycle();
-                bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), colorMode);
-                this.colorMode = colorMode;
+                bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp.ordinal());
+                this.camp = camp;
             }
         }
     }
-    
-    //读颜色模式: 0/原色 1/绿色 2/红色 3/灰色 4/橙色 5/紫色 6/不蓝不绿
-    public int getColorMode(){
-        return colorMode;
+    public FeCamp getCamp(){
+        return camp;
     }
 
-    //设置动画模式: 0/待机 1/选中 2/上 3/下 4/左 5/右
-    public void setAnimMode(int animMode){
-        if(this.animMode != animMode){
+    //动画模式
+    public void setAnim(FeAnim anim){
+        if(this.anim != anim){
             //镜像和恢复
-            if(this.animMode == 5 || animMode == 5) {
+            if(this.anim == FeAnim.RIGHT || anim == FeAnim.RIGHT) {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, (int) bitmap.getWidth(), (int) bitmap.getHeight(), matrix, true);
                 matrix.postScale(1, 1);
             }
-            //范围限制
-            if(animMode < 0 || animMode > 5)
-                animMode = 0;
             //缓存状态
-            this.animMode = animMode;
+            this.anim = anim;
             //更新动画顺序
-            upgradeHeartType(animMode);
+            upgradeHeartType(anim);
             //马上重绘
-            if(animMode == 1)
+            if(anim == FeAnim.ACTIVITY)
                 ;//heartUnit.task.run(2);//选中动画比较特殊,需从第2帧开始
             else
                 heartUnit.task.run(0);
         }
         else {
-            this.animMode = animMode;
-            upgradeHeartType(animMode);
+            this.anim = anim;
+            upgradeHeartType(anim);
         }
     }
-
-    //读动画模式
-    public int getAnimMode(){
-        return animMode;
-    }
-
-    public FeInfoGrid getSite(){
-        return site;
+    public FeAnim getAnim(){
+        return anim;
     }
 
     //根据动画模式,切换心跳类型
-    private void upgradeHeartType(int animMode){
-        if(animMode == 0)
+    private void upgradeHeartType(FeAnim anim){
+        if(anim == FeAnim.STAY)
             heartUnit.type = FeHeart.TYPE_ANIM_STAY;
-        else if(animMode == 1)
+        else if(anim == FeAnim.ACTIVITY)
             heartUnit.type = FeHeart.TYPE_ANIM_SELECT;
         else
             heartUnit.type = FeHeart.TYPE_ANIM_MOVE;
+    }
+
+    //位置信息
+    public FeInfoGrid getSite(){
+        return site;
     }
 
     //动画心跳回调
@@ -177,7 +171,7 @@ public class FeViewUnit extends FeView {
         public void run(int count){
             //移动框图(电影胶片)
             bitmapBody.left = 0;
-            bitmapBody.top = frameHeight*(frameSkipByAnimMode[animMode] + count);
+            bitmapBody.top = frameHeight*(frameSkipByAnimMode[anim.ordinal()] + count);
             bitmapBody.right = bitmap.getWidth();
             bitmapBody.bottom = bitmapBody.top + frameHeight;
             //调用一次onDrow
