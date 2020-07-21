@@ -60,7 +60,7 @@ public class FeViewUnit extends FeView {
 //        paint.setAntiAlias(true);
 //        paint.setBitmapFilter(true);
         //图片加载和颜色变换
-        bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp.ordinal());
+        bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp);
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
         setAnim(anim);
@@ -115,7 +115,7 @@ public class FeViewUnit extends FeView {
         if(this.camp != camp) {
             synchronized (paint) {
                 bitmap.recycle();
-                bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp.ordinal());
+                bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp);
                 this.camp = camp;
             }
         }

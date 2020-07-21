@@ -150,29 +150,29 @@ public class FeLayoutUnit extends FeLayout {
         if(!sectionCallback.onUnitSelect() ||
 			hitViewUnit != sectionCallback.getSectionUnit().selectView){
             //自己阵营?
-            if(hitViewUnit.getColorMode() == 0)
-                setAnim(hitViewUnit, 1);
+            if(hitViewUnit.getCamp() == FeCamp.BLUE)
+                setAnim(hitViewUnit, FeAnim.ACTIVITY);
             else
-                setAnim(hitViewUnit, 0);
+                setAnim(hitViewUnit, FeAnim.STAY);
             sectionCallback.onUnitSelect(true);
             sectionCallback.onUnitMove(false);
         }
         //二次选中, 显示移动范围
         else if(!sectionCallback.onUnitMove()){
             //自己阵营?
-            if(hitViewUnit.getColorMode() == 0)
-                setAnim(hitViewUnit, 3);
+            if(hitViewUnit.getCamp() == FeCamp.BLUE)
+                setAnim(hitViewUnit, FeAnim.DOWN);
             else
-                setAnim(hitViewUnit, 0);
+                setAnim(hitViewUnit, FeAnim.STAY);
             sectionCallback.onUnitMove(true);
         }
         //三次选中, 人物菜单(己方阵营), 关闭移动范围(其它阵营)
         else{
             //自己阵营?
-            if(hitViewUnit.getColorMode() == 0)
-                setAnim(hitViewUnit, 1);
+            if(hitViewUnit.getCamp() == FeCamp.BLUE)
+                setAnim(hitViewUnit, FeAnim.ACTIVITY);
             else
-                setAnim(hitViewUnit, 0);
+                setAnim(hitViewUnit, FeAnim.STAY);
             sectionCallback.onUnitMove(false);
         }
         //缓存当前选中
