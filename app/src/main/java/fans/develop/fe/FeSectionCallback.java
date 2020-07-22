@@ -27,14 +27,25 @@ public interface FeSectionCallback{
     FeLayoutInterlude getLayoutInterlude();
     FeLayoutDebug getLayoutDebug();
     /* ------------------------------- */
+
     void onTouchEnable(Boolean on);
     Boolean onTouchEnable();
+
     void onMapMove(Boolean on);
     Boolean onMapMove();
+
     void onMapHit(Boolean on);
     Boolean onMapHit();
+
     void onUnitSelect(Boolean on);
     Boolean onUnitSelect();
+
     void onUnitMove(Boolean on);
     Boolean onUnitMove();
+
+    void onUnitMenu(Boolean on);
+    Boolean onUnitMenu();
+
+    void onSysMenu(Boolean on);
+    Boolean onSysMenu();
 }

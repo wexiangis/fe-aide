@@ -127,6 +127,48 @@ public class FeLayoutUnit extends FeLayout {
     }
 
     /*
+        多次点击人物效果
+     */
+    public void hitFirst(){
+        //自己阵营?
+        if(hitViewUnit.getCamp() == FeCamp.BLUE)
+            setAnim(hitViewUnit, FeAnim.ACTIVITY);
+        else
+            setAnim(hitViewUnit, FeAnim.STAY);
+        //置标志
+        sectionCallback.onUnitSelect(true);
+        sectionCallback.onUnitMove(false);
+        //缓存当前选中
+        sectionCallback.getSectionUnit().selectView = hitViewUnit;
+    }
+    public void hitSecond(){
+        //自己阵营?
+        if(hitViewUnit.getCamp() == FeCamp.BLUE)
+            setAnim(hitViewUnit, FeAnim.DOWN);
+        else
+            setAnim(hitViewUnit, FeAnim.STAY);
+        //置标志
+        sectionCallback.onUnitMove(true);
+        //缓存当前选中
+        sectionCallback.getSectionUnit().selectView = hitViewUnit;
+        //显示移动范围
+        ;
+    }
+    public void hitThird(){
+        //自己阵营?
+        if(hitViewUnit.getCamp() == FeCamp.BLUE)
+            setAnim(hitViewUnit, FeAnim.ACTIVITY);
+        else
+            setAnim(hitViewUnit, FeAnim.STAY);
+        //置标志
+        sectionCallback.onUnitMove(false);
+        //缓存当前选中
+        sectionCallback.getSectionUnit().selectView = hitViewUnit;
+        //关闭显示范围
+        ;
+    }
+
+    /*
         接收点击事件
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
@@ -148,33 +190,14 @@ public class FeLayoutUnit extends FeLayout {
         }
         //一次选中, 目标人物选中 或 和上次选中的不是同一个人
         if(!sectionCallback.onUnitSelect() ||
-			hitViewUnit != sectionCallback.getSectionUnit().selectView){
-            //自己阵营?
-            if(hitViewUnit.getCamp() == FeCamp.BLUE)
-                setAnim(hitViewUnit, FeAnim.ACTIVITY);
-            else
-                setAnim(hitViewUnit, FeAnim.STAY);
-            sectionCallback.onUnitSelect(true);
-            sectionCallback.onUnitMove(false);
-        }
+            hitViewUnit != sectionCallback.getSectionUnit().selectView)
+            hitFirst();
         //二次选中, 显示移动范围
-        else if(!sectionCallback.onUnitMove()){
-            //自己阵营?
-            if(hitViewUnit.getCamp() == FeCamp.BLUE)
-                setAnim(hitViewUnit, FeAnim.DOWN);
-            else
-                setAnim(hitViewUnit, FeAnim.STAY);
-            sectionCallback.onUnitMove(true);
-        }
+        else if(!sectionCallback.onUnitMove())
+            hitSecond();
         //三次选中, 人物菜单(己方阵营), 关闭移动范围(其它阵营)
-        else{
-            //自己阵营?
-            if(hitViewUnit.getCamp() == FeCamp.BLUE)
-                setAnim(hitViewUnit, FeAnim.ACTIVITY);
-            else
-                setAnim(hitViewUnit, FeAnim.STAY);
-            sectionCallback.onUnitMove(false);
-        }
+        else
+            hitThird();
         //缓存当前选中
         sectionCallback.getSectionUnit().selectView = hitViewUnit;
         //输入坐标求格子位置,更新人物选中点信息

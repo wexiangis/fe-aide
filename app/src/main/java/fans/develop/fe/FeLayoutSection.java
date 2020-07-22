@@ -342,44 +342,60 @@ public class FeLayoutSection extends FeLayout{
 
         /* ------------------------------- */
 
-        private Boolean _onTouchEnable = true;
+        private Boolean onTouchEnable = false;
         public void onTouchEnable(Boolean on){
-            _onTouchEnable = on;
+            onTouchEnable = on;
         }
         public Boolean onTouchEnable(){
-            return _onTouchEnable;
+            return onTouchEnable;
         }
 
-        private Boolean _onMapMove = false;
+        private Boolean onMapMove = false;
         public void onMapMove(Boolean on){
-            _onMapMove = on;
+            onMapMove = on;
         }
         public Boolean onMapMove(){
-            return _onMapMove;
+            return onMapMove;
         }
 
-        private Boolean _onMapHit = false;
+        private Boolean onMapHit = false;
         public void onMapHit(Boolean on){
-            _onMapHit = on;
+            onMapHit = on;
         }
         public Boolean onMapHit(){
-            return _onMapHit;
+            return onMapHit;
         }
 
-        private Boolean _onUnitSelect = false;
+        private Boolean onUnitSelect = false;
         public void onUnitSelect(Boolean on){
-            _onUnitSelect = on;
+            onUnitSelect = on;
         }
         public Boolean onUnitSelect(){
-            return _onUnitSelect;
+            return onUnitSelect;
         }
 
-        private Boolean _onUnitMove = false;
+        private Boolean onUnitMove = false;
         public void onUnitMove(Boolean on){
-            _onUnitMove = on;
+            onUnitMove = on;
         }
         public Boolean onUnitMove(){
-            return _onUnitMove;
+            return onUnitMove;
+        }
+
+        private Boolean onUnitMenu = false;
+        public void onUnitMenu(Boolean on){
+            onUnitMenu = on;
+        }
+        public Boolean onUnitMenu(){
+            return onUnitMenu;
+        }
+
+        private Boolean onSysMenu = false;
+        public void onSysMenu(Boolean on){
+            onSysMenu = on;
+        }
+        public Boolean onSysMenu(){
+            return onSysMenu;
         }
     };
 }
