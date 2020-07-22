@@ -22,9 +22,9 @@ public class FeLayoutInterlude extends FeLayout
 		阵营切换动画
 	 */
 	public void campSwitch(FeCamp camp){
-		sectionCallback.onTouchEnable(false);
+		sectionCallback.onTouchDisable(true);
 		;
-		sectionCallback.onTouchEnable(true);
+		sectionCallback.onTouchDisable(false);
 	}
 	
 	/*

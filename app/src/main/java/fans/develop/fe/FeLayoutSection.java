@@ -155,9 +155,6 @@ public class FeLayoutSection extends FeLayout{
 
                             //启动地图信息显示
                             layoutMapInfo.on();
-							
-							//启动地图信息显示
-                            layoutMark.markUnit(0);
 
                             layoutLoading.setPercent(80);//百分比进度
 
@@ -342,12 +339,12 @@ public class FeLayoutSection extends FeLayout{
 
         /* ------------------------------- */
 
-        private Boolean onTouchEnable = false;
-        public void onTouchEnable(Boolean on){
-            onTouchEnable = on;
+        private Boolean onTouchDisable = false;
+        public void onTouchDisable(Boolean disable){
+            onTouchDisable = disable;
         }
-        public Boolean onTouchEnable(){
-            return onTouchEnable;
+        public Boolean onTouchDisable(){
+            return onTouchDisable;
         }
 
         private Boolean onMapMove = false;

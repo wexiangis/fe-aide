@@ -8,5 +8,8 @@ public class FeSectionUnit {
     // ----------- 选中信息 -----------
 
     //当前选中的unit
-    public FeViewUnit selectView = null;
+    public FeViewUnit viewUnit = null;
+
+    //当前人物移动力剩余
+    public int mov = 0;
 }

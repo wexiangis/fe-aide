@@ -15,23 +15,23 @@ public class FeViewMark extends FeView {
     //画笔
     private Paint paint;
 	//颜色模式
-    private int colorMode;
+    private FeMark mark;
     //所在格
     private int xGrid, yGrid;
     //在地图中的位置
-	private FeInfoGrid gridInfo;
+	private FeInfoGrid site;
 
     /*
         colorMode: 0/蓝色 1/红色 2/绿色
      */
-    public FeViewMark(Context context, 
-			int colorMode, 
+    public FeViewMark(Context context,
+          FeMark mark,
 			int xGird, 
 			int yGrid,
 			FeSectionCallback sectionCallback)
 	{
         super(context);
-        this.colorMode = colorMode;
+        this.mark = mark;
 		this.xGrid = xGird;
 		this.yGrid = yGrid;
         this.sectionCallback = sectionCallback;
@@ -39,14 +39,10 @@ public class FeViewMark extends FeView {
         paint = new Paint();
         paint.setColor(Color.BLUE);
 		//
-		gridInfo = new FeInfoGrid();
+        site = new FeInfoGrid();
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);
     }
-	
-	public void setColorMode(int colorMode){
-		this.colorMode = colorMode;
-	}
 	
 	public void setXY(int xGrid, int yGrid){
 		this.xGrid = xGrid;
@@ -60,6 +56,20 @@ public class FeViewMark extends FeView {
         return yGrid;
     }
 
+    public FeInfoGrid getSite(){
+        return site;
+    }
+
+    public FeMark getMark(){
+        return mark;
+    }
+
+    public boolean checkHit(float x, float y){
+        if(site.rect.contains((int)x, (int)y))
+            return true;
+        return false;
+    }
+
     //动画心跳回调
     private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART, new FeHeartUnit.TimeOutTask(){
         public void run(int count){
@@ -71,16 +81,16 @@ public class FeViewMark extends FeView {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
         //求格子位置
-		sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, gridInfo);
+		sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, site);
         //按颜色取渲染
-        if(colorMode == 0)
+        if(mark == FeMark.BLUE)
             paint.setShader(sectionCallback.getSectionShader().getShaderB());
-        else if(colorMode == 1)
+        else if(mark == FeMark.RED)
             paint.setShader(sectionCallback.getSectionShader().getShaderR());
         else
             paint.setShader(sectionCallback.getSectionShader().getShaderG());
         //画填充多边形
-        canvas.drawPath(gridInfo.path, paint);
+        canvas.drawPath(site.path, paint);
     }
 
     /* ---------- abstract interface ---------- */

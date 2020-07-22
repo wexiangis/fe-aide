@@ -28,8 +28,8 @@ public interface FeSectionCallback{
     FeLayoutDebug getLayoutDebug();
     /* ------------------------------- */
 
-    void onTouchEnable(Boolean on);
-    Boolean onTouchEnable();
+    void onTouchDisable(Boolean disable);
+    Boolean onTouchDisable();
 
     void onMapMove(Boolean on);
     Boolean onMapMove();

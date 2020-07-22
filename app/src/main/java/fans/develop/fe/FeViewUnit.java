@@ -88,10 +88,10 @@ public class FeViewUnit extends FeView {
 
     //方格位置
     public void setGrid(int x, int y){
-        gridX += x;
-        gridY += y;
-        leftMargin += x*sectionCallback.getSectionMap().xGridPixel;
-        topMargin += y*sectionCallback.getSectionMap().yGridPixel;
+        gridX = x;
+        gridY = y;
+        leftMargin = x*sectionCallback.getSectionMap().xGridPixel;
+        topMargin = y*sectionCallback.getSectionMap().yGridPixel;
     }
 
     public int getGridX(){

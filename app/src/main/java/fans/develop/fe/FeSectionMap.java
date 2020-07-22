@@ -296,6 +296,12 @@ public class FeSectionMap {
         }
     }
 
+    public FeInfoGrid getRectByGrid(int xG, int yG){
+        FeInfoGrid ret = new FeInfoGrid();
+        getRectByGrid(xG, yG, ret);
+        return ret;
+    }
+
     //输入坐标求格子位置
     public void getRectByLocation(float x, float y, FeInfoGrid fig) {
         for(int yCount = 0; yCount < srcGridY; yCount++){
@@ -308,6 +314,12 @@ public class FeSectionMap {
             }
         }
         getRectByGrid(-1, -1 + srcGridXStart, fig);
+    }
+
+    public FeInfoGrid getRectByLocation(float x, float y){
+        FeInfoGrid ret = new FeInfoGrid();
+        getRectByLocation(x, y, ret);
+        return ret;
     }
 }
 

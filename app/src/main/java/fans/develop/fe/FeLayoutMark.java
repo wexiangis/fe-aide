@@ -14,6 +14,10 @@ public class FeLayoutMark extends FeLayout {
     private FeSectionCallback sectionCallback;
     //着色器心跳启动标志
     private Boolean shaderHeartStartFlag = false;
+    //标记点击位置
+    private FeViewMark hitViewMark = null;
+    //标记当前中心
+    private int certenXY[] = new int[2];
 
     public FeLayoutMark(Context context, FeSectionCallback sectionCallback) {
         super(context);
@@ -70,6 +74,16 @@ public class FeLayoutMark extends FeLayout {
     /* ---------- function ---------- */
     
     public boolean checkHit(float x, float y){
+        FeViewMark viewMark;
+        //遍历所有子view
+        for (int i = 0; i < getChildCount(); i++) {
+            viewMark = (FeViewMark)getChildAt(i);
+            //只有蓝色格参与点击判定
+            if (viewMark.getMark() == FeMark.BLUE && viewMark.checkHit(x, y)) {
+                hitViewMark = viewMark;
+                return true;
+            }
+        }
         return false;
     }
 
@@ -81,17 +95,21 @@ public class FeLayoutMark extends FeLayout {
     /*
         显示特定人物的mark范围
      */
-    public void markUnit(int id){
+    public void markUnit(){
+        //未初始化FeLayoutMark
         if(!shaderHeartStartFlag)
             shaderHeartStart();
-        if(sectionCallback.getSectionUnit() == null ||
-            sectionCallback.getSectionUnit().selectView == null)
+        //没有选中unit?
+        FeSectionUnit sectionUnit = sectionCallback.getSectionUnit();
+        if(sectionUnit == null || sectionUnit.viewUnit == null)
             return;
+        //清移动范围
+        removeAllViews();
         //获得移动力
-        int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(id) + 1;
+        int mov = sectionUnit.mov;
         //中心坐标
-        int centerX = sectionCallback.getSectionUnit().selectView.getGridX();
-        int centerY = sectionCallback.getSectionUnit().selectView.getGridY();
+        certenXY[0] = sectionUnit.viewUnit.getGridX();
+        certenXY[1] = sectionUnit.viewUnit.getGridY();
         //开出一个矩阵以覆盖移动范围
         int gridSize = mov*2+1;
         int[][] grid = new int[gridSize][gridSize];
@@ -106,13 +124,21 @@ public class FeLayoutMark extends FeLayout {
             }
         }
         //左上角坐标
-        int xStart = centerX - mov;
-        int yStart = centerY - mov;
+        int xStart = certenXY[0] - mov;
+        int yStart = certenXY[1] - mov;
         //显示范围
         for(int xCount = 0; xCount < gridSize; xCount++){
             for(int yCount = 0; yCount < gridSize; yCount++){
-                if(grid[xCount][yCount] != 0)
-                    addView(new FeViewMark(context, grid[xCount][yCount] - 1, xCount + xStart, yCount + yStart, sectionCallback));
+                if(grid[xCount][yCount] == 1)
+                    addView(new FeViewMark(context,
+                        FeMark.BLUE,
+                        xCount + xStart,
+                        yCount + yStart, sectionCallback));
+                else if(grid[xCount][yCount] == 2)
+                    addView(new FeViewMark(context,
+                            FeMark.RED,
+                            xCount + xStart,
+                            yCount + yStart, sectionCallback));
             }
         }
     }
@@ -136,13 +162,39 @@ public class FeLayoutMark extends FeLayout {
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y, Boolean hitThis, int hitType){
-        if(!hitThis){
+    public void click(float x, float y, FeFlagHit flag){
+        //没有选中unit?
+        FeSectionUnit sectionUnit = sectionCallback.getSectionUnit();
+        if(sectionUnit == null || sectionUnit.viewUnit == null) {
+            //清mark
             removeAllViews();
-            //人物二次选中,mark该人物行动范围
-            if(hitType == FeFlagHit.HIT_UNIT && sectionCallback.onUnitMove())
-                markUnit(sectionCallback.getSectionUnit().selectView.getId());
             return;
+        }
+        //
+        if(!flag.checkFlag(FeFlagHit.HIT_MARK) || hitViewMark == null)
+            return;
+        //清mark
+        removeAllViews();
+        //己方人物?
+        if (sectionUnit.viewUnit.getCamp() == FeCamp.BLUE) {
+            //移动人物
+            sectionUnit.viewUnit.setGrid(hitViewMark.getGridX(), hitViewMark.getGridY());
+            //削减移动力
+            sectionUnit.mov -= Math.abs(certenXY[0] - hitViewMark.getGridX()) + Math.abs(certenXY[1] - hitViewMark.getGridY());
+            //还有移动力剩余?
+            if(sectionUnit.mov > 0)
+                //更新移动范围
+                markUnit();
+            else
+                //显示unitMenu
+                ;
+        }
+        else{
+            //非己方的移动范围,透传点击地图
+            sectionCallback.onUnitSelect(false);
+            FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
+            if(layoutMap != null)
+                layoutMap.hitMap(hitViewMark.getSite().rect.left + 1, hitViewMark.getSite().rect.top + 1);
         }
     }
 

@@ -29,7 +29,7 @@ public class FeLayoutUnitMenu extends FeLayout {
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y, Boolean hitThis, int hitType){
+    public void click(float x, float y, FeFlagHit flag){
         ;
     }
 

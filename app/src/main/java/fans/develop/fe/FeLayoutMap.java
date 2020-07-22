@@ -135,16 +135,20 @@ public class FeLayoutMap extends FeLayout {
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y, Boolean hitThis, int hitType){
+    public void click(float x, float y, FeFlagHit flag){
         //点击对象不是自己 或 点击的unit不是第一次点击操作
-        if(!hitThis && (hitType != FeFlagHit.HIT_UNIT || sectionCallback.onUnitMove()))
+        if(!flag.checkFlag(FeFlagHit.HIT_MAP) &&
+            (flag.checkFlag(FeFlagHit.HIT_UNIT) || sectionCallback.onUnitMove()))
             return;
-        if(viewMap != null){
-            //输入坐标求格子位置,更新地图选中点信息
-            sectionCallback.getSectionMap().getRectByLocation(x, y, sectionCallback.getSectionMap().selectSite);
-            //置标记
-            sectionCallback.onMapHit(true);
-        }
+        if(viewMap != null)
+            hitMap(x, y);
+    }
+
+    public void hitMap(float x, float y){
+        //输入坐标求格子位置,更新地图选中点信息
+        sectionCallback.getSectionMap().getRectByLocation(x, y, sectionCallback.getSectionMap().selectSite);
+        //置标记
+        sectionCallback.onMapHit(true);
     }
 
     /* ---------- abstract interface ---------- */

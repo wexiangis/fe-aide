@@ -93,9 +93,9 @@ public class FeViewSelect extends FeView {
 //            canvas.drawPath(mapSite.path, paintSelct);
             canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
         }
-        else if(sectionCallback.onUnitSelect() && sectionCallback.getSectionUnit().selectView != null){
+        else if(sectionCallback.onUnitSelect() && sectionCallback.getSectionUnit().viewUnit != null){
             //选中人物位置
-            FeInfoGrid unitSite = sectionCallback.getSectionUnit().selectView.getSite();
+            FeInfoGrid unitSite = sectionCallback.getSectionUnit().viewUnit.getSite();
             //计算输出位置
             rectDistSelect.left = unitSite.rect.left - unitSite.rect.width()/4;
             rectDistSelect.right = unitSite.rect.right + unitSite.rect.width()/4;
