@@ -15,7 +15,7 @@
 ## profession.txt : 职业描述文件
 
 * 格式: 每个职业由多种信息拼凑而成,这里一行描述一个人物
-* 示例: name;anim;ability;grow;upgrade;skill;special;type;下一职业(不能再转填自己);下一职业2;保留;
+* 示例: name;anim;fight,ability;upgrade;grow;skill;special;type;下一职业(不能再转填自己);下一职业2;保留;
 
 ## p_name.txt : 职业名称列表
 

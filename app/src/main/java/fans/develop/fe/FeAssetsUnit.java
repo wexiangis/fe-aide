@@ -535,23 +535,27 @@ public class FeAssetsUnit {
     class Profession extends FeReaderFile {
         public int getName(int line){ return getInt(line, 0); }
         public int getAnim(int line){ return getInt(line, 1); }
-        public int getAbility(int line){ return getInt(line, 2); }
-        public int getUpgrade(int line){ return getInt(line, 3); }
-        public int getGrow(int line){ return getInt(line, 4); }
-        public int getSkill(int line){ return getInt(line, 5); }
-        public int getSpecial(int line){ return getInt(line, 6); }
-        public int getType(int line){ return getInt(line, 7); }
-        public int getNext(int line){ return getInt(line, 8); }
+        public int getFight(int line){ return getInt(line, 2); }
+        public int getAbility(int line){ return getInt(line, 3); }
+        public int getUpgrade(int line){ return getInt(line, 4); }
+        public int getGrow(int line){ return getInt(line, 5); }
+        public int getSkill(int line){ return getInt(line, 6); }
+        public int getSpecial(int line){ return getInt(line, 7); }
+        public int getType(int line){ return getInt(line, 8); }
+        public int getNext(int line){ return getInt(line, 9); }
+        public int getNext2(int line){ return getInt(line, 10); }
 
         public void setName(int line, int name){ setValue(name, line, 0); }
         public void setAnim(int line, int anim){ setValue(anim, line, 1); }
-        public void setAbility(int line, int ability){ setValue(ability, line, 2); }
-        public void setUpgrade(int line, int upgrade){ setValue(upgrade, line, 3); }
-        public void setGrow(int line, int grow){ setValue(grow, line, 4); }
-        public void setSkill(int line, int skill){ setValue(skill, line, 5); }
-        public void setSpecial(int line, int special){ setValue(special, line, 6); }
-        public void setType(int line, int type){ setValue(type, line, 7); }
-        public void setNext(int line, int next){ setValue(next, line, 8); }
+        public void setFight(int line, int fight){ setValue(fight, line, 2); }
+        public void setAbility(int line, int ability){ setValue(ability, line, 3); }
+        public void setUpgrade(int line, int upgrade){ setValue(upgrade, line, 4); }
+        public void setGrow(int line, int grow){ setValue(grow, line, 5); }
+        public void setSkill(int line, int skill){ setValue(skill, line, 6); }
+        public void setSpecial(int line, int special){ setValue(special, line, 7); }
+        public void setType(int line, int type){ setValue(type, line, 8); }
+        public void setNext(int line, int next){ setValue(next, line, 9); }
+        public void setNext2(int line, int next2){ setValue(next2, line, 10); }
 
         public Profession(String folder, String name, String split){
             super(folder, name, split);
