@@ -2,12 +2,10 @@
 
 ## 文件结构
 
-* FeAnim: 动画类型
 * FeAssetsXXX: assets文件资源管理类
 * FeData: 全局参数(Application)
 * FeEvent: 用户操作和当前状态
 * FeAsyncTask: 二次封装FeAsyncTask的回调接口,引入私有数据obj
-* FeCamp: 阵营类型 
 * FeChain: 通用链表结构
 * FeData: 数据中枢
 * FeFileXXX: FE定制assets文件读写管理类
@@ -23,6 +21,7 @@
 * FeSectionXXX: 章节内容部件
 * FeShader: 线性渲染(LinearGradient)数组,用于渲染标记方格
 * FeThread: 批量异步线程操作
+* FeTypeXXX: enum类型集合
 * FeViewXXX: view文件
 
 ## 结构总览

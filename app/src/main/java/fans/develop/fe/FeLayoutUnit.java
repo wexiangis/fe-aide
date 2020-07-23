@@ -44,7 +44,7 @@ public class FeLayoutUnit extends FeLayout {
     /*
         人员增删
      */
-    public void addUnit(int id, int y, int x, FeCamp camp){
+    public void addUnit(int id, int y, int x, FeTypeCamp camp){
         addView(new FeViewUnit(context, id, x, y, camp, sectionCallback));
     }
     public void removeUnit(int id){
@@ -78,7 +78,7 @@ public class FeLayoutUnit extends FeLayout {
     /*
         人员阵营
      */
-    public void setCamp(int id, FeCamp camp){
+    public void setCamp(int id, FeTypeCamp camp){
         ;
     }
 
@@ -107,22 +107,22 @@ public class FeLayoutUnit extends FeLayout {
         人员动画
         animMode: 0/待机 1/选中 2,3,4,5/上,下,左,右
      */
-    public void setAnim(int id, FeAnim anim){
+    public void setAnim(int id, FeTypeAnim anim){
         ;
     }
 
     /*
         清所有人物选中状态
      */
-    public void setAnim(FeViewUnit target, FeAnim anim){
+    public void setAnim(FeViewUnit target, FeTypeAnim anim){
         FeViewUnit viewUnit;
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
             viewUnit = (FeViewUnit)getChildAt(i);
             if(viewUnit == target)
                 viewUnit.setAnim(anim);
-            else if (viewUnit.getAnim() != FeAnim.STAY)
-                viewUnit.setAnim(FeAnim.STAY);
+            else if (viewUnit.getAnim() != FeTypeAnim.STAY)
+                viewUnit.setAnim(FeTypeAnim.STAY);
         }
     }
 
@@ -133,10 +133,10 @@ public class FeLayoutUnit extends FeLayout {
         if(hitViewUnit == null)
             return;
         //自己阵营?
-        if(hitViewUnit.getCamp() == FeCamp.BLUE)
-            setAnim(hitViewUnit, FeAnim.ACTIVITY);
+        if(hitViewUnit.getCamp() == FeTypeCamp.BLUE)
+            setAnim(hitViewUnit, FeTypeAnim.ACTIVITY);
         else
-            setAnim(hitViewUnit, FeAnim.STAY);
+            setAnim(hitViewUnit, FeTypeAnim.STAY);
         //置标志
         sectionCallback.onUnitSelect(true);
         sectionCallback.onUnitMove(false);
@@ -155,14 +155,14 @@ public class FeLayoutUnit extends FeLayout {
         if(hitViewUnit == null)
             return;
         //自己阵营?
-        if(hitViewUnit.getCamp() == FeCamp.BLUE) {
-            setAnim(hitViewUnit, FeAnim.DOWN);
+        if(hitViewUnit.getCamp() == FeTypeCamp.BLUE) {
+            setAnim(hitViewUnit, FeTypeAnim.DOWN);
             //移至居中
             sectionCallback.getLayoutMap().moveCenter(
                 hitViewUnit.getSite().point[0], hitViewUnit.getSite().point[1]);
         }
         else
-            setAnim(hitViewUnit, FeAnim.STAY);
+            setAnim(hitViewUnit, FeTypeAnim.STAY);
         //缓存当前选中
         sectionCallback.getSectionUnit().viewUnit = hitViewUnit;
         //置标志
@@ -183,13 +183,13 @@ public class FeLayoutUnit extends FeLayout {
         if(hitViewUnit == null)
             return;
         //自己阵营?
-        if(hitViewUnit.getCamp() == FeCamp.BLUE) {
-            setAnim(hitViewUnit, FeAnim.ACTIVITY);
+        if(hitViewUnit.getCamp() == FeTypeCamp.BLUE) {
+            setAnim(hitViewUnit, FeTypeAnim.ACTIVITY);
             //移动结束,显示unitMenu
             ;
         }
         else
-            setAnim(hitViewUnit, FeAnim.STAY);
+            setAnim(hitViewUnit, FeTypeAnim.STAY);
         //置标志
         sectionCallback.onUnitMove(false);
         //缓存当前选中
@@ -222,7 +222,7 @@ public class FeLayoutUnit extends FeLayout {
             else {
                 //清选中状态
                 if (sectionCallback.getSectionUnit().viewUnit != null)
-                    sectionCallback.getSectionUnit().viewUnit.setAnim(FeAnim.STAY);
+                    sectionCallback.getSectionUnit().viewUnit.setAnim(FeTypeAnim.STAY);
                 //请标记
                 sectionCallback.getSectionUnit().viewUnit = hitViewUnit = null;
                 sectionCallback.onUnitSelect(false);

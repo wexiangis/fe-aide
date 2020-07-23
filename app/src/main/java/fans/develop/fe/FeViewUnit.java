@@ -24,8 +24,8 @@ public class FeViewUnit extends FeView {
     //人物唯一id
     private int id = 0;
     //动画模式和颜色模式
-    private FeAnim anim = FeAnim.STAY;
-    private FeCamp camp = FeCamp.BLUE;
+    private FeTypeAnim anim = FeTypeAnim.STAY;
+    private FeTypeCamp camp = FeTypeCamp.BLUE;
     //当前人物所在格子
     public int gridX = 0, gridY = 0;
     //根据动画模式0~5,图像胶片上移帧数
@@ -48,7 +48,7 @@ public class FeViewUnit extends FeView {
         gridX, gridY: 所在格子
      */
     public FeViewUnit(Context context, 
-        int id, int gridX, int gridY, FeCamp camp,
+        int id, int gridX, int gridY, FeTypeCamp camp,
         FeSectionCallback sectionCallback)
     {
         super(context);
@@ -62,7 +62,7 @@ public class FeViewUnit extends FeView {
         bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp);
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
-        setAnim(FeAnim.STAY);
+        setAnim(FeTypeAnim.STAY);
         //参数备份
         this.camp = camp;
         this.id = id;
@@ -110,7 +110,7 @@ public class FeViewUnit extends FeView {
     }
 
     //阵营
-    public void setCamp(FeCamp camp){
+    public void setCamp(FeTypeCamp camp){
         if(this.camp != camp) {
             synchronized (paint) {
                 bitmap.recycle();
@@ -119,15 +119,15 @@ public class FeViewUnit extends FeView {
             }
         }
     }
-    public FeCamp getCamp(){
+    public FeTypeCamp getCamp(){
         return camp;
     }
 
     //动画模式
-    public void setAnim(FeAnim anim){
+    public void setAnim(FeTypeAnim anim){
         if(this.anim != anim){
             //镜像和恢复
-            if(this.anim == FeAnim.RIGHT || anim == FeAnim.RIGHT) {
+            if(this.anim == FeTypeAnim.RIGHT || anim == FeTypeAnim.RIGHT) {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, (int) bitmap.getWidth(), (int) bitmap.getHeight(), matrix, true);
                 matrix.postScale(1, 1);
             }
@@ -136,7 +136,7 @@ public class FeViewUnit extends FeView {
             //更新动画顺序
             upgradeHeartType(anim);
             //马上重绘
-            if(anim == FeAnim.ACTIVITY)
+            if(anim == FeTypeAnim.ACTIVITY)
                 ;//heartUnit.task.run(2);//选中动画比较特殊,需从第2帧开始
             else
                 heartUnit.task.run(0);
@@ -146,15 +146,15 @@ public class FeViewUnit extends FeView {
             upgradeHeartType(anim);
         }
     }
-    public FeAnim getAnim(){
+    public FeTypeAnim getAnim(){
         return anim;
     }
 
     //根据动画模式,切换心跳类型
-    private void upgradeHeartType(FeAnim anim){
-        if(anim == FeAnim.STAY)
+    private void upgradeHeartType(FeTypeAnim anim){
+        if(anim == FeTypeAnim.STAY)
             heartUnit.type = FeHeart.TYPE_ANIM_STAY;
-        else if(anim == FeAnim.ACTIVITY)
+        else if(anim == FeTypeAnim.ACTIVITY)
             heartUnit.type = FeHeart.TYPE_ANIM_SELECT;
         else
             heartUnit.type = FeHeart.TYPE_ANIM_MOVE;

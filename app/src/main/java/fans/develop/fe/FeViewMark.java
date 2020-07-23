@@ -15,7 +15,7 @@ public class FeViewMark extends FeView {
     //画笔
     private Paint paint;
 	//颜色模式
-    private FeMark mark;
+    private FeTypeMark mark;
     //所在格
     private int xGrid, yGrid;
     //在地图中的位置
@@ -25,7 +25,7 @@ public class FeViewMark extends FeView {
         colorMode: 0/蓝色 1/红色 2/绿色
      */
     public FeViewMark(Context context,
-          FeMark mark,
+          FeTypeMark mark,
 			int xGird, 
 			int yGrid,
 			FeSectionCallback sectionCallback)
@@ -60,7 +60,7 @@ public class FeViewMark extends FeView {
         return site;
     }
 
-    public FeMark getMark(){
+    public FeTypeMark getMark(){
         return mark;
     }
 
@@ -83,9 +83,9 @@ public class FeViewMark extends FeView {
         //求格子位置
 		sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, site);
         //按颜色取渲染
-        if(mark == FeMark.BLUE)
+        if(mark == FeTypeMark.BLUE)
             paint.setShader(sectionCallback.getSectionShader().getShaderB());
-        else if(mark == FeMark.RED)
+        else if(mark == FeTypeMark.RED)
             paint.setShader(sectionCallback.getSectionShader().getShaderR());
         else
             paint.setShader(sectionCallback.getSectionShader().getShaderG());

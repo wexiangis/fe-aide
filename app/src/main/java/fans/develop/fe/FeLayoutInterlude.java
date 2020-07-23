@@ -21,7 +21,7 @@ public class FeLayoutInterlude extends FeLayout
 	/*
 		阵营切换动画
 	 */
-	public void campSwitch(FeCamp camp){
+	public void campSwitch(FeTypeCamp camp){
 		sectionCallback.onTouchDisable(true);
 		;
 		sectionCallback.onTouchDisable(false);

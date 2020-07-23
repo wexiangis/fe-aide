@@ -79,7 +79,7 @@ public class FeLayoutMark extends FeLayout {
         for (int i = 0; i < getChildCount(); i++) {
             viewMark = (FeViewMark)getChildAt(i);
             //只有蓝色格参与点击判定
-            if (viewMark.getMark() == FeMark.BLUE && viewMark.checkHit(x, y)) {
+            if (viewMark.getMark() == FeTypeMark.BLUE && viewMark.checkHit(x, y)) {
                 hitViewMark = viewMark;
                 return true;
             }
@@ -131,12 +131,12 @@ public class FeLayoutMark extends FeLayout {
             for(int yCount = 0; yCount < gridSize; yCount++){
                 if(grid[xCount][yCount] == 1)
                     addView(new FeViewMark(context,
-                        FeMark.BLUE,
+                        FeTypeMark.BLUE,
                         xCount + xStart,
                         yCount + yStart, sectionCallback));
                 else if(grid[xCount][yCount] == 2)
                     addView(new FeViewMark(context,
-                            FeMark.RED,
+                            FeTypeMark.RED,
                             xCount + xStart,
                             yCount + yStart, sectionCallback));
             }
@@ -176,7 +176,7 @@ public class FeLayoutMark extends FeLayout {
         //清mark
         removeAllViews();
         //己方人物?
-        if (sectionUnit.viewUnit.getCamp() == FeCamp.BLUE) {
+        if (sectionUnit.viewUnit.getCamp() == FeTypeCamp.BLUE) {
             //移动人物
             sectionUnit.viewUnit.setGrid(hitViewMark.getGridX(), hitViewMark.getGridY());
             //削减移动力
