@@ -46,7 +46,7 @@ public class FeSectionMap {
         this.section = section;
         this.mapInfo = mapInfo;
         //屏幕长、高格子数适配屏幕分辨率,得到地图实际显示长高(width、height)
-        init(screenWidth, screenHeight, mapInfo.xGrid, mapInfo.yGrid, mapInfo.pixelPerGrid);
+        init(screenWidth, screenHeight, mapInfo.width, mapInfo.height, mapInfo.pixelPerGrid);
         //xp、yp分别为xy缩放比例(原始长、高缩放到实际显示长、高)
         float xp = (float)width/mapInfo.bitmap.getWidth();
         float yp = (float)height/mapInfo.bitmap.getHeight();
@@ -68,8 +68,8 @@ public class FeSectionMap {
         mapInfo.pixelPerGrid = pixelPG;
         screenWidth = screenXSixe;
         screenHeight = screenYSize;
-        mapInfo.xGrid = mapXGrid;
-        mapInfo.yGrid = mapYGrid;
+        mapInfo.width = mapXGrid;
+        mapInfo.height = mapYGrid;
         //屏幕的长高比例大于地图,地图参照屏幕长来缩放
         if(screenXDivY > mapXDivY){
             //得到屏幕横向实际显示格数
@@ -105,7 +105,7 @@ public class FeSectionMap {
                 mapDist.left = screenWidth - width;
             else{
                 mapDist.left -= (width - (mapDist.right - mapDist.left))/2;
-                mapDist.left = (int)((int)((float)mapDist.left/width*mapInfo.xGrid)*xGridPixel);
+                mapDist.left = (int)((int)((float)mapDist.left/width*mapInfo.width)*xGridPixel);
             }
             mapDist.right = width - mapDist.left;
             //
@@ -113,7 +113,7 @@ public class FeSectionMap {
                 mapDist.top = screenHeight - height;
             else{
                 mapDist.top -= (height - (mapDist.bottom - mapDist.top))/2;
-                mapDist.top = (int)((int)((float)mapDist.top/height*mapInfo.yGrid)*yGridPixel);
+                mapDist.top = (int)((int)((float)mapDist.top/height*mapInfo.height)*yGridPixel);
             }
             mapDist.bottom = height - mapDist.top;
         }

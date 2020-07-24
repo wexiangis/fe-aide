@@ -107,11 +107,9 @@ public class FeViewMapInfo extends FeView {
         if(sectionCallback.onMapHit()){
             drawInfo = true;
             canvas.drawBitmap(bitmapInfo, rectSrcInfo, rectDistInfo, paintBitmap);
-            //选中方格会提供一个序号,用来检索地图类型信息
-            int mapInfoOrder = sectionCallback.getSectionMap().mapInfo.grid[mapSite.point[1]][mapSite.point[0]];
             //填地形信息
             canvas.drawText(
-                    sectionCallback.getSectionMap().mapInfo.name[mapInfoOrder],
+                    sectionCallback.getSectionMap().mapInfo.name(mapSite.point[0], mapSite.point[1]),
                     rectDistInfo.left + rectDistInfo.width()/2,
                     rectDistInfo.top + rectDistInfo.height()/2 - pixelPowInfo*1,
                     paintInfoName);
@@ -129,11 +127,11 @@ public class FeViewMapInfo extends FeView {
             //地形参数数据
             paintInfoParam.setColor(Color.BLACK);
             paintInfoParam.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.defend[mapInfoOrder]),
+            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.defend(mapSite.point[0], mapSite.point[1])),
                     rectPaintInfo.right,
                     rectPaintInfo.top + paintInfoParam.getTextSize(),
                     paintInfoParam);
-            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.avoid[mapInfoOrder]),
+            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.avoid(mapSite.point[0], mapSite.point[1])),
                     rectPaintInfo.right,
                     rectPaintInfo.bottom,
                     paintInfoParam);

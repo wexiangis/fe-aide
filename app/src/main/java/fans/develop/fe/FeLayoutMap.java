@@ -117,12 +117,12 @@ public class FeLayoutMap extends FeLayout {
             //防止把地图移出屏幕
             if (sectionMap.xGridErr < 0)
                 sectionMap.xGridErr = 0;
-            else if (sectionMap.xGridErr + sectionMap.screenXGrid > sectionMap.mapInfo.xGrid)
-                sectionMap.xGridErr = sectionMap.mapInfo.xGrid - sectionMap.screenXGrid;
+            else if (sectionMap.xGridErr + sectionMap.screenXGrid > sectionMap.mapInfo.width)
+                sectionMap.xGridErr = sectionMap.mapInfo.width - sectionMap.screenXGrid;
             if (sectionMap.yGridErr < 0)
                 sectionMap.yGridErr = 0;
-            else if (sectionMap.yGridErr + sectionMap.screenYGrid > sectionMap.mapInfo.yGrid)
-                sectionMap.yGridErr = sectionMap.mapInfo.yGrid - sectionMap.screenYGrid;
+            else if (sectionMap.yGridErr + sectionMap.screenYGrid > sectionMap.mapInfo.height)
+                sectionMap.yGridErr = sectionMap.mapInfo.height - sectionMap.screenYGrid;
             //输入坐标求格子位置,更新地图选中点信息
             sectionCallback.getSectionMap().getRectByGrid(xGridErr, yGridErr, sectionCallback.getSectionMap().selectSite);
             //置标记

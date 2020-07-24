@@ -70,12 +70,12 @@ public class FeViewMap extends FeView {
         //防止把地图移出屏幕
         if (sectionCallback.getSectionMap().xGridErr < 0)
             sectionCallback.getSectionMap().xGridErr = 0;
-        else if (sectionCallback.getSectionMap().xGridErr + sectionCallback.getSectionMap().screenXGrid > sectionCallback.getSectionMap().mapInfo.xGrid)
-            sectionCallback.getSectionMap().xGridErr = sectionCallback.getSectionMap().mapInfo.xGrid - sectionCallback.getSectionMap().screenXGrid;
+        else if (sectionCallback.getSectionMap().xGridErr + sectionCallback.getSectionMap().screenXGrid > sectionCallback.getSectionMap().mapInfo.width)
+            sectionCallback.getSectionMap().xGridErr = sectionCallback.getSectionMap().mapInfo.width - sectionCallback.getSectionMap().screenXGrid;
         if (sectionCallback.getSectionMap().yGridErr < 0)
             sectionCallback.getSectionMap().yGridErr = 0;
-        else if (sectionCallback.getSectionMap().yGridErr + sectionCallback.getSectionMap().screenYGrid > sectionCallback.getSectionMap().mapInfo.yGrid)
-            sectionCallback.getSectionMap().yGridErr = sectionCallback.getSectionMap().mapInfo.yGrid - sectionCallback.getSectionMap().screenYGrid;
+        else if (sectionCallback.getSectionMap().yGridErr + sectionCallback.getSectionMap().screenYGrid > sectionCallback.getSectionMap().mapInfo.height)
+            sectionCallback.getSectionMap().yGridErr = sectionCallback.getSectionMap().mapInfo.height - sectionCallback.getSectionMap().screenYGrid;
     }
 
     //动画心跳回调
@@ -103,15 +103,15 @@ public class FeViewMap extends FeView {
                 if (sectionCallback.getSectionMap().xGridErr < 0){
                     sectionCallback.getSectionMap().xGridErr = 0;
                     xGridErr = 0;
-                }else if (sectionCallback.getSectionMap().xGridErr + sectionCallback.getSectionMap().screenXGrid > sectionCallback.getSectionMap().mapInfo.xGrid){
-                    sectionCallback.getSectionMap().xGridErr = sectionCallback.getSectionMap().mapInfo.xGrid - sectionCallback.getSectionMap().screenXGrid;
+                }else if (sectionCallback.getSectionMap().xGridErr + sectionCallback.getSectionMap().screenXGrid > sectionCallback.getSectionMap().mapInfo.width){
+                    sectionCallback.getSectionMap().xGridErr = sectionCallback.getSectionMap().mapInfo.width - sectionCallback.getSectionMap().screenXGrid;
                     xGridErr = 0;
                 }
                 if (sectionCallback.getSectionMap().yGridErr < 0){
                     sectionCallback.getSectionMap().yGridErr = 0;
                     yGridErr = 0;
-                }else if (sectionCallback.getSectionMap().yGridErr + sectionCallback.getSectionMap().screenYGrid > sectionCallback.getSectionMap().mapInfo.yGrid){
-                    sectionCallback.getSectionMap().yGridErr = sectionCallback.getSectionMap().mapInfo.yGrid - sectionCallback.getSectionMap().screenYGrid;
+                }else if (sectionCallback.getSectionMap().yGridErr + sectionCallback.getSectionMap().screenYGrid > sectionCallback.getSectionMap().mapInfo.height){
+                    sectionCallback.getSectionMap().yGridErr = sectionCallback.getSectionMap().mapInfo.height - sectionCallback.getSectionMap().screenYGrid;
                     yGridErr = 0;
                 }
                 //调用一次onDraw

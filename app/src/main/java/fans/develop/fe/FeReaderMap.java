@@ -97,7 +97,7 @@ class FeReaderMap {
 
     private void _load_grid_txt(FeInfoMap mapInfo, String line, int count) {
         String[] lineData = line.split(";");
-        for(int i = 0; i < mapInfo.xGrid && i < lineData.length; i++)
+        for(int i = 0; i < mapInfo.width && i < lineData.length; i++)
             mapInfo.grid[count][i] = (short)FeFormat.StringToInt(lineData[i]);
     }
 
@@ -106,7 +106,7 @@ class FeReaderMap {
         String line = null;
         int count = 0;
         //重新分配二维数组
-        mapInfo.grid = new short[mapInfo.yGrid][mapInfo.xGrid];
+        mapInfo.grid = new short[mapInfo.height][mapInfo.width];
         try {
             if(sdGridPath.exists()) {
                 FileInputStream fis = new FileInputStream(sdGridPath.getPath());
@@ -115,7 +115,7 @@ class FeReaderMap {
                 //分行读取
                 while ((line = br.readLine()) != null) {
                     _load_grid_txt(mapInfo, line, count++);
-                    if(count >= mapInfo.yGrid)
+                    if(count >= mapInfo.height)
                         break;
                 }
                 br.close();
@@ -129,7 +129,7 @@ class FeReaderMap {
                 //分行读取
                 while ((line = br.readLine()) != null) {
                     _load_grid_txt(mapInfo, line, count++);
-                    if(count >= mapInfo.yGrid)
+                    if(count >= mapInfo.height)
                         break;
                 }
                 br.close();
@@ -164,8 +164,8 @@ class FeReaderMap {
 
     private void _load_size_txt(FeInfoMap mapInfo, byte[] line){
         String[] dat = new String(line).split(";");
-        if(dat.length > 0) mapInfo.xGrid = FeFormat.StringToInt(dat[0]);
-        if(dat.length > 1) mapInfo.yGrid = FeFormat.StringToInt(dat[1]);
+        if(dat.length > 0) mapInfo.width = FeFormat.StringToInt(dat[0]);
+        if(dat.length > 1) mapInfo.height = FeFormat.StringToInt(dat[1]);
         if(dat.length > 2) mapInfo.pixelPerGrid = FeFormat.StringToInt(dat[2]);
         if(dat.length > 3) mapInfo.transferGrid = FeFormat.StringToInt(dat[3]);
     }
