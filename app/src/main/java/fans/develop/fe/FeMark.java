@@ -121,12 +121,16 @@ public class FeMark {
         public int xGridCenter, yGridCenter;
         //输出范围
         public Boolean[][] array;
+				
+				public int mapWidth, mapHeight;
 
         /*
             xGrid, yGrid: 地图中的坐标
             mov: 移动力
          */
         public Range(int xGrid, int yGrid, int mov, int mapWidth, int mapHeight){
+						this.mapWidth = mapWidth;
+						this.mapHeight = mapHeight;
             //矩阵宽、高
             width = mov * 2 + 1;
             height = mov * 2 + 1;
@@ -144,6 +148,8 @@ public class FeMark {
             腰围扩增
          */
         public Range(Range rangeSrc, int addRad){
+						mapWidth = rangeSrc.mapWidth;
+						mapHeight = rangeSrc.mapHeight;
             //矩阵宽、高
             width = rangeSrc.width + addRad * 2;
             height = rangeSrc.height + addRad * 2;
@@ -200,9 +206,9 @@ public class FeMark {
                 yGridCenter = height - 1;
             //是否发生了变化？
             if(width != this.width
-                || height = this.height
-                || xGridStart = this.xGridStart
-                || yGridStart = this.yGridStart){
+                || height != this.height
+                || xGridStart != this.xGridStart
+                || yGridStart != this.yGridStart){
                 //重新生成并拷贝
                 Boolean[][] array = new Boolean[width][height];
                 //这里 array 必然小于 this.array

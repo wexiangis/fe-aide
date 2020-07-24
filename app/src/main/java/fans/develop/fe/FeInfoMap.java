@@ -63,7 +63,7 @@ public class FeInfoMap {
      */
     public int movReduce(int xGrid, int yGrid, int typeProfession){
         //超出地图范围
-        if(xGrid < 0 || yGrid < 0 || xGrid > this.xGrid || yGrid > this.yGrid)
+        if(xGrid < 0 || yGrid < 0 || xGrid > width || yGrid > height)
             return 9999;
         //是否地图禁进入typeProfession?
         if((type(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0)
