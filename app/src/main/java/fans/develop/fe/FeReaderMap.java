@@ -35,17 +35,17 @@ class FeReaderMap {
         mapInfo.avoid = new short[total];
         mapInfo.plus = new short[total];
         mapInfo.mov = new short[total];
-        mapInfo.type = new short[total];
+        mapInfo.type = new int[total];
         mapInfo.info = new String[total];
         for(int i = 0; i < total && ffal != null; i++)
         {
             String[] lineData = ffal.line.split(";");
             if(lineData.length > 1)  mapInfo.name[i] = lineData[1];
-            if(lineData.length > 2) mapInfo.defend[i] = (short)Integer.parseInt(lineData[2]);
-            if(lineData.length > 3) mapInfo.avoid[i] = (short)Integer.parseInt(lineData[3]);
-            if(lineData.length > 4) mapInfo.plus[i] = (short)Integer.parseInt(lineData[4]);
-            if(lineData.length > 5) mapInfo.mov[i] = (short)Integer.parseInt(lineData[5]);
-            if(lineData.length > 6) mapInfo.type[i] = (short)Integer.parseInt(lineData[6]);
+            if(lineData.length > 2) mapInfo.defend[i] = (short)FeFormat.StringToInt(lineData[2]);
+            if(lineData.length > 3) mapInfo.avoid[i] = (short)FeFormat.StringToInt(lineData[3]);
+            if(lineData.length > 4) mapInfo.plus[i] = (short)FeFormat.StringToInt(lineData[4]);
+            if(lineData.length > 5) mapInfo.mov[i] = (short)FeFormat.StringToInt(lineData[5]);
+            if(lineData.length > 6) mapInfo.type[i] = FeFormat.HexStringToInt(lineData[6]);
             if(lineData.length > 7) mapInfo.info[i] = lineData[7];
             ffal = ffal.next;
         }
@@ -98,7 +98,7 @@ class FeReaderMap {
     private void _load_grid_txt(FeInfoMap mapInfo, String line, int count) {
         String[] lineData = line.split(";");
         for(int i = 0; i < mapInfo.xGrid && i < lineData.length; i++)
-            mapInfo.grid[count][i] = (short)Integer.parseInt(lineData[i]);
+            mapInfo.grid[count][i] = (short)FeFormat.StringToInt(lineData[i]);
     }
 
     private void load_grid_txt(FeInfoMap mapInfo){
@@ -164,10 +164,10 @@ class FeReaderMap {
 
     private void _load_size_txt(FeInfoMap mapInfo, byte[] line){
         String[] dat = new String(line).split(";");
-        if(dat.length > 0) mapInfo.xGrid = Integer.parseInt(dat[0]);
-        if(dat.length > 1) mapInfo.yGrid = Integer.parseInt(dat[1]);
-        if(dat.length > 2) mapInfo.pixelPerGrid = Integer.parseInt(dat[2]);
-        if(dat.length > 3) mapInfo.transferGrid = Integer.parseInt(dat[3]);
+        if(dat.length > 0) mapInfo.xGrid = FeFormat.StringToInt(dat[0]);
+        if(dat.length > 1) mapInfo.yGrid = FeFormat.StringToInt(dat[1]);
+        if(dat.length > 2) mapInfo.pixelPerGrid = FeFormat.StringToInt(dat[2]);
+        if(dat.length > 3) mapInfo.transferGrid = FeFormat.StringToInt(dat[3]);
     }
 
     private void load_size_txt(FeInfoMap mapInfo){

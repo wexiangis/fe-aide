@@ -27,11 +27,21 @@ public class FeInfoMap {
     public short[] avoid;
     public short[] plus;
     public short[] mov;
-    public short[] type;
+    public int[] type;
     public String[] info;
 
     public FeInfoMap(int section){
         this.section = section;
     }
 
+    /*
+        移动力减损计算
+     */
+    public int movReduce(int xGrid, int yGrid, FeTypeProfession type){
+        //超出地图范围
+        if(xGrid < 0 || yGrid < 0 || xGrid > this.xGrid || yGrid > this.yGrid)
+            return 9999;
+        //
+        return 0;
+    }
 }
