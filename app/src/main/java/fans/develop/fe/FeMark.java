@@ -28,8 +28,10 @@ public class FeMark {
         loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, mapInfo, mov, typeProfession, rangeMov);
         //获得攻击范围
         rangeHit = getRangeHit(rangeMov, hit, hitSpace);
+        rangeHit.cut();
         //获得特效范围
         rangeSpecial = getRangeSpecial(rangeMov, special);
+        rangeSpecial.cut();
     }
 
     /*
