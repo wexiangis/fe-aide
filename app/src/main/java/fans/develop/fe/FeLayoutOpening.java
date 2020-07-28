@@ -32,7 +32,7 @@ public class FeLayoutOpening extends FeLayout {
 
     public void reload(){
 
-        this._removeViewAll();
+        this._removeViewAll(this);
         
         asyncTask = new FeAsyncTask(this, new FeAsyncTask.Callback<FeLayoutOpening>() {
 
@@ -125,7 +125,7 @@ public class FeLayoutOpening extends FeLayout {
     public boolean onDestory(){
         asyncTask.cancel(true);
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

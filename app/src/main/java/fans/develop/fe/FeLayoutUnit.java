@@ -221,7 +221,7 @@ public class FeLayoutUnit extends FeLayout {
         //关闭移动范围
         FeLayoutMark layoutMark = sectionCallback.getLayoutMark();
         if(layoutMark != null)
-            layoutMark._removeViewAll();
+            layoutMark._removeViewAll(this);
     }
 
     /*
@@ -277,7 +277,7 @@ public class FeLayoutUnit extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

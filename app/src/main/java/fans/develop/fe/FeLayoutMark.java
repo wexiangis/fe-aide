@@ -53,7 +53,7 @@ public class FeLayoutMark extends FeLayout {
         if(sectionUnit == null || sectionUnit.viewUnit == null)
             return;
         //清移动范围
-        _removeViewAll();
+        _removeViewAll(this);
         //获得移动力
         int mov = sectionUnit.mov;
         //中心坐标
@@ -103,7 +103,7 @@ public class FeLayoutMark extends FeLayout {
         关闭全部人物的mark范围
      */
     public void cleanAllUnit(){
-        _removeViewAll();
+        _removeViewAll(this);
     }
 
     /*
@@ -116,14 +116,14 @@ public class FeLayoutMark extends FeLayout {
         FeSectionUnit sectionUnit = sectionCallback.getSectionUnit();
         if(sectionUnit == null || sectionUnit.viewUnit == null) {
             //清mark
-            _removeViewAll();
+            _removeViewAll(this);
             return;
         }
         //
         if(!flag.checkFlag(FeFlagHit.HIT_MARK) || hitViewMark == null)
             return;
         //清mark
-        _removeViewAll();
+        _removeViewAll(this);
         //己方人物?
         if (sectionUnit.viewUnit.getCamp() == FeTypeCamp.BLUE) {
             //移动人物
@@ -154,7 +154,7 @@ public class FeLayoutMark extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

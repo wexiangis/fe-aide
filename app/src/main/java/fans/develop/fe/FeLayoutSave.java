@@ -157,7 +157,7 @@ public class FeLayoutSave extends FeLayout {
      */
     public void reload() {
 
-        this._removeViewAll();
+        this._removeViewAll(this);
 
         /* ----- 数据初始化 -----*/
         //更新存档状态(saveState[][]的状态)
@@ -213,7 +213,7 @@ public class FeLayoutSave extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

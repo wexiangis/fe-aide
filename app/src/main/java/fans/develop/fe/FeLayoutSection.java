@@ -53,7 +53,7 @@ public class FeLayoutSection extends FeLayout{
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){
@@ -63,7 +63,7 @@ public class FeLayoutSection extends FeLayout{
     public void reload(){
 
         sectionOperation = null;
-        this._removeViewAll();
+        this._removeViewAll(this);
 
         //显示loading界面
         this.addView(new FeLayoutLoading(feData.context, 0, this,
@@ -182,7 +182,7 @@ public class FeLayoutSection extends FeLayout{
                     public void run(FeLayoutSection obj, String result) {
 
                         //移除loading界面
-                        obj._removeViewAll();
+                        obj._removeViewAll(this);
 
                         //初始化失败
                         if(result != null){

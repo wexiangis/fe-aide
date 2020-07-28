@@ -46,7 +46,7 @@ public class FeLayoutMap extends FeLayout {
     public void loadMap(int section){
         //只容存在一张地图
         if(viewMap != null)
-            _removeView(viewMap);
+            _removeView(this, viewMap);
         //更换了地图,重新初始化参数
         sectionCallback.refreshSectionMap(section);
         //添加地图view
@@ -60,7 +60,7 @@ public class FeLayoutMap extends FeLayout {
     public void loadBackground(){
         //只容存在一张背景
         if(viewBackground != null)
-            _removeView(viewBackground);
+            _removeView(this, viewBackground);
         //添加view
         viewBackground = new View(context);
         addView(viewBackground);
@@ -158,7 +158,7 @@ public class FeLayoutMap extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

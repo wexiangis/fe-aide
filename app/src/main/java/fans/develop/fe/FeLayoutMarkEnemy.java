@@ -48,7 +48,7 @@ public class FeLayoutMarkEnemy extends FeLayout {
         关闭全部人物的mark范围
      */
     public void cleanAllUnit(){
-        _removeViewAll();
+        _removeViewAll(this);
     }
 
     /*
@@ -67,7 +67,7 @@ public class FeLayoutMarkEnemy extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

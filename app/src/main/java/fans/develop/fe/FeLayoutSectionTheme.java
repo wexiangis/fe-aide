@@ -54,7 +54,7 @@ public class FeLayoutSectionTheme extends FeLayout{
         catch (InterruptedException e)
         {}
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         //解除心跳注册
         feData.removeHeartUnit(heartAnim);
         //清标志

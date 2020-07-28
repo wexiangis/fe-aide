@@ -99,7 +99,7 @@ public class FeLayoutMainMenu extends FeLayout {
 
     public void reload(){
 
-        this._removeViewAll();
+        this._removeViewAll(this);
 
         /* ----- 数据初始化 -----*/
 
@@ -126,7 +126,7 @@ public class FeLayoutMainMenu extends FeLayout {
         /* ----- 装载界面 -----*/
 
         //显示列表
-        this._removeViewAll();
+        this._removeViewAll(this);
         this.addView(linearLayout, linearLayoutParam);
         this.setBackgroundColor(0x80408040);
     }
@@ -142,7 +142,7 @@ public class FeLayoutMainMenu extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){

@@ -36,7 +36,7 @@ public class FeLayoutGameOver extends FeLayout{
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         //解除心跳注册
         feData.removeHeartUnit(heartAnim);
         return true;

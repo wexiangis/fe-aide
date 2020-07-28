@@ -23,7 +23,7 @@ public abstract class FeLayout extends RelativeLayout{
 
     /* ---------- remove方法替代 ---------- */
 
-    public void _removeView(View v){
+    public void _removeView(FeLayout layout, View v){
         //该 view 属于 FeView 子系
         if (v instanceof FeView)
             ((FeView)v).onDestory();
@@ -31,13 +31,15 @@ public abstract class FeLayout extends RelativeLayout{
         else if (v instanceof FeLayout)
             ((FeLayout)v).onDestory();
         //移除
-        removeView(v);
+        layout.removeView(v);
     }
 
-    public void _removeViewAll(){
+    public void _removeViewAll(FeLayout layout){
         //遍历所有子view,逐个移除
         for (int i = 0; i < getChildCount(); i++)
-            _removeView(getChildAt(i));
+            _removeView(getChildAt(layout, i));
+        //确保移除
+        layout.removeAllView();
     }
 
     public FeLayout(Context context){

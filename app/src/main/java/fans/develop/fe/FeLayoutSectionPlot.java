@@ -20,7 +20,7 @@ public class FeLayoutSectionPlot extends FeLayout{
     }
     public boolean onDestory(){
         //释放子view
-        _removeViewAll();
+        _removeViewAll(this);
         return true;
     }
     public void onReload(){
