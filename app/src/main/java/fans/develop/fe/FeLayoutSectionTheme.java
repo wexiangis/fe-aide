@@ -49,10 +49,10 @@ public class FeLayoutSectionTheme extends FeLayout{
             return true;
         //等待数据加载完毕
         try{
-			thread.join();
-		}
-		catch (InterruptedException e)
-		{}
+            thread.join();
+        }
+        catch (InterruptedException e)
+        {}
         //释放子view
         _removeViewAll();
         //解除心跳注册

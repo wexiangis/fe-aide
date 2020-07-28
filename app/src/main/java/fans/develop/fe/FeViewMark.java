@@ -14,12 +14,12 @@ public class FeViewMark extends FeView {
 
     //画笔
     private Paint paint;
-	//颜色模式
+    //颜色模式
     private FeTypeMark mark;
     //所在格
     private int xGrid, yGrid;
     //在地图中的位置
-	private FeInfoGrid site;
+    private FeInfoGrid site;
 
     /*
         mark: 颜色模式
@@ -27,28 +27,28 @@ public class FeViewMark extends FeView {
      */
     public FeViewMark(Context context,
           FeTypeMark mark,
-			int xGird, 
-			int yGrid,
-			FeSectionCallback sectionCallback)
-	{
+            int xGird, 
+            int yGrid,
+            FeSectionCallback sectionCallback)
+    {
         super(context);
         this.mark = mark;
-		this.xGrid = xGird;
-		this.yGrid = yGrid;
+        this.xGrid = xGird;
+        this.yGrid = yGrid;
         this.sectionCallback = sectionCallback;
         //画笔
         paint = new Paint();
         paint.setColor(Color.BLUE);
-		//位置初始化
+        //位置初始化
         site = new FeInfoGrid();
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);
     }
-	
-	public void setXY(int xGrid, int yGrid){
-		this.xGrid = xGrid;
-		this.yGrid = yGrid;
-	}
+    
+    public void setXY(int xGrid, int yGrid){
+        this.xGrid = xGrid;
+        this.yGrid = yGrid;
+    }
 
     public int getGridX(){
         return xGrid;
@@ -82,7 +82,7 @@ public class FeViewMark extends FeView {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
         //求格子位置
-		sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, site);
+        sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, site);
         //按颜色取渲染
         if(mark == FeTypeMark.BLUE)
             paint.setShader(sectionCallback.getSectionShader().getShaderB());

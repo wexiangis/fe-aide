@@ -11,8 +11,8 @@ public class FeLayoutUnit extends FeLayout {
 
     private Context context;
     private FeSectionCallback sectionCallback;
-	//缓存checkHit选中
-	private FeViewUnit hitViewUnit = null;
+    //缓存checkHit选中
+    private FeViewUnit hitViewUnit = null;
 
     public FeLayoutUnit(Context context, FeSectionCallback sectionCallback) {
         super(context);

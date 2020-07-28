@@ -15,20 +15,20 @@ public class FeLayoutLoading extends FeLayout{
      */
     public static final int TYPE_NORMAL = 0;
 
-	/*
-		提前结束loading界面, 即结束 DoInBackground
-	 */
-	public void cancel(){
-		asyncTask.cancel(true);
-	}
-	
-	/*
-	 	检查结束标志, 在 DoInBackground 中使用
-	 */
-	public boolean isCancelled(){
-		return asyncTask.isCancelled();
-	}
-	
+    /*
+        提前结束loading界面, 即结束 DoInBackground
+     */
+    public void cancel(){
+        asyncTask.cancel(true);
+    }
+    
+    /*
+         检查结束标志, 在 DoInBackground 中使用
+     */
+    public boolean isCancelled(){
+        return asyncTask.isCancelled();
+    }
+    
     /*
         进度设置接口, 在 DoInBackground 中使用
      */

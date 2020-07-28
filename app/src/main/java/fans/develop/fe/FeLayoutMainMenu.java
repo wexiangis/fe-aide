@@ -93,8 +93,8 @@ public class FeLayoutMainMenu extends FeLayout {
         button.setOnTouchListener(onTouchListener);
         button.setBackground(Drawable.createFromStream(getClass().getResourceAsStream("/assets/menu/item/item_b.png"), null));
         //button.setBackgroundDrawable(Drawable.createFromStream(getClass().getResourceAsStream("/assets/menu/item/item_b.png"), null));
-		button.setPadding(80, 0, 80, 0);
-		return button;
+        button.setPadding(80, 0, 80, 0);
+        return button;
     }
 
     public void reload(){

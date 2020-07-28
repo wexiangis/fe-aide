@@ -8,15 +8,15 @@ import android.view.View;
  */
 public class FeLayoutChat extends FeLayout {
 
-	private FeSectionCallback sectionCallback;
+    private FeSectionCallback sectionCallback;
 
     public FeLayoutChat(Context context, FeSectionCallback sectionCallback) {
         super(context);
-		this.sectionCallback = sectionCallback;
+        this.sectionCallback = sectionCallback;
     }
 
     /* ---------- function ---------- */
-	
+    
     public boolean checkHit(float x, float y){
         return false;
     }

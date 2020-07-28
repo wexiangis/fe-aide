@@ -33,7 +33,7 @@ public class FeLayoutSection extends FeLayout{
     private FeLayoutUnitMenu layoutUnitMenu = null;
     private FeLayoutSysMenu layoutSysMenu = null;
     private FeLayoutChat layoutChat = null;
-	private FeLayoutInterlude layoutInterlude = null;
+    private FeLayoutInterlude layoutInterlude = null;
     private FeLayoutDebug layoutDebug = null;
     //debug
     private TextView dbTouchXY = null;
@@ -208,8 +208,8 @@ public class FeLayoutSection extends FeLayout{
                         obj.addView(layoutChat);
                         // 系统菜单图层
                         obj.addView(layoutSysMenu);
-						//过场动画图层
-						obj.addView(layoutInterlude);
+                        //过场动画图层
+                        obj.addView(layoutInterlude);
                         //debug图层
                         obj.addView(layoutDebug);
 
