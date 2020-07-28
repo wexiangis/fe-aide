@@ -182,7 +182,7 @@ public class FeLayoutSection extends FeLayout{
                     public void run(FeLayoutSection obj, String result) {
 
                         //移除loading界面
-                        obj._removeViewAll(this);
+                        obj._removeViewAll(obj);
 
                         //初始化失败
                         if(result != null){

@@ -37,9 +37,9 @@ public abstract class FeLayout extends RelativeLayout{
     public void _removeViewAll(FeLayout layout){
         //遍历所有子view,逐个移除
         for (int i = 0; i < getChildCount(); i++)
-            _removeView(getChildAt(layout, i));
+            _removeView(layout, getChildAt(i));
         //确保移除
-        layout.removeAllView();
+        layout.removeAllViews();
     }
 
     public FeLayout(Context context){
