@@ -2,6 +2,7 @@ package fans.develop.fe;
 
 import android.content.Context;
 import android.widget.RelativeLayout;
+import android.view.View;
 
 /*
     所有layout的父类,用于提供一些统一的接口或方法,比如返回键事件处理接口
@@ -19,6 +20,22 @@ public abstract class FeLayout extends RelativeLayout{
     //重新加载界面及其数据
     //子类可以在这里添加自己的loading界面
     public abstract void onReload();
+
+    /* ---------- remove方法替代 ---------- */
+
+    public void _removeView(View v){
+        //该view属于FeView子系
+        if (v instanceof FeView)
+            ((FeView)v).onDestory();
+        //移除
+        removeView(v);
+    }
+
+    public void _removeViewAll(){
+        //遍历所有子view,逐个移除
+        for (int i = 0; i < getChildCount(); i++)
+            _removeView(getChildAt(i));
+    }
 
     public FeLayout(Context context){
         super(context);

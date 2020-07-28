@@ -40,12 +40,8 @@ public class FeLayoutInterlude extends FeLayout
 		return false;
 	}
 	public boolean onDestory(){
-		//释放子view
-		for (int i = 0; i < getChildCount(); i++) {
-			View v = getChildAt(i);
-			if (v instanceof FeView)
-				((FeView)v).onDestory();
-		}
+        //释放子view
+        _removeViewAll();
 		return true;
 	}
 	public void onReload(){

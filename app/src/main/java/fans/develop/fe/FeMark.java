@@ -141,6 +141,9 @@ public class FeMark {
         return rangeSpecial;
     }
 
+    /*
+        范围管理类, 可用 getGridInfo() 获得格子在地图位置数组
+     */
     public class Range{
 
         //宽高

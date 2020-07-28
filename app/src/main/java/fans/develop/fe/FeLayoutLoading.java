@@ -141,6 +141,8 @@ public class FeLayoutLoading extends FeLayout{
         return false;
     }
     public boolean onDestory(){
+        //释放子view
+        _removeViewAll();
         return true;
     }
     public void onReload(){

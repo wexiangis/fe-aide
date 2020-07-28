@@ -42,6 +42,30 @@ public class FeLayoutUnit extends FeLayout {
     }
 
     /*
+        根据id找人物
+     */
+    public FeViewUnit getUnit(int id){
+        FeViewUnit viewUnit;
+        //遍历所有子view
+        for (int i = 0; i < getChildCount(); i++) {
+            viewUnit = (FeViewUnit)getChildAt(i);
+            if (viewUnit.getId() == id)
+                return viewUnit;
+        }
+        return null;
+    }
+
+    /*
+        根据id找人物位置
+     */
+    public FeInfoGrid getUnitSite(int id){
+        FeViewUnit viewUnit = getUnit(id);
+        if(viewUnit == null)
+            return null;
+        return viewUnit.getSite();
+    }
+
+    /*
         人员增删
      */
     public void addUnit(int id, int y, int x, FeTypeCamp camp){
@@ -253,11 +277,7 @@ public class FeLayoutUnit extends FeLayout {
     }
     public boolean onDestory(){
         //释放子view
-        for (int i = 0; i < getChildCount(); i++) {
-            View v = getChildAt(i);
-            if (v instanceof FeView)
-                ((FeView)v).onDestory();
-        }
+        _removeViewAll();
         return true;
     }
     public void onReload(){

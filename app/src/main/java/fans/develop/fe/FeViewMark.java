@@ -22,7 +22,8 @@ public class FeViewMark extends FeView {
 	private FeInfoGrid site;
 
     /*
-        colorMode: 0/蓝色 1/红色 2/绿色
+        mark: 颜色模式
+        xGird、yGird: 格子位置
      */
     public FeViewMark(Context context,
           FeTypeMark mark,
@@ -38,7 +39,7 @@ public class FeViewMark extends FeView {
         //画笔
         paint = new Paint();
         paint.setColor(Color.BLUE);
-		//
+		//位置初始化
         site = new FeInfoGrid();
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);

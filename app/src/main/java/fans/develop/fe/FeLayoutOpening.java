@@ -124,6 +124,8 @@ public class FeLayoutOpening extends FeLayout {
 	}
 	public boolean onDestory(){
 		asyncTask.cancel(true);
+        //释放子view
+        _removeViewAll();
 		return true;
 	}
 	public void onReload(){

@@ -51,6 +51,12 @@ public class FeLayoutSection extends FeLayout{
         return false;
     }
     public boolean onDestory(){
+        //释放子layout
+        for (int i = 0; i < getChildCount(); i++){
+            Layout layout = getChildAt(i);
+            if (layout instanceof FeLayout)
+                ((FeLayout)layout).onDestory();
+        }
         return true;
     }
     public void onReload(){

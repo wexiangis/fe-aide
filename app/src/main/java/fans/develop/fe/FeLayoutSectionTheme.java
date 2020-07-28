@@ -54,11 +54,7 @@ public class FeLayoutSectionTheme extends FeLayout{
 		catch (InterruptedException e)
 		{}
         //释放子view
-        for (int i = 0; i < getChildCount(); i++) {
-            View v = getChildAt(i);
-            if (v instanceof FeView)
-                ((FeView)v).onDestory();
-        }
+        _removeViewAll();
         //解除心跳注册
         feData.removeHeartUnit(heartAnim);
         //清标志
