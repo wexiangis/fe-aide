@@ -18,6 +18,7 @@ public interface FeSectionCallback{
     FeSectionShader getSectionShader();
     /* ------------------------------- */
     FeLayoutMap getLayoutMap();
+    FeLayoutMarkEnemy getLayoutMarkEnemy();
     FeLayoutMark getLayoutMark();
     FeLayoutUnit getLayoutUnit();
     FeLayoutMapInfo getLayoutMapInfo();

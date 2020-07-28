@@ -59,6 +59,7 @@ public class FeSectionOperation {
                 }
                 else if(flag.checkFlag(FeFlagHit.HIT_UNIT)
                     || flag.checkFlag(FeFlagHit.HIT_MARK)
+                    || flag.checkFlag(FeFlagHit.HIT_MARK_ENEMY)
                     || flag.checkFlag(FeFlagHit.HIT_MAP)){
                     flagMove.setFlag(FeFlagHit.HIT_MAP);
                 }
@@ -107,6 +108,9 @@ public class FeSectionOperation {
                 else if(flagMove.checkFlag(FeFlagHit.HIT_MARK)){
                     ;
                 }
+                else if(flagMove.checkFlag(FeFlagHit.HIT_MARK_ENEMY)){
+                    ;
+                }
                 else if(flagMove.checkFlag(FeFlagHit.HIT_MAP)){
                     sectionCallback.getLayoutMap().move(xGridErr, yGridErr);
                 }
@@ -138,6 +142,7 @@ public class FeSectionOperation {
                     else if(flag.checkFlag(FeFlagHit.HIT_MAP_INFO)) flag.setOnlyFlag(FeFlagHit.HIT_MAP_INFO);
                     else if(flag.checkFlag(FeFlagHit.HIT_UNIT)) flag.setOnlyFlag(FeFlagHit.HIT_UNIT);
                     else if(flag.checkFlag(FeFlagHit.HIT_MARK)) flag.setOnlyFlag(FeFlagHit.HIT_MARK);
+                    else if(flag.checkFlag(FeFlagHit.HIT_MARK_ENEMY)) flag.setOnlyFlag(FeFlagHit.HIT_MARK_ENEMY);
                     else if(flag.checkFlag(FeFlagHit.HIT_MAP)) flag.setOnlyFlag(FeFlagHit.HIT_MAP);
 
                     //即使没有被选中,也会得到一个非己点击事件,用来清除原点击状态
@@ -147,6 +152,7 @@ public class FeSectionOperation {
                     sectionCallback.getLayoutMapInfo().click(tUpX, tUpY, flag);
                     sectionCallback.getLayoutUnit().click(tUpX, tUpY, flag);
                     sectionCallback.getLayoutMark().click(tUpX, tUpY, flag);
+                    sectionCallback.getLayoutMarkEnemy().click(tUpX, tUpY, flag);
                     sectionCallback.getLayoutMap().click(tUpX, tUpY, flag);
 
                 }
