@@ -28,7 +28,7 @@ public class FeLayoutTheme extends FeLayout {
 
     public void reload(){
 
-        this.removeAllViews();
+        this._removeViewAll();
 
         /* ----- 数据初始化 -----*/
 

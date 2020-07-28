@@ -47,7 +47,7 @@ public class FeLayoutMapInfo extends FeLayout {
         关闭 地图光标、地图信息、地图人物头像信息 显示
      */
     public void off(){
-        removeAllViews();
+        _removeViewAll();
         onFlag = false;
     }
 

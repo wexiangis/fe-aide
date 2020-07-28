@@ -99,58 +99,7 @@ public class FeLayoutMainMenu extends FeLayout {
 
     public void reload(){
 
-        this.removeAllViews();
-
-        // this.addView(new FeLayoutLoading(feData.context, 0, this,
-        //         new FeLayoutLoading.DoInBackground<FeLayoutMainMenu>() {
-        //             @Override
-        //             public String run(FeLayoutMainMenu obj, FeLayoutLoading layoutLoading) {
-        //                 try {
-        //                     Thread.sleep(100);
-        //                     //菜单各项TXT
-        //                     tvContinue = buildButtonStyle("继续游戏");
-        //                     tvLoad = buildButtonStyle("读取记录");
-        //                     tvNew = buildButtonStyle("新游戏");
-        //                     tvCopy = buildButtonStyle("复 制");
-        //                     tvDel = buildButtonStyle("删 除");
-        //                     tvElse = buildButtonStyle("附加内容");
-        //                     layoutLoading.setPercent(20);
-        //                     Thread.sleep(100);
-        //                     //创建线性布局窗体
-        //                     linearLayout = new LinearLayout(feData.context);
-        //                     linearLayout.setOrientation(LinearLayout.VERTICAL);
-        //                     layoutLoading.setPercent(50);
-        //                     Thread.sleep(100);
-        //                     //创建线性布局窗体参数
-        //                     tvLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //                     tvLayoutParams.setMargins(0,0, 0, 30);
-        //                     layoutLoading.setPercent(70);
-        //                     Thread.sleep(100);
-        //                     //线性布局窗体相对主界面位置参数
-        //                     linearLayoutParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //                     linearLayoutParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        //                     linearLayoutParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        //                     layoutLoading.setPercent(85);
-        //                     Thread.sleep(100);
-        //                     //根据存档状态加载条目
-        //                     loadMenu();
-        //                     layoutLoading.setPercent(100);
-        //                     Thread.sleep(100);
-        //                 } catch (java.lang.InterruptedException e) { }
-        //                 return null;
-        //             }
-        //         },
-        //         new FeLayoutLoading.DoInFinal<FeLayoutMainMenu>() {
-        //             @Override
-        //             public void run(FeLayoutMainMenu obj, String result) {
-        //                 obj.removeAllViews();
-        //                 //显示列表
-        //                 obj.removeAllViews();
-        //                 obj.addView(linearLayout, linearLayoutParam);
-        //                 obj.setBackgroundColor(0x80408040);
-        //             }
-        //         }
-        // ));
+        this._removeViewAll();
 
         /* ----- 数据初始化 -----*/
 
@@ -177,7 +126,7 @@ public class FeLayoutMainMenu extends FeLayout {
         /* ----- 装载界面 -----*/
 
         //显示列表
-        this.removeAllViews();
+        this._removeViewAll();
         this.addView(linearLayout, linearLayoutParam);
         this.setBackgroundColor(0x80408040);
     }

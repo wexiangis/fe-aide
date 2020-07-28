@@ -32,7 +32,7 @@ public class FeLayoutOpening extends FeLayout {
 
     public void reload(){
 
-        this.removeAllViews();
+        this._removeViewAll();
 		
 		asyncTask = new FeAsyncTask(this, new FeAsyncTask.Callback<FeLayoutOpening>() {
 

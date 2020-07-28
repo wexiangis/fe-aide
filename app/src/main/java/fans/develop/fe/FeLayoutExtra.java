@@ -59,7 +59,7 @@ public class FeLayoutExtra extends FeLayout {
 
     public void reload(){
 
-        this.removeAllViews();
+        this._removeViewAll();
 
         /* ----- 数据初始化 -----*/
 
@@ -86,7 +86,7 @@ public class FeLayoutExtra extends FeLayout {
         /* ----- 装载界面 -----*/
 
         //显示列表
-        this.removeAllViews();
+        this._removeViewAll();
         this.addView(linearLayout, linearLayoutParam);
         this.setBackgroundColor(0x80408040);
     }

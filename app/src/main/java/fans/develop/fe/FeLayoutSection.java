@@ -51,12 +51,8 @@ public class FeLayoutSection extends FeLayout{
         return false;
     }
     public boolean onDestory(){
-        //释放子layout
-        for (int i = 0; i < getChildCount(); i++){
-            View v = getChildAt(i);
-            if (v instanceof FeLayout)
-                ((FeLayout)v).onDestory();
-        }
+        //释放子view
+        _removeViewAll();
         return true;
     }
     public void onReload(){
@@ -66,7 +62,7 @@ public class FeLayoutSection extends FeLayout{
     public void reload(){
 
         sectionOperation = null;
-        this.removeAllViews();
+        this._removeViewAll();
 
         //显示loading界面
         this.addView(new FeLayoutLoading(feData.context, 0, this,
@@ -181,7 +177,7 @@ public class FeLayoutSection extends FeLayout{
                     public void run(FeLayoutSection obj, String result) {
 
                         //移除loading界面
-                        obj.removeAllViews();
+                        obj._removeViewAll();
 
                         //初始化失败
                         if(result != null){

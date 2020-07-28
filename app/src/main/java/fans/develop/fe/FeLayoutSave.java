@@ -157,7 +157,7 @@ public class FeLayoutSave extends FeLayout {
      */
     public void reload() {
 
-        this.removeAllViews();
+        this._removeViewAll();
 
         /* ----- 数据初始化 -----*/
         //更新存档状态(saveState[][]的状态)

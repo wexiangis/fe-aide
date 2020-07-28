@@ -24,9 +24,12 @@ public abstract class FeLayout extends RelativeLayout{
     /* ---------- remove方法替代 ---------- */
 
     public void _removeView(View v){
-        //该view属于FeView子系
+        //该 view 属于 FeView 子系
         if (v instanceof FeView)
             ((FeView)v).onDestory();
+        //该 view 属于 FeLayout 子系
+        else if (v instanceof FeLayout)
+            ((FeLayout)v).onDestory();
         //移除
         removeView(v);
     }
