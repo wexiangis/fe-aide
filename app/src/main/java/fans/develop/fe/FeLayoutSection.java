@@ -2,8 +2,8 @@ package fans.develop.fe;
 
 import android.content.*;
 import android.util.*;
+import android.view.*;
 import android.widget.*;
-import android.view.MotionEvent;
 
 /*
     章节运行关键参数之数据部分
@@ -53,9 +53,9 @@ public class FeLayoutSection extends FeLayout{
     public boolean onDestory(){
         //释放子layout
         for (int i = 0; i < getChildCount(); i++){
-            Layout layout = getChildAt(i);
-            if (layout instanceof FeLayout)
-                ((FeLayout)layout).onDestory();
+            View v = getChildAt(i);
+            if (v instanceof FeLayout)
+                ((FeLayout)v).onDestory();
         }
         return true;
     }
