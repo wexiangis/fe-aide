@@ -1,6 +1,6 @@
 package fans.develop.fe;
 
-import android.graphics.LinearGradient;
+import android.graphics.*;
 
 /*
     各个图层画图所需着色器都从这里取
