@@ -44,7 +44,7 @@ public class FeLayoutUnit extends FeLayout {
     /*
         根据id找人物
      */
-    public FeViewUnit getUnit(int id){
+    public FeViewUnit getViewUnit(int id){
         FeViewUnit viewUnit;
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
@@ -59,7 +59,7 @@ public class FeLayoutUnit extends FeLayout {
         根据id找人物位置
      */
     public FeInfoGrid getUnitSite(int id){
-        FeViewUnit viewUnit = getUnit(id);
+        FeViewUnit viewUnit = getViewUnit(id);
         if(viewUnit == null)
             return null;
         return viewUnit.getSite();

@@ -11,24 +11,30 @@ import android.graphics.Rect;
  */
 public class FeSectionMap {
 
+    //----- 关键结构 -----
+
+    //对应章节数
     public int section;
-
+    //地图缩放、梯形变换矩阵
     public Matrix matrix = new Matrix();
-
+    //地图信息
     public FeInfoMap mapInfo;
-
+    //地图
     public Bitmap bitmap = null;
+
+    //----- mark记录 -----
+
+    //mark点覆盖情况,用于避免重复标记同一格,标记值为上面id号
+    public int[][][] markMap;
 
     //----- 地图基本信息 -----
 
     //屏幕实际宽高
     public int screenWidth = 1920, screenHeight = 1080;
-
     //地图实际显示区域
     public Rect mapDist = null;
     //地图移动格子数
     public int xGridErr = 0, yGridErr = 0;
-
     //地图实际显示宽高像素
     public int width = 1920, height = 1080;
     //屏幕横纵向格数
@@ -54,6 +60,9 @@ public class FeSectionMap {
         matrix.postScale(xp, yp);
         bitmap = Bitmap.createBitmap(mapInfo.bitmap, 0, 0,
                 (int)mapInfo.bitmap.getWidth(), (int)mapInfo.bitmap.getHeight(), matrix, true);
+
+        //mark点覆盖情况,用于避免重复标记同一格,标记值为上面id号
+        markMap = new int[mapInfo.height][mapInfo.width][3];
     }
 
     //地图适配屏幕

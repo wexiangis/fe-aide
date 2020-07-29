@@ -18,8 +18,6 @@ public class FeViewMarkEnemy extends FeView {
     private FeTypeMark typeMark;
     //标记unit的id
     private int id;
-    //mark点覆盖情况,用于避免重复标记同一格,标记值为上面id号
-    private int[][][] markMap;
     //人物的移动、攻击、特效范围
     private FeInfoGrid[] siteMov;
     private FeInfoGrid[] siteHit;
@@ -30,21 +28,15 @@ public class FeViewMarkEnemy extends FeView {
     /*
         typeMark: 颜色模式
         id: 人员
-        markMap[mapY][mapX][3]: 
-            mark点覆盖情况,分3层
-            [0]/敌军移动范围,[1]/敌军攻击范围(红色),[2]/敌军特效范围(绿色)
-            标记值为上面id号,
      */
     public FeViewMarkEnemy(Context context,
             FeTypeMark typeMark,
             int id,
-            int[][][] markMap,
             FeSectionCallback sectionCallback)
     {
         super(context);
         this.typeMark = typeMark;
         this.id = id;
-        this.markMap = markMap;
         this.sectionCallback = sectionCallback;
         //画笔
         paint = new Paint();
@@ -79,6 +71,7 @@ public class FeViewMarkEnemy extends FeView {
         擦除自己画过的格子(每一层)
      */
     private void cleanMarkMap(){
+        int[][][] markMap = sectionCallback.getSectionMap().markMap;
         for(int x = 0; x < markMap[0].length; x++)
             for(int y = 0; y < markMap.length; y++)
                 for(int i = 0; i < markMap[0][0].length; i++)
@@ -143,6 +136,7 @@ public class FeViewMarkEnemy extends FeView {
         //擦除自己画过的格子(每一层)
         cleanMarkMap();
 
+        int[][][] markMap = sectionCallback.getSectionMap().markMap;
         if(siteTarget != null){
             //遍历 siteTarget 数组,画格子
             for(int i = 0; i < siteTarget.length; i++){

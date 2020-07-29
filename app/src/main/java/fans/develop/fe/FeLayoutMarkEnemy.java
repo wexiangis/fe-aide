@@ -31,10 +31,27 @@ public class FeLayoutMarkEnemy extends FeLayout {
     }
 
     /*
+        根据id定位view
+     */
+    public FeViewMarkEnemy getViewMarkEnemy(int id){
+        FeViewMarkEnemy viewMarkEnemy;
+        for (int i = 0; i < getChildCount(); i++){
+            viewMarkEnemy = (FeViewMarkEnemy)getChildAt(i);
+            if(viewMarkEnemy.getId() == id)
+                return viewMarkEnemy;
+        }
+        return null;
+    }
+
+    /*
         显示特定人物的mark范围
      */
-    public void markUnit(){
-        ;
+    public void markUnit(int id, FeTypeMark typeMark){
+        FeViewMarkEnemy viewMarkEnemy = getViewMarkEnemy(id);
+        if(viewMarkEnemy == null)
+            addView(new FeViewMarkEnemy(context, typeMark, id, sectionCallback));
+        else
+            viewMarkEnemy.setTypeMark(typeMark);
     }
 
     /*
