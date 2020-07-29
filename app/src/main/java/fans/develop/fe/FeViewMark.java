@@ -26,6 +26,8 @@ public class FeViewMark extends FeView {
     private FeInfoSite[] siteSpecial;
     //id人物的位置,和新的位置进行比较确定是否更新
     private FeInfoSite siteUnit = null;
+    //范围计算用
+    private FeMark mark;
 
     /*
         typeMark: 颜色模式
@@ -119,17 +121,18 @@ public class FeViewMark extends FeView {
             //更新位置
             this.siteUnit = siteUnit;
             //计算范围
-            FeMark mark = new FeMark(
+            mark = new FeMark(
                 siteUnit.xGrid, siteUnit.yGrid,
                 sectionCallback.getSectionMap().mapInfo,
                 mov,
                 sectionCallback.getAssets().unit.getProfessionType(id),
                 1, 0, 2);
-            //获取位置数组
-            siteMov = mark.rangeMov.getGridInfo(sectionCallback.getSectionMap());
-            siteHit = mark.rangeHit.getGridInfo(sectionCallback.getSectionMap());
-            siteSpecial = mark.rangeSpecial.getGridInfo(sectionCallback.getSectionMap());
         }
+
+        //获取位置数组
+        siteMov = mark.rangeMov.getGridInfo(sectionCallback.getSectionMap());
+        siteHit = mark.rangeHit.getGridInfo(sectionCallback.getSectionMap());
+        siteSpecial = mark.rangeSpecial.getGridInfo(sectionCallback.getSectionMap());
 
         //按颜色取渲染
         paintB.setShader(sectionCallback.getSectionShader().getShaderB());

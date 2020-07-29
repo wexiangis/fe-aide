@@ -11,6 +11,8 @@ public class FeFlag {
         if(arrayLen < 0)
             arrayLen = 1;
         array = new boolean[arrayLen];
+        for(int i = 0; i < array.length; i++)
+            array[i] = false;
     }
 
     // 置标志

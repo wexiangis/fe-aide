@@ -36,6 +36,7 @@ class FeReaderMap {
         mapInfo.plus = new short[total];
         mapInfo.mov = new short[total];
         mapInfo.type = new int[total];
+        mapInfo.typeFirst = new int[total];
         mapInfo.info = new String[total];
         for(int i = 0; i < total && ffal != null; i++)
         {
@@ -46,7 +47,8 @@ class FeReaderMap {
             if(lineData.length > 4) mapInfo.plus[i] = (short)FeFormat.StringToInt(lineData[4]);
             if(lineData.length > 5) mapInfo.mov[i] = (short)FeFormat.StringToInt(lineData[5]);
             if(lineData.length > 6) mapInfo.type[i] = FeFormat.HexStringToInt(lineData[6]);
-            if(lineData.length > 7) mapInfo.info[i] = lineData[7];
+            if(lineData.length > 7) mapInfo.typeFirst[i] = FeFormat.HexStringToInt(lineData[7]);
+            if(lineData.length > 8) mapInfo.info[i] = lineData[8];
             ffal = ffal.next;
         }
     }

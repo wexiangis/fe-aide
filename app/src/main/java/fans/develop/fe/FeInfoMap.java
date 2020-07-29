@@ -27,6 +27,7 @@ public class FeInfoMap {
     public short[] plus;
     public short[] mov;
     public int[] type;
+    public int[] typeFirst;
     public String[] info;
 
     public FeInfoMap(int section){
@@ -54,6 +55,9 @@ public class FeInfoMap {
     public int type(int xGrid, int yGrid){
         return type[grid[yGrid][xGrid]];
     }
+    public int typeFirst(int xGrid, int yGrid){
+        return typeFirst[grid[yGrid][xGrid]];
+    }
     public String info(int xGrid, int yGrid){
         return info[grid[yGrid][xGrid]];
     }
@@ -63,12 +67,20 @@ public class FeInfoMap {
      */
     public int movReduce(int xGrid, int yGrid, int typeProfession){
         //超出地图范围
-        if(xGrid < 0 || yGrid < 0 || xGrid > width || yGrid > height)
+        if(xGrid < 0 || yGrid < 0 || xGrid >= width || yGrid >= height)
             return 9999;
+        //
+        int reduce = mov(xGrid, yGrid);
         //是否地图禁进入typeProfession?
         if((type(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0)
             return 9999;
+        //是否优势通过?
+        if((typeFirst(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0){
+            //这里预留可能出现负值的情况
+            if(reduce > 1)
+                reduce = 1;
+        }
         //否则返回mov削减量
-        return mov(xGrid, yGrid);
+        return reduce;
     }
 }

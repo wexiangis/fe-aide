@@ -128,7 +128,7 @@ public class FeLayoutMark extends FeLayout {
             sectionCallback.onUnitSelect(false);
             FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
             if(layoutMap != null)
-                layoutMap.hitMap(hitViewMark.getSite().rect.left + 1, hitViewMark.getSite().rect.top + 1);
+                layoutMap.hitMap(hitSite.rect.left + 1, hitSite.rect.top + 1);
         }
     }
 
