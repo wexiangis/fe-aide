@@ -6,69 +6,79 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 /*
-    带动态渐变色的标记方格
+    敌军攻击范围、特效范围标记
  */
 public class FeViewMark extends FeView {
 
     private FeSectionCallback sectionCallback;
 
-    //画笔
-    private Paint paint;
+    //画笔,蓝色、红色、绿色,分别用于画移动范围、攻击范围、特效范围
+    private Paint paintB, paintR, paintG;
     //颜色模式
-    private FeTypeMark mark;
-    //所在格
-    private int xGrid, yGrid;
-    //在地图中的位置
-    private FeInfoGrid site;
+    private FeTypeMark typeMark;
+    //标记unit的id
+    private int id;
+    //标记unit的mov
+    private int mov;
+    //人物的移动、攻击、特效范围
+    private FeInfoSite[] siteMov;
+    private FeInfoSite[] siteHit;
+    private FeInfoSite[] siteSpecial;
+    //id人物的位置,和新的位置进行比较确定是否更新
+    private FeInfoSite siteUnit = null;
 
     /*
-        mark: 颜色模式
-        xGird、yGird: 格子位置
+        typeMark: 颜色模式
+        id: 人员
      */
     public FeViewMark(Context context,
-          FeTypeMark mark,
-            int xGird, 
-            int yGrid,
+            FeTypeMark typeMark,
+            int id,
+            int mov,
             FeSectionCallback sectionCallback)
     {
         super(context);
-        this.mark = mark;
-        this.xGrid = xGird;
-        this.yGrid = yGrid;
+        this.typeMark = typeMark;
+        this.id = id;
+        this.mov = mov;
         this.sectionCallback = sectionCallback;
         //画笔
-        paint = new Paint();
-        paint.setColor(Color.BLUE);
-        //位置初始化
-        site = new FeInfoGrid();
+        paintB = new Paint();
+        paintR = new Paint();
+        paintG = new Paint();
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);
     }
-    
-    public void setXY(int xGrid, int yGrid){
-        this.xGrid = xGrid;
-        this.yGrid = yGrid;
+
+    public void setTypeMark(FeTypeMark typeMark){
+        this.typeMark = typeMark;
     }
 
-    public int getGridX(){
-        return xGrid;
-    }
-    public int getGridY(){
-        return yGrid;
+    public FeTypeMark getTypeMark(){
+        return typeMark;
     }
 
-    public FeInfoGrid getSite(){
-        return site;
+    public void setMov(int mov){
+        this.mov = mov;
     }
 
-    public FeTypeMark getMark(){
-        return mark;
+    public int getMov(){
+        return mov;
     }
 
-    public boolean checkHit(float x, float y){
-        if(site.rect.contains((int)x, (int)y))
-            return true;
-        return false;
+    public int getId(){
+        return id;
+    }
+
+    public FeInfoSite checkHit(int xGrid, int yGrid){
+        //非移动范围
+        if(typeMark != FeTypeMark.BLUE || siteMov == null)
+            return null;
+        //遍历 siteMov
+        for(int i = 0; i < siteMov.length; i++)
+            if(siteMov[i].xGrid == xGrid && siteMov[i].yGrid == yGrid)
+                return siteMov[i];
+        return null;
     }
 
     //动画心跳回调
@@ -78,25 +88,88 @@ public class FeViewMark extends FeView {
         }
     });
 
+    /*
+        擦除自己画过的格子
+     */
+    private void cleanMarkMap(){
+        int[][] markMap = sectionCallback.getSectionMap().markMap;
+        for(int x = 0; x < markMap[0].length; x++)
+            for(int y = 0; y < markMap.length; y++)
+                if(markMap[y][x] == id)
+                    markMap[y][x] = 0;
+    }
+
     //绘图回调
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-        //求格子位置
-        sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, site);
+
+        //没有unit图层?
+        if(sectionCallback.getLayoutUnit() == null)
+            return;
+        //获得unit位置
+        FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(id);
+        //id人物没有绘制?
+        if(siteUnit == null)
+            return;
+
+        //第一次初始化 或者 人物位置变动了, 更新range
+        if(this.siteUnit == null
+            || this.siteUnit.xGrid != siteUnit.xGrid
+            || this.siteUnit.yGrid != siteUnit.yGrid){
+            //更新位置
+            this.siteUnit = siteUnit;
+            //计算范围
+            FeMark mark = new FeMark(
+                siteUnit.xGrid, siteUnit.yGrid,
+                sectionCallback.getSectionMap().mapInfo,
+                mov,
+                sectionCallback.getAssets().unit.getProfessionType(id),
+                1, 0, 2);
+            //获取位置数组
+            siteMov = mark.rangeMov.getGridInfo(sectionCallback.getSectionMap());
+            siteHit = mark.rangeHit.getGridInfo(sectionCallback.getSectionMap());
+            siteSpecial = mark.rangeSpecial.getGridInfo(sectionCallback.getSectionMap());
+        }
+
         //按颜色取渲染
-        if(mark == FeTypeMark.BLUE)
-            paint.setShader(sectionCallback.getSectionShader().getShaderB());
-        else if(mark == FeTypeMark.RED)
-            paint.setShader(sectionCallback.getSectionShader().getShaderR());
-        else
-            paint.setShader(sectionCallback.getSectionShader().getShaderG());
-        //画填充多边形
-        canvas.drawPath(site.path, paint);
+        paintB.setShader(sectionCallback.getSectionShader().getShaderB());
+        paintR.setShader(sectionCallback.getSectionShader().getShaderR());
+        paintG.setShader(sectionCallback.getSectionShader().getShaderG());
+
+        //擦除自己画过的格子(每一层)
+        cleanMarkMap();
+        int[][] markMap = sectionCallback.getSectionMap().markMap;
+
+        //遍历 siteMov 数组,画格子
+        for(int i = 0; i < siteMov.length; i++){
+            canvas.drawPath(siteMov[i].path, paintB);
+            //标记已画过
+            markMap[siteMov[i].yGrid][siteMov[i].xGrid] = id;
+        }
+
+        //遍历 siteHit 数组,画格子
+        if(typeMark == FeTypeMark.RED){
+            for(int i = 0; i < siteHit.length; i++){
+                //这个点刚才没有画过移动范围?
+                if(markMap[siteHit[i].yGrid][siteHit[i].xGrid] != id)
+                    canvas.drawPath(siteHit[i].path, paintR);
+            }
+        }
+        //遍历 siteSpecial 数组,画格子
+        else{
+            for(int i = 0; i < siteSpecial.length; i++){
+                //这个点刚才没有画过移动范围?
+                if(markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] != id)
+                    canvas.drawPath(siteSpecial[i].path, paintR);
+            }
+        }
     }
 
     /* ---------- abstract interface ---------- */
 
     public void onDestory(){
+        //擦除自己画过的格子(每一层)
+        cleanMarkMap();
         //解除心跳注册
         sectionCallback.removeHeartUnit(heartUnit);
     }

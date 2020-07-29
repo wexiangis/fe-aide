@@ -81,7 +81,7 @@ public class FeViewSelect extends FeView {
         //画选中框
         if(sectionCallback.onMapHit() && !sectionCallback.onUnitSelect()) {
             //选中地图位置
-            FeInfoGrid mapSite = sectionCallback.getSectionMap().selectSite;
+            FeInfoSite mapSite = sectionCallback.getSectionMap().selectSite;
             //计算输出位置
             rectDistSelect.left = mapSite.rect.left - mapSite.rect.width()/4;
             rectDistSelect.right = mapSite.rect.right + mapSite.rect.width()/4;
@@ -95,7 +95,7 @@ public class FeViewSelect extends FeView {
         }
         else if(sectionCallback.onUnitSelect() && sectionCallback.getSectionUnit().viewUnit != null){
             //选中人物位置
-            FeInfoGrid unitSite = sectionCallback.getSectionUnit().viewUnit.getSite();
+            FeInfoSite unitSite = sectionCallback.getSectionUnit().viewUnit.getSite();
             //计算输出位置
             rectDistSelect.left = unitSite.rect.left - unitSite.rect.width()/4;
             rectDistSelect.right = unitSite.rect.right + unitSite.rect.width()/4;

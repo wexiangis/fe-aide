@@ -303,7 +303,7 @@ public class FeLayoutSection extends FeLayout{
                 flag.setFlag(FeFlagHit.HIT_MAP);
             //debug
             // dbTouchXY.setText(String.format("Touch XY: %.2f, %.2f", x, y));
-            // dbTouchGridXY.setText(String.format("Touch Grid XY: %d, %d", sectionMap.selectSite.point[0], sectionMap.selectSite.point[1]));
+            // dbTouchGridXY.setText(String.format("Touch Grid XY: %d, %d", sectionMap.selectSite.xGrid, sectionMap.selectSite.yGrid));
             return flag;
         }
 

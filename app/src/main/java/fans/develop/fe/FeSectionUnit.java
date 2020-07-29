@@ -10,6 +10,4 @@ public class FeSectionUnit {
     //当前选中的unit
     public FeViewUnit viewUnit = null;
 
-    //当前人物移动力剩余
-    public int mov = 0;
 }

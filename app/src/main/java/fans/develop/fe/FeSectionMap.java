@@ -25,7 +25,10 @@ public class FeSectionMap {
     //----- mark记录 -----
 
     //mark点覆盖情况,用于避免重复标记同一格,标记值为上面id号
-    public int[][][] markMap;
+    //敌军范围: [mapHeigth][mapEidth][3]: [0]/移动范围,[1]/攻击范围,[2]/特效范围,值为id
+    public int[][][] markEnemyMap;
+    //选中人物范围: 值为id
+    public int[][] markMap;
 
     //----- 地图基本信息 -----
 
@@ -62,7 +65,8 @@ public class FeSectionMap {
                 (int)mapInfo.bitmap.getWidth(), (int)mapInfo.bitmap.getHeight(), matrix, true);
 
         //mark点覆盖情况,用于避免重复标记同一格,标记值为上面id号
-        markMap = new int[mapInfo.height][mapInfo.width][3];
+        markEnemyMap = new int[mapInfo.height][mapInfo.width][3];
+        markMap = new int[mapInfo.height][mapInfo.width];
     }
 
     //地图适配屏幕
@@ -256,15 +260,15 @@ public class FeSectionMap {
 
     //----- 求梯形中的某一格子 -----
 
-    public FeInfoGrid selectSite = new FeInfoGrid();
+    public FeInfoSite selectSite = new FeInfoSite();
 
     //输入格子求位置
-    public void getRectByGrid(int xG, int yG, FeInfoGrid fig){
+    public void getRectByGrid(int xG, int yG, FeInfoSite fig){
         //多边形路径缩进(显示移动范围的网格相邻缝隙大小)
         int edge = 1;
         //默认值
-        fig.point[0] = xG;
-        fig.point[1] = yG;
+        fig.xGrid = xG;
+        fig.yGrid = yG;
         fig.path.reset();
         //在屏幕范围内
         if(xG >= srcGridXStart &&
@@ -305,28 +309,28 @@ public class FeSectionMap {
         }
     }
 
-    public FeInfoGrid getRectByGrid(int xG, int yG){
-        FeInfoGrid ret = new FeInfoGrid();
+    public FeInfoSite getRectByGrid(int xG, int yG){
+        FeInfoSite ret = new FeInfoSite();
         getRectByGrid(xG, yG, ret);
         return ret;
     }
 
     //输入坐标求格子位置
-    public void getRectByLocation(float x, float y, FeInfoGrid fig) {
+    public void getRectByLocation(float x, float y, FeInfoSite fig) {
         for(int yCount = 0; yCount < srcGridY; yCount++){
             if(y < srcGridLine[yCount][1]){
-                fig.point[1] = yCount + srcGridYStart;
-                fig.point[0] = (int)((x + srcGridLine[yCount][2])/srcGridLine[yCount][3]) + srcGridXStart;
+                fig.yGrid = yCount + srcGridYStart;
+                fig.xGrid = (int)((x + srcGridLine[yCount][2])/srcGridLine[yCount][3]) + srcGridXStart;
                 //
-                getRectByGrid(fig.point[0], fig.point[1], fig);
+                getRectByGrid(fig.xGrid, fig.yGrid, fig);
                 return;
             }
         }
         getRectByGrid(-1, -1 + srcGridXStart, fig);
     }
 
-    public FeInfoGrid getRectByLocation(float x, float y){
-        FeInfoGrid ret = new FeInfoGrid();
+    public FeInfoSite getRectByLocation(float x, float y){
+        FeInfoSite ret = new FeInfoSite();
         getRectByLocation(x, y, ret);
         return ret;
     }

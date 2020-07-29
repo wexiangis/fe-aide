@@ -14,6 +14,7 @@ public class FeLayoutMark extends FeLayout {
     private FeSectionCallback sectionCallback;
     //标记最近 checkHit() 点击位置
     private FeViewMark hitViewMark = null;
+    private FeInfoSite hitSite = null;
     //标记当前中心
     private int certenXY[] = new int[2];
 
@@ -26,16 +27,21 @@ public class FeLayoutMark extends FeLayout {
     /* ---------- function ---------- */
     
     public boolean checkHit(float x, float y){
-        FeViewMark viewMark;
+        //转换为格子位置
+        FeInfoSite site = sectionCallback.getSectionMap().getRectByLocation(x, y);
+        //清选中
+        hitViewMark = null;
+        hitSite = null;
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
-            viewMark = (FeViewMark)getChildAt(i);
-            //只有蓝色格参与点击判定
-            if (viewMark.getMark() == FeTypeMark.BLUE && viewMark.checkHit(x, y)) {
-                hitViewMark = viewMark;
+            hitViewMark = (FeViewMark)getChildAt(i);
+            hitSite = hitViewMark.checkHit(site.xGrid, site.yGrid);
+            if(hitSite != null)
                 return true;
-            }
         }
+        //清选中
+        hitViewMark = null;
+        hitSite = null;
         return false;
     }
 
@@ -45,50 +51,28 @@ public class FeLayoutMark extends FeLayout {
     }
 
     /*
+        根据id定位view
+     */
+    public FeViewMark getViewMark(int id){
+        FeViewMark viewMark;
+        for (int i = 0; i < getChildCount(); i++){
+            viewMark = (FeViewMark)getChildAt(i);
+            if(viewMark.getId() == id)
+                return viewMark;
+        }
+        return null;
+    }
+
+    /*
         显示特定人物的mark范围
      */
-    public void markUnit(){
-        //没有选中unit?
-        FeSectionUnit sectionUnit = sectionCallback.getSectionUnit();
-        if(sectionUnit == null || sectionUnit.viewUnit == null)
-            return;
-        //清移动范围
-        _removeViewAll(this);
-        //获得移动力
-        int mov = sectionUnit.mov;
-        //中心坐标
-        certenXY[0] = sectionUnit.viewUnit.getGridX();
-        certenXY[1] = sectionUnit.viewUnit.getGridY();
-        //开出一个矩阵以覆盖移动范围
-        int gridSize = mov*2+1;
-        int[][] grid = new int[gridSize][gridSize];
-        //标记所有离中心距离小于等于mov的点
-        for(int xCount = 0, x = -mov; xCount < gridSize; xCount++, x++){
-            for(int yCount = 0, y = -mov; yCount < gridSize; yCount++, y++){
-                int absSum = Math.abs(x) + Math.abs(y);
-                if(absSum < mov)
-                    grid[xCount][yCount] = 1;
-                else if(absSum == mov)
-                    grid[xCount][yCount] = 2;
-            }
-        }
-        //左上角坐标
-        int xStart = certenXY[0] - mov;
-        int yStart = certenXY[1] - mov;
-        //显示范围
-        for(int xCount = 0; xCount < gridSize; xCount++){
-            for(int yCount = 0; yCount < gridSize; yCount++){
-                if(grid[xCount][yCount] == 1)
-                    addView(new FeViewMark(context,
-                        FeTypeMark.BLUE,
-                        xCount + xStart,
-                        yCount + yStart, sectionCallback));
-                else if(grid[xCount][yCount] == 2)
-                    addView(new FeViewMark(context,
-                            FeTypeMark.RED,
-                            xCount + xStart,
-                            yCount + yStart, sectionCallback));
-            }
+    public void markUnit(int id, int mov, FeTypeMark typeMark){
+        FeViewMark viewMark = getViewMark(id);
+        if(viewMark == null)
+            addView(new FeViewMark(context, typeMark, id, mov, sectionCallback));
+        else{
+            viewMark.setMov(mov);
+            viewMark.setTypeMark(typeMark);
         }
     }
 
@@ -119,21 +103,22 @@ public class FeLayoutMark extends FeLayout {
             _removeViewAll(this);
             return;
         }
-        //
-        if(!flag.checkFlag(FeFlagHit.HIT_MARK) || hitViewMark == null)
+        //是否调用过 checkHit ?
+        if(!flag.checkFlag(FeFlagHit.HIT_MARK) || hitSite == null)
             return;
         //清mark
         _removeViewAll(this);
         //己方人物?
         if (sectionUnit.viewUnit.getCamp() == FeTypeCamp.BLUE) {
             //移动人物
-            sectionUnit.viewUnit.setGrid(hitViewMark.getGridX(), hitViewMark.getGridY());
+            sectionUnit.viewUnit.setGrid(hitSite.xGrid, hitSite.yGrid);
             //削减移动力
-            sectionUnit.mov -= Math.abs(certenXY[0] - hitViewMark.getGridX()) + Math.abs(certenXY[1] - hitViewMark.getGridY());
+            int mov = hitViewMark.getMov();
+            mov -= Math.abs(certenXY[0] - hitSite.xGrid) + Math.abs(certenXY[1] - hitSite.yGrid);
             //还有移动力剩余?
-            if(sectionUnit.mov > 0)
+            if(mov > 0)
                 //更新移动范围
-                markUnit();
+                markUnit(sectionUnit.viewUnit.getId(), mov, FeTypeMark.RED);
             else
                 //显示unitMenu
                 ;

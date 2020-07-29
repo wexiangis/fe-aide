@@ -39,7 +39,7 @@ public class FeViewUnit extends FeView {
     //扣取图片位置
     private Rect bitmapBody = new Rect(0,0,0,0);
     //当前人物在地图中的位置
-    private FeInfoGrid site;
+    private FeInfoSite site;
     //动画输出位置
     private Rect bitmapDist = new Rect(0,0,0,0);
 
@@ -78,7 +78,7 @@ public class FeViewUnit extends FeView {
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);
         //地图中的位置信息管理结构
-        site = new FeInfoGrid();
+        site = new FeInfoSite();
     }
 
     //人物id
@@ -161,7 +161,7 @@ public class FeViewUnit extends FeView {
     }
 
     //位置信息
-    public FeInfoGrid getSite(){
+    public FeInfoSite getSite(){
         return site;
     }
 

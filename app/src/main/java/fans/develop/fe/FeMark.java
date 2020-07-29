@@ -211,15 +211,15 @@ public class FeMark {
         }
 
         /*
-            生成 FeInfoGrid 数组, 并且计算好在地图中的位置
+            生成 FeInfoSite 数组, 并且计算好在地图中的位置
          */
-        public FeInfoGrid[] getGridInfo(FeSectionMap sectionMap){
+        public FeInfoSite[] getGridInfo(FeSectionMap sectionMap){
             //没有标记格
             int size = sum();
             if(size < 1)
                 return null;
             //生成数组
-            FeInfoGrid[] gridInfo = new FeInfoGrid[size];
+            FeInfoSite[] gridInfo = new FeInfoSite[size];
             int sizeCount = 0;
             //位置赋值
             for(int x = 0; x < width; x++){

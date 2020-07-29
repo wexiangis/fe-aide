@@ -19,11 +19,11 @@ public class FeViewMarkEnemy extends FeView {
     //标记unit的id
     private int id;
     //人物的移动、攻击、特效范围
-    private FeInfoGrid[] siteMov;
-    private FeInfoGrid[] siteHit;
-    private FeInfoGrid[] siteSpecial;
+    private FeInfoSite[] siteMov;
+    private FeInfoSite[] siteHit;
+    private FeInfoSite[] siteSpecial;
     //id人物的位置,和新的位置进行比较确定是否更新
-    private FeInfoGrid siteUnit = null;
+    private FeInfoSite siteUnit = null;
 
     /*
         typeMark: 颜色模式
@@ -56,8 +56,8 @@ public class FeViewMarkEnemy extends FeView {
         return id;
     }
 
-    public boolean checkHit(float x, float y){
-        return false;
+    public FeInfoSite checkHit(int xGrid, int yGrid){
+        return null;
     }
 
     //动画心跳回调
@@ -71,12 +71,12 @@ public class FeViewMarkEnemy extends FeView {
         擦除自己画过的格子(每一层)
      */
     private void cleanMarkMap(){
-        int[][][] markMap = sectionCallback.getSectionMap().markMap;
-        for(int x = 0; x < markMap[0].length; x++)
-            for(int y = 0; y < markMap.length; y++)
-                for(int i = 0; i < markMap[0][0].length; i++)
-                    if(markMap[y][x][i] == id)
-                        markMap[y][x][i] = 0;
+        int[][][] markEnemyMap = sectionCallback.getSectionMap().markEnemyMap;
+        for(int x = 0; x < markEnemyMap[0].length; x++)
+            for(int y = 0; y < markEnemyMap.length; y++)
+                for(int i = 0; i < markEnemyMap[0][0].length; i++)
+                    if(markEnemyMap[y][x][i] == id)
+                        markEnemyMap[y][x][i] = 0;
     }
 
     //绘图回调
@@ -87,20 +87,20 @@ public class FeViewMarkEnemy extends FeView {
         if(sectionCallback.getLayoutUnit() == null)
             return;
         //获得unit位置
-        FeInfoGrid siteUnit = sectionCallback.getLayoutUnit().getUnitSite(id);
+        FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(id);
         //id人物没有绘制?
         if(siteUnit == null)
             return;
 
         //第一次初始化 或者 人物位置变动了, 更新range
         if(this.siteUnit == null
-            || this.siteUnit.point[0] != siteUnit.point[0]
-            || this.siteUnit.point[1] != siteUnit.point[1]){
+            || this.siteUnit.xGrid != siteUnit.xGrid
+            || this.siteUnit.yGrid != siteUnit.yGrid){
             //更新位置
             this.siteUnit = siteUnit;
             //计算范围
             FeMark mark = new FeMark(
-                siteUnit.point[0], siteUnit.point[1],
+                siteUnit.xGrid, siteUnit.yGrid,
                 sectionCallback.getSectionMap().mapInfo,
                 sectionCallback.getAssets().unit.getProfessionAbilityMov(id),
                 sectionCallback.getAssets().unit.getProfessionType(id),
@@ -113,7 +113,7 @@ public class FeViewMarkEnemy extends FeView {
 
         //按颜色取渲染、取位置数组
         int _typeMark = 0;
-        FeInfoGrid[] siteTarget = siteMov;
+        FeInfoSite[] siteTarget = siteMov;
         if(typeMark == FeTypeMark.BLUE){
             paint.setShader(sectionCallback.getSectionShader().getShaderB());
             siteTarget = siteMov;
@@ -133,14 +133,14 @@ public class FeViewMarkEnemy extends FeView {
         //擦除自己画过的格子(每一层)
         cleanMarkMap();
 
-        int[][][] markMap = sectionCallback.getSectionMap().markMap;
+        int[][][] markEnemyMap = sectionCallback.getSectionMap().markEnemyMap;
         if(siteTarget != null){
             //遍历 siteTarget 数组,画格子
             for(int i = 0; i < siteTarget.length; i++){
                 //没有画过这个格子?
-                if(markMap[siteTarget[i].point[1]][siteTarget[i].point[0]][_typeMark] == 0){
+                if(markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] == 0){
                     //标记格子
-                    markMap[siteTarget[i].point[1]][siteTarget[i].point[0]][_typeMark] = id;
+                    markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] = id;
                     //画格子
                     canvas.drawPath(siteTarget[i].path, paint);
                 }

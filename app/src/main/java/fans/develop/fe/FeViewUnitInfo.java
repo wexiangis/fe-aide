@@ -74,7 +74,7 @@ public class FeViewUnitInfo extends FeView {
         //选中人物位置
         if(sectionCallback.getSectionUnit().viewUnit == null)
             return;
-        FeInfoGrid unitSite = sectionCallback.getSectionUnit().viewUnit.getSite();
+        FeInfoSite unitSite = sectionCallback.getSectionUnit().viewUnit.getSite();
 
         //图像位置自动调整
         if(unitSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边

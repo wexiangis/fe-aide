@@ -58,7 +58,7 @@ public class FeLayoutUnit extends FeLayout {
     /*
         根据id找人物位置
      */
-    public FeInfoGrid getUnitSite(int id){
+    public FeInfoSite getUnitSite(int id){
         FeViewUnit viewUnit = getViewUnit(id);
         if(viewUnit == null)
             return null;
@@ -183,7 +183,7 @@ public class FeLayoutUnit extends FeLayout {
             setAnim(hitViewUnit, FeTypeAnim.DOWN);
             //移至居中
             sectionCallback.getLayoutMap().moveCenter(
-                hitViewUnit.getSite().point[0], hitViewUnit.getSite().point[1]);
+                hitViewUnit.getSite().xGrid, hitViewUnit.getSite().yGrid);
         }
         else
             setAnim(hitViewUnit, FeTypeAnim.STAY);
@@ -191,13 +191,12 @@ public class FeLayoutUnit extends FeLayout {
         sectionCallback.getSectionUnit().viewUnit = hitViewUnit;
         //置标志
         sectionCallback.onUnitMove(true);
-        //更新移动范围
-        sectionCallback.getSectionUnit().mov =
-            sectionCallback.getAssets().unit.getProfessionAbilityMov(hitViewUnit.getId());
+        //得到移动范围
+        int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(hitViewUnit.getId());
         //显示移动范围
         FeLayoutMark layoutMark = sectionCallback.getLayoutMark();
         if(layoutMark != null)
-            layoutMark.markUnit();
+            layoutMark.markUnit(hitViewUnit.getId(), mov, FeTypeMark.RED);
     }
 
     /*

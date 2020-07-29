@@ -90,7 +90,7 @@ public class FeViewMapInfo extends FeView {
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));//抗锯齿
 
         //选中地图位置
-        FeInfoGrid mapSite = sectionCallback.getSectionMap().selectSite;
+        FeInfoSite mapSite = sectionCallback.getSectionMap().selectSite;
 
         //图像位置自动调整
         if(mapSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
@@ -109,7 +109,7 @@ public class FeViewMapInfo extends FeView {
             canvas.drawBitmap(bitmapInfo, rectSrcInfo, rectDistInfo, paintBitmap);
             //填地形信息
             canvas.drawText(
-                    sectionCallback.getSectionMap().mapInfo.name(mapSite.point[0], mapSite.point[1]),
+                    sectionCallback.getSectionMap().mapInfo.name(mapSite.xGrid, mapSite.yGrid),
                     rectDistInfo.left + rectDistInfo.width()/2,
                     rectDistInfo.top + rectDistInfo.height()/2 - pixelPowInfo*1,
                     paintInfoName);
@@ -127,11 +127,11 @@ public class FeViewMapInfo extends FeView {
             //地形参数数据
             paintInfoParam.setColor(Color.BLACK);
             paintInfoParam.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.defend(mapSite.point[0], mapSite.point[1])),
+            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.defend(mapSite.xGrid, mapSite.yGrid)),
                     rectPaintInfo.right,
                     rectPaintInfo.top + paintInfoParam.getTextSize(),
                     paintInfoParam);
-            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.avoid(mapSite.point[0], mapSite.point[1])),
+            canvas.drawText(String.valueOf(sectionCallback.getSectionMap().mapInfo.avoid(mapSite.xGrid, mapSite.yGrid)),
                     rectPaintInfo.right,
                     rectPaintInfo.bottom,
                     paintInfoParam);
