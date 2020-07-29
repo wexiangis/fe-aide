@@ -87,20 +87,20 @@ public class FeViewMarkEnemy extends FeView {
         if(sectionCallback.getLayoutUnit() == null)
             return;
         //获得unit位置
-        FeInfoGrid unitSite = sectionCallback.getLayoutUnit().getUnitSite(id);
+        FeInfoGrid siteUnit = sectionCallback.getLayoutUnit().getUnitSite(id);
         //id人物没有绘制?
-        if(unitSite == null)
+        if(siteUnit == null)
             return;
 
         //第一次初始化 或者 人物位置变动了, 更新range
         if(this.siteUnit == null
-            || this.siteUnit.xGrid != siteUnit.xGrid
-            || this.siteUnit.yGrid != siteUnit.yGrid){
+            || this.siteUnit.point[0] != siteUnit.point[0]
+            || this.siteUnit.point[1] != siteUnit.point[1]){
             //更新位置
             this.siteUnit = siteUnit;
             //计算范围
             FeMark mark = new FeMark(
-                siteUnit.xGrid, siteUnit.yGrid,
+                siteUnit.point[0], siteUnit.point[1],
                 sectionCallback.getSectionMap().mapInfo,
                 sectionCallback.getAssets().unit.getProfessionAbilityMov(id),
                 sectionCallback.getAssets().unit.getProfessionType(id),
@@ -110,9 +110,6 @@ public class FeViewMarkEnemy extends FeView {
             siteHit = mark.rangeHit.getGridInfo(sectionCallback.getSectionMap());
             siteSpecial = mark.rangeSpecial.getGridInfo(sectionCallback.getSectionMap());
         }
-
-        //求格子位置
-        sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid, site);
 
         //按颜色取渲染、取位置数组
         int _typeMark = 0;
@@ -141,9 +138,9 @@ public class FeViewMarkEnemy extends FeView {
             //遍历 siteTarget 数组,画格子
             for(int i = 0; i < siteTarget.length; i++){
                 //没有画过这个格子?
-                if(markMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] == 0){
+                if(markMap[siteTarget[i].point[1]][siteTarget[i].point[0]][_typeMark] == 0){
                     //标记格子
-                    markMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] = id;
+                    markMap[siteTarget[i].point[1]][siteTarget[i].point[0]][_typeMark] = id;
                     //画格子
                     canvas.drawPath(siteTarget[i].path, paint);
                 }
