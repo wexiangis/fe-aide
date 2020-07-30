@@ -20,13 +20,13 @@ public class FeAssetsSaveCache {
         this.unit = new Unit(folder, "unit.txt", ";");
         this.round = new Round(folder, "round.txt", ";");
         //每个阵营都有一个链表头
-        campBlue = new Camp(folder, 0, 0, ";");
-        campRed = new Camp(folder, 1, 0, ";");
-        campGreen = new Camp(folder, 2, 0, ";");
-        campDark = new Camp(folder, 3, 0, ";");
-        campOrange = new Camp(folder, 4, 0, ";");
-        campPurple = new Camp(folder, 5, 0, ";");
-        campCyan = new Camp(folder, 6, 0, ";");
+        campUnitBlue = new CampUnit(folder, 0, 0, ";");
+        campUnitRed = new CampUnit(folder, 1, 0, ";");
+        campUnitGreen = new CampUnit(folder, 2, 0, ";");
+        campUnitDark = new CampUnit(folder, 3, 0, ";");
+        campUnitOrange = new CampUnit(folder, 4, 0, ";");
+        campUnitPurple = new CampUnit(folder, 5, 0, ";");
+        campUnitCyan = new CampUnit(folder, 6, 0, ";");
     }
 
     //----- file -----
@@ -35,13 +35,13 @@ public class FeAssetsSaveCache {
     public Round round;
 
     // 有添加时初始化
-    public Camp campBlue = null;
-    public Camp campRed = null;
-    public Camp campGreen = null;
-    public Camp campDark = null;
-    public Camp campOrange = null;
-    public Camp campPurple = null;
-    public Camp campCyan = null;
+    public CampUnit campUnitBlue = null;
+    public CampUnit campUnitRed = null;
+    public CampUnit campUnitGreen = null;
+    public CampUnit campUnitDark = null;
+    public CampUnit campUnitOrange = null;
+    public CampUnit campUnitPurple = null;
+    public CampUnit campUnitCyan = null;
 
     //----- api -----
 
@@ -51,16 +51,16 @@ public class FeAssetsSaveCache {
         //获取order
         int order = unit.add(camp, id, xy);
         //创建文件
-        Camp cp = new Camp(folder, camp, order, ";");
+        CampUnit campUnit = new CampUnit(folder, camp, order, ";");
         //添加到链表
         switch(camp){
-            case 0: campBlue.add(cp); break;
-            case 1: campRed.add(cp); break;
-            case 2: campGreen.add(cp); break;
-            case 3: campDark.add(cp); break;
-            case 4: campOrange.add(cp); break;
-            case 5: campPurple.add(cp); break;
-            case 6: campCyan.add(cp); break;
+            case 0: campUnitBlue.add(campUnit); break;
+            case 1: campUnitRed.add(campUnit); break;
+            case 2: campUnitGreen.add(campUnit); break;
+            case 3: campUnitDark.add(campUnit); break;
+            case 4: campUnitOrange.add(campUnit); break;
+            case 5: campUnitPurple.add(campUnit); break;
+            case 6: campUnitCyan.add(campUnit); break;
             //camp error !!
             default: return;
         }
@@ -72,58 +72,58 @@ public class FeAssetsSaveCache {
                 return;
             //搬迁数据
             //行0
-            cp.setStandby(0);
-            cp.setState(0);
-            cp.setLevel(_saveUnit.getLevel(line));
-            cp.setExp(_saveUnit.getExp(line));
+            campUnit.setStandby(0);
+            campUnit.setState(0);
+            campUnit.setLevel(_saveUnit.getLevel(line));
+            campUnit.setExp(_saveUnit.getExp(line));
             //行1 (整行拷贝)
-            cp.setLine(1, _saveUnit.ability.getLine(_saveUnit.unit.getAbility(line)));
+            campUnit.setLine(1, _saveUnit.ability.getLine(_saveUnit.unit.getAbility(line)));
             //行2 (默认为0)
             //行3 (整行拷贝)
-            cp.setLine(3, _saveUnit.skill.getLine(_saveUnit.unit.getSkill(line)));
+            campUnit.setLine(3, _saveUnit.skill.getLine(_saveUnit.unit.getSkill(line)));
             //行4 (整行拷贝)
-            cp.setLine(4, _saveUnit.item.getLine(_saveUnit.unit.getItem(line)));
+            campUnit.setLine(4, _saveUnit.item.getLine(_saveUnit.unit.getItem(line)));
             //行5 (整行拷贝)
-            cp.setLine(5, _saveUnit.special.getLine(_saveUnit.unit.getSpecial(line)));
+            campUnit.setLine(5, _saveUnit.special.getLine(_saveUnit.unit.getSpecial(line)));
             //行6
-            cp.setRescue(0);
-            cp.setRescueOrder(0);
+            campUnit.setRescue(0);
+            campUnit.setRescueOrder(0);
             //行7 (整行拷贝)
-            cp.setLine(7, _saveUnit.record.getLine(_saveUnit.unit.getRecord(line)));
+            campUnit.setLine(7, _saveUnit.record.getLine(_saveUnit.unit.getRecord(line)));
             //行8
-            cp.setView(3);
-            cp.setViewAdd(0);
+            campUnit.setView(3);
+            campUnit.setViewAdd(0);
             //保存文件
-            cp.save();
+            campUnit.save();
         }
         else{
             //搬迁数据
             //行0
-            cp.setStandby(0);
-            cp.setState(0);
-            cp.setLevel(_unit.getLevel(id));
-            cp.setExp(0);
+            campUnit.setStandby(0);
+            campUnit.setState(0);
+            campUnit.setLevel(_unit.getLevel(id));
+            campUnit.setExp(0);
             //行1 (整行拷贝)
-            cp.setLine(1, _unit.getProfessionAbility(id));
+            campUnit.setLine(1, _unit.getProfessionAbility(id));
             //行2 (默认为0)
             //行3 (整行拷贝)
-            cp.setLine(3, _unit.getProfessionSkill(id));
+            campUnit.setLine(3, _unit.getProfessionSkill(id));
             //行4 (整行拷贝)
-            cp.setLine(4, _unit.getItem(id));
+            campUnit.setLine(4, _unit.getItem(id));
             //行5 (整行拷贝)
-            cp.setLine(5, _unit.getAdditionSpecial(id));
+            campUnit.setLine(5, _unit.getAdditionSpecial(id));
             //行6
-            cp.setRescue(0);
-            cp.setRescueOrder(0);
+            campUnit.setRescue(0);
+            campUnit.setRescueOrder(0);
             //行7
-            cp.setRescue(0);
-            cp.setWin(0);
-            cp.setDie(0);
+            campUnit.setRescue(0);
+            campUnit.setWin(0);
+            campUnit.setDie(0);
             //行8
-            cp.setView(3);
-            cp.setViewAdd(0);
+            campUnit.setView(3);
+            campUnit.setViewAdd(0);
             //保存文件
-            cp.save();
+            campUnit.save();
         }
     }
 
@@ -138,28 +138,42 @@ public class FeAssetsSaveCache {
             int order = unit.getOrder(i);
             int camp = unit.getCamp(i);
             //创建文件
-            Camp cp = new Camp(folder, camp, order, ";");
+            CampUnit campUnit = new CampUnit(folder, camp, order, ";");
             //添加到链表
-            Camp target = getCamp(camp);
-            if(target != null)
-                target.add(cp);
+            CampUnit campUnits = getCampUnits(camp);
+            if(campUnits != null)
+                campUnits.add(campUnit);
         }
     }
 
     /*
-        获得某个阵营(的所有人物信息)
+        获得某个阵营链表
      */
-    public Camp getCamp(int camp){
+    public CampUnit getCampUnits(int camp){
         switch(camp){
-            case 0: return campBlue;
-            case 1: return campRed;
-            case 2: return campGreen;
-            case 3: return campDark;
-            case 4: return campOrange;
-            case 5: return campPurple;
-            case 6: return campCyan;
+            case 0: return campUnitBlue;
+            case 1: return campUnitRed;
+            case 2: return campUnitGreen;
+            case 3: return campUnitDark;
+            case 4: return campUnitOrange;
+            case 5: return campUnitPurple;
+            case 6: return campUnitCyan;
         }
         return null;
+    }
+
+    /*
+        获得特定order人物
+     */
+    public CampUnit getCampUnit(int order){
+        int line = unit.find(order);
+        if(line < 0)
+            return null;
+        int camp = unit.getCamp(line);
+        CampUnit campUnit = getCampUnits(camp);
+        if(campUnit == null)
+            return null;
+        return campUnit.find(order);
     }
 
     //----- class -----
@@ -193,21 +207,20 @@ public class FeAssetsSaveCache {
         private int order_seed = 0;
 
         //返回所在行
-        public int find(int camp, int order){
+        public int find(int order){
             for(int i = 0; i < total(); i++)
             {
-                if(getEnable(i) == 0 &&
-                    getCamp(i) == camp && 
+                if(getDisable(i) == 0 &&
                     getOrder(i) == order)
                     return i;
             }
             return -1;
         }
         //移除
-        public void remove(int camp, int order){
-            int line = find(camp, order);
+        public void remove(int order){
+            int line = find(order);
             if(line >= 0)
-                setEnable(line, 1);
+                setDisable(line, 1);
         }
         //注意xy格式如003004,代表x=3,y=4
         //返回序号,可用于创建camp_c_xxx.txt
@@ -219,8 +232,10 @@ public class FeAssetsSaveCache {
                 String.valueOf(id),
                 String.valueOf(xxxyyy)});
         }
+        
+        public int total(){ return line(); }
 
-        public int getEnable(int line){ return getInt(line, 0); }
+        public int getDisable(int line){ return getInt(line, 0); }
         public int getCamp(int line){ return getInt(line, 1); }
         public int getOrder(int line){ return getInt(line, 2); }
         public int getId(int line){ return getInt(line, 3); }
@@ -228,66 +243,81 @@ public class FeAssetsSaveCache {
         public int getX(int line){ return getInt(line, 4)/1000; }
         public int getY(int line){ return getInt(line, 4)%1000; }
 
-        public void setEnable(int line, int enable){ setValue(enable, line, 0); }
+        public void setDisable(int line, int disable){ setValue(disable, line, 0); }
         public void setCamp(int line, int camp){ setValue(camp, line, 1); }
         public void setOrder(int line, int order){ setValue(order, line, 2); }
         public void setId(int line, int id){ setValue(id, line, 3); }
         public void setXY(int line, int xy){ setValue(xy, line, 4); }
         public void setX(int line, int x){ setValue(x*1000+getY(line), line, 4); }
         public void setY(int line, int y){ setValue(getX(line)*1000+y, line, 4); }
-        
-        public int total(){ return line(); }
+
         public Unit(String folder, String name, String split){
             super(folder, name, split);
             //文件加载成功
             if(line() > 0)
                 //继续上一次的序号
-                order_seed = getOrder(line() - 1);
+                order_seed = getOrder(line() - 1) + 1;
         }
     }
 
-    class Camp extends FeReaderFile{
+    class CampUnit extends FeReaderFile{
 
         //链表信息
-        public int order = 0;
-        public int camp = 0;
-        public Camp next = null, last = null;
-        //链表操作
-        public Camp find(int order){
-            Camp camp = this.next;
-            if(camp != null){
-                while(camp.order != order && camp.next != null)
-                    camp = camp.next;
-                if(camp.order == order)
-                    return camp;
-            }
-            return this;
+        private CampUnit next = null, last = null;
+        private int total = 0;
+        public int total(){
+            return total;
         }
-        public void add(Camp cp){
-            if(this.next == null){
-                this.next = cp;
-                cp.last = this;
+        //链表操作
+        public CampUnit find(int order){
+            CampUnit campUnit = next;
+            if(campUnit != null){
+                while(campUnit.order != order && campUnit.next != null)
+                    campUnit = campUnit.next;
+                if(campUnit.order == order)
+                    return campUnit;
+            }
+            return null;
+        }
+        public void add(CampUnit campUnit){
+            if(next == null){
+                next = campUnit;
+                campUnit.last = this;
+                total = 1;
             }
             else{
-                Camp camp = this.next;
-                while(camp.next != null)
-                    camp = camp.next;
-                camp.next = cp;
-                cp.last = camp;
+                CampUnit tmp = next;
+                while(tmp.next != null)
+                    tmp = tmp.next;
+                tmp.next = campUnit;
+                campUnit.last = tmp;
             }
         }
         public void remove(int order){
-            Camp camp = this.next;
-            if(camp != null){
-                while(camp.order != order && camp.next != null)
-                    camp = camp.next;
-                if(camp.order == order){
-                    if(camp.next != null)
-                        camp.next = camp.last;
-                    if(camp.last != null)
-                        camp.last = camp.next;
+            CampUnit campUnit = next;
+            if(campUnit != null){
+                while(campUnit.order != order && campUnit.next != null)
+                    campUnit = campUnit.next;
+                if(campUnit.order == order){
+                    if(campUnit.next != null)
+                        campUnit.next.last = campUnit.last;
+                    if(campUnit.last != null)
+                        campUnit.last.next = campUnit.next;
+                    if(campUnit == next)
+                        next = campUnit.next;
+                    total -= 1;
                 }
             }
+        }
+
+        //文件名信息
+        private int order = 0;
+        public int order(){
+            return order;
+        }
+        private int camp = 0;
+        public int camp(){
+            return camp;
         }
 
         // line 0
@@ -400,7 +430,7 @@ public class FeAssetsSaveCache {
         public void setView(int view){ setValue(view, 8, 0); }
         public void setViewAdd(int viewAdd){ setValue(viewAdd, 8, 1); }
         
-        public Camp(String folder, int camp, int order, String split){
+        public CampUnit(String folder, int camp, int order, String split){
             super(folder, String.format("camp_%d_%03d.txt", camp, order), split);
             this.camp = camp;
             this.order = order;
@@ -416,7 +446,7 @@ public class FeAssetsSaveCache {
                 addLine(new String[]{"0","0","行6:救出状态及其ID"});
                 addLine(new String[]{"0","0","0","0","行7:战绩/战胜/战败"});
                 addLine(new String[]{"0","0","行8:视野/道具加成视野"});
-//                save();
+                // save();
             }
         }
     }
