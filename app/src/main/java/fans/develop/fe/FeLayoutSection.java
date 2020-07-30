@@ -312,6 +312,9 @@ public class FeLayoutSection extends FeLayout{
         public FeAssets getAssets(){
             return feData.assets;
         }
+				public FeAssetsSX getAssetsSX(){
+						return sxData;
+				}
         public Context getContext(){
             return feData.context;
         }
