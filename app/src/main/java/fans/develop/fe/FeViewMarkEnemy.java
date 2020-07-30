@@ -17,7 +17,7 @@ public class FeViewMarkEnemy extends FeView {
     //颜色模式
     private FeTypeMark typeMark;
     //标记unit的id
-    private int id;
+    private int order = 0, id = 0;
     //人物的移动、攻击、特效范围
     private FeInfoSite[] siteMov;
     private FeInfoSite[] siteHit;
@@ -27,16 +27,17 @@ public class FeViewMarkEnemy extends FeView {
 
     /*
         typeMark: 颜色模式
-        id: 人员
+        order: 地图人物唯一order
      */
     public FeViewMarkEnemy(Context context,
             FeTypeMark typeMark,
-            int id,
+            int order,
             FeSectionCallback sectionCallback)
     {
         super(context);
         this.typeMark = typeMark;
-        this.id = id;
+        this.order = order;
+        this.id = sectionCallback.getAssetsSX().saveCache.unit.getId(order);
         this.sectionCallback = sectionCallback;
         //画笔
         paint = new Paint();
@@ -52,8 +53,8 @@ public class FeViewMarkEnemy extends FeView {
         return typeMark;
     }
 
-    public int getId(){
-        return id;
+    public int getOrder(){
+        return order;
     }
 
     public FeInfoSite checkHit(int xGrid, int yGrid){
@@ -75,7 +76,7 @@ public class FeViewMarkEnemy extends FeView {
         for(int x = 0; x < markEnemyMap[0].length; x++)
             for(int y = 0; y < markEnemyMap.length; y++)
                 for(int i = 0; i < markEnemyMap[0][0].length; i++)
-                    if(markEnemyMap[y][x][i] == id)
+                    if(markEnemyMap[y][x][i] == order)
                         markEnemyMap[y][x][i] = 0;
     }
 
@@ -87,8 +88,8 @@ public class FeViewMarkEnemy extends FeView {
         if(sectionCallback.getLayoutUnit() == null)
             return;
         //获得unit位置
-        FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(id);
-        //id人物没有绘制?
+        FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(order);
+        //order人物没有绘制?
         if(siteUnit == null)
             return;
 
@@ -140,7 +141,7 @@ public class FeViewMarkEnemy extends FeView {
                 //没有画过这个格子?
                 if(markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] == 0){
                     //标记格子
-                    markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] = id;
+                    markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] = order;
                     //画格子
                     canvas.drawPath(siteTarget[i].path, paint);
                 }

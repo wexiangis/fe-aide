@@ -51,13 +51,13 @@ public class FeLayoutMark extends FeLayout {
     }
 
     /*
-        根据id定位view
+        根据order定位view
      */
-    public FeViewMark getViewMark(int id){
+    public FeViewMark getViewMark(int order){
         FeViewMark viewMark;
         for (int i = 0; i < getChildCount(); i++){
             viewMark = (FeViewMark)getChildAt(i);
-            if(viewMark.getId() == id)
+            if(viewMark.getOrder() == order)
                 return viewMark;
         }
         return null;
@@ -66,10 +66,10 @@ public class FeLayoutMark extends FeLayout {
     /*
         显示特定人物的mark范围
      */
-    public void markUnit(int id, int mov, FeTypeMark typeMark){
-        FeViewMark viewMark = getViewMark(id);
+    public void markUnit(int order, int mov, FeTypeMark typeMark){
+        FeViewMark viewMark = getViewMark(order);
         if(viewMark == null)
-            addView(new FeViewMark(context, typeMark, id, mov, sectionCallback));
+            addView(new FeViewMark(context, typeMark, order, mov, sectionCallback));
         else{
             viewMark.setMov(mov);
             viewMark.setTypeMark(typeMark);
@@ -79,7 +79,7 @@ public class FeLayoutMark extends FeLayout {
     /*
         关闭特定人物的mark范围
      */
-    public void cleanUnit(int id){
+    public void cleanUnit(int order){
         ;
     }
 
@@ -118,7 +118,7 @@ public class FeLayoutMark extends FeLayout {
             //还有移动力剩余?
             if(mov > 0)
                 //更新移动范围
-                markUnit(sectionUnit.viewUnit.getId(), mov, FeTypeMark.RED);
+                markUnit(sectionUnit.viewUnit.getOrder(), mov, FeTypeMark.RED);
             else
                 //显示unitMenu
                 ;

@@ -21,13 +21,13 @@ public class FeViewUnit extends FeView {
     private float leftMargin = 0, topMargin = 0;
     //每帧图片实际高度
     private int frameHeight = 56;
-    //人物唯一id
-    private int id = 0;
+    //地图人物唯一order
+    private int order = 0, id = 0;
     //动画模式和颜色模式
     private FeTypeAnim anim = FeTypeAnim.STAY;
     private FeTypeCamp camp = FeTypeCamp.BLUE;
     //当前人物所在格子
-    public int gridX = 0, gridY = 0;
+    private int gridX = 0, gridY = 0;
     //根据动画模式0~5,图像胶片上移帧数
     private final int[] frameSkipByAnimMode = new int[]{15, 12, 8, 4, 0, 0};
     //画图
@@ -44,15 +44,18 @@ public class FeViewUnit extends FeView {
     private Rect bitmapDist = new Rect(0,0,0,0);
 
     /*
-        id: 人物唯一id
+        order: 地图人物唯一order
         gridX, gridY: 所在格子
      */
     public FeViewUnit(Context context, 
-        int id, int gridX, int gridY, FeTypeCamp camp,
+        int order, int gridX, int gridY, FeTypeCamp camp,
         FeSectionCallback sectionCallback)
     {
         super(context);
         this.sectionCallback = sectionCallback;
+        this.camp = camp;
+        this.order = order;
+        this.id = sectionCallback.getAssetsSX().saveCache.unit.getId(order);
         //画笔初始化
         paint = new Paint();
         paint.setColor(Color.GREEN);
@@ -63,9 +66,6 @@ public class FeViewUnit extends FeView {
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
         setAnim(FeTypeAnim.STAY);
-        //参数备份
-        this.camp = camp;
-        this.id = id;
         //
         frameHeight = bitmap.getWidth();
         //
@@ -81,9 +81,9 @@ public class FeViewUnit extends FeView {
         site = new FeInfoSite();
     }
 
-    //人物id
-    public int getId(){
-        return id;
+    //人物order
+    public int getOrder(){
+        return order;
     }
 
     //方格位置

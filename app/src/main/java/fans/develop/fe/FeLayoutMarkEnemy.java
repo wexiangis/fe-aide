@@ -33,11 +33,11 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         根据id定位view
      */
-    public FeViewMarkEnemy getViewMarkEnemy(int id){
+    public FeViewMarkEnemy getViewMarkEnemy(int order){
         FeViewMarkEnemy viewMarkEnemy;
         for (int i = 0; i < getChildCount(); i++){
             viewMarkEnemy = (FeViewMarkEnemy)getChildAt(i);
-            if(viewMarkEnemy.getId() == id)
+            if(viewMarkEnemy.getOrder() == order)
                 return viewMarkEnemy;
         }
         return null;
@@ -46,10 +46,10 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         显示特定人物的mark范围
      */
-    public void markUnit(int id, FeTypeMark typeMark){
-        FeViewMarkEnemy viewMarkEnemy = getViewMarkEnemy(id);
+    public void markUnit(int order, FeTypeMark typeMark){
+        FeViewMarkEnemy viewMarkEnemy = getViewMarkEnemy(order);
         if(viewMarkEnemy == null)
-            addView(new FeViewMarkEnemy(context, typeMark, id, sectionCallback));
+            addView(new FeViewMarkEnemy(context, typeMark, order, sectionCallback));
         else
             viewMarkEnemy.setTypeMark(typeMark);
     }
@@ -57,7 +57,7 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         关闭特定人物的mark范围
      */
-    public void cleanUnit(int id){
+    public void cleanUnit(int order){
         ;
     }
 

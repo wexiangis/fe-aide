@@ -12,6 +12,7 @@ public interface FeSectionCallback{
     FeFlagHit checkHit(float x, float y);
     /* ------------------------------- */
     FeAssets getAssets();
+    FeAssetsSX getAssetsSX();
     Context getContext();
     FeSectionMap getSectionMap();
     FeSectionUnit getSectionUnit();

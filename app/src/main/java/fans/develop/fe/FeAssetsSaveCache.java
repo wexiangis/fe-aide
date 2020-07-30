@@ -1,5 +1,7 @@
 package fans.develop.fe;
 
+import javax.sound.sampled.Line;
+
 /*
     /assets/save/sX/cache 文件夹资源管理器,章节运行信息缓存
  */
@@ -166,10 +168,9 @@ public class FeAssetsSaveCache {
         获得特定order人物
      */
     public CampUnit getCampUnit(int order){
-        int line = unit.find(order);
-        if(line < 0)
+        if(order >= unit.line())
             return null;
-        int camp = unit.getCamp(line);
+        int camp = unit.getCamp(order);
         CampUnit campUnit = getCampUnits(camp);
         if(campUnit == null)
             return null;
@@ -203,24 +204,13 @@ public class FeAssetsSaveCache {
 
     class Unit extends FeReaderFile{
 
-        //用于永不重复的生成新的order
-        private int order_seed = 0;
-
-        //返回所在行
-        public int find(int order){
-            for(int i = 0; i < total(); i++)
-            {
-                if(getDisable(i) == 0 &&
-                    getOrder(i) == order)
-                    return i;
-            }
-            return -1;
-        }
         //移除
         public void remove(int order){
-            int line = find(order);
-            if(line >= 0)
-                setDisable(line, 1);
+            setDisable(order, 1);
+        }
+        //恢复
+        public void recover(int order){
+            setDisable(order, 0);
         }
         //注意xy格式如003004,代表x=3,y=4
         //返回序号,可用于创建camp_c_xxx.txt
@@ -228,7 +218,7 @@ public class FeAssetsSaveCache {
             return addLine(new String[]{
                 "0",
                 String.valueOf(camp),
-                String.valueOf(order_seed++),
+                String.valueOf(line()),
                 String.valueOf(id),
                 String.valueOf(xxxyyy)});
         }
@@ -253,10 +243,6 @@ public class FeAssetsSaveCache {
 
         public Unit(String folder, String name, String split){
             super(folder, name, split);
-            //文件加载成功
-            if(line() > 0)
-                //继续上一次的序号
-                order_seed = getOrder(line() - 1) + 1;
         }
     }
 

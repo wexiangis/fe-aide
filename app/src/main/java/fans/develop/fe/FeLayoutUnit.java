@@ -42,24 +42,24 @@ public class FeLayoutUnit extends FeLayout {
     }
 
     /*
-        根据id找人物
+        根据order找人物
      */
-    public FeViewUnit getViewUnit(int id){
+    public FeViewUnit getViewUnit(int order){
         FeViewUnit viewUnit;
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
             viewUnit = (FeViewUnit)getChildAt(i);
-            if (viewUnit.getId() == id)
+            if (viewUnit.getOrder() == order)
                 return viewUnit;
         }
         return null;
     }
 
     /*
-        根据id找人物位置
+        根据order找人物位置
      */
-    public FeInfoSite getUnitSite(int id){
-        FeViewUnit viewUnit = getViewUnit(id);
+    public FeInfoSite getUnitSite(int order){
+        FeViewUnit viewUnit = getViewUnit(order);
         if(viewUnit == null)
             return null;
         return viewUnit.getSite();
@@ -68,17 +68,17 @@ public class FeLayoutUnit extends FeLayout {
     /*
         人员增删
      */
-    public void addUnit(int id, int y, int x, FeTypeCamp camp){
-        addView(new FeViewUnit(context, id, x, y, camp, sectionCallback));
+    public void addUnit(int order, int y, int x, FeTypeCamp camp){
+        addView(new FeViewUnit(context, order, x, y, camp, sectionCallback));
     }
-    public void removeUnit(int id){
+    public void removeUnit(int order){
         ;
     }
 
     /*
         选中人物
      */
-    public void unitSelect(int id){
+    public void unitSelect(int order){
         ;
     }
 
@@ -88,42 +88,42 @@ public class FeLayoutUnit extends FeLayout {
             例如: [0,0] -> [1,1] 是错误的, 要改为 [0,0] -> [0,1] -> [1,1]
         sectionCallback: 移动结束后要做什么(一般把人物 setStay())
      */
-    public void unitWalk(int id, Path path, Runnable sectionCallback){
+    public void unitWalk(int order, Path path, Runnable sectionCallback){
         ;
     }
 
     /*
         释放选中
      */
-    public void unitRelease(int id){
+    public void unitRelease(int order){
         ;
     }
 
     /*
         人员阵营
      */
-    public void setCamp(int id, FeTypeCamp camp){
+    public void setCamp(int order, FeTypeCamp camp){
         ;
     }
 
     /*
         人员可行动
      */
-    public void setActivity(int id){
+    public void setActivity(int order){
         ;
     }
 
     /*
         人员待机
      */
-    public void setStay(int id){
+    public void setStay(int order){
         ;
     }
 
     /*
         人员异常状态
      */
-    public void setError(int id, int errorType){
+    public void setError(int order, int errorType){
         ;
     }
 
@@ -131,7 +131,7 @@ public class FeLayoutUnit extends FeLayout {
         人员动画
         animMode: 0/待机 1/选中 2,3,4,5/上,下,左,右
      */
-    public void setAnim(int id, FeTypeAnim anim){
+    public void setAnim(int order, FeTypeAnim anim){
         ;
     }
 
@@ -196,7 +196,7 @@ public class FeLayoutUnit extends FeLayout {
         //显示移动范围
         FeLayoutMark layoutMark = sectionCallback.getLayoutMark();
         if(layoutMark != null)
-            layoutMark.markUnit(hitViewUnit.getId(), mov, FeTypeMark.RED);
+            layoutMark.markUnit(hitViewUnit.getOrder(), mov, FeTypeMark.RED);
     }
 
     /*

@@ -17,7 +17,7 @@ public class FeViewMark extends FeView {
     //颜色模式
     private FeTypeMark typeMark;
     //标记unit的id
-    private int id;
+    private int order = 0, id = 0;
     //标记unit的mov
     private int mov;
     //人物的移动、攻击、特效范围
@@ -31,17 +31,18 @@ public class FeViewMark extends FeView {
 
     /*
         typeMark: 颜色模式
-        id: 人员
+        order: 地图人物唯一order
      */
     public FeViewMark(Context context,
             FeTypeMark typeMark,
-            int id,
+            int prder,
             int mov,
             FeSectionCallback sectionCallback)
     {
         super(context);
         this.typeMark = typeMark;
-        this.id = id;
+        this.order = order;
+        this.id = sectionCallback.getAssetsSX().saveCache.unit.getId(order);
         this.mov = mov;
         this.sectionCallback = sectionCallback;
         //画笔
@@ -68,8 +69,8 @@ public class FeViewMark extends FeView {
         return mov;
     }
 
-    public int getId(){
-        return id;
+    public int getOrder(){
+        return order;
     }
 
     public FeInfoSite checkHit(int xGrid, int yGrid){
@@ -97,7 +98,7 @@ public class FeViewMark extends FeView {
         int[][] markMap = sectionCallback.getSectionMap().markMap;
         for(int x = 0; x < markMap[0].length; x++)
             for(int y = 0; y < markMap.length; y++)
-                if(markMap[y][x] == id)
+                if(markMap[y][x] == order)
                     markMap[y][x] = 0;
     }
 
@@ -109,8 +110,8 @@ public class FeViewMark extends FeView {
         if(sectionCallback.getLayoutUnit() == null)
             return;
         //获得unit位置
-        FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(id);
-        //id人物没有绘制?
+        FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(order);
+        //order人物没有绘制?
         if(siteUnit == null)
             return;
 
@@ -147,14 +148,14 @@ public class FeViewMark extends FeView {
         for(int i = 0; i < siteMov.length; i++){
             canvas.drawPath(siteMov[i].path, paintB);
             //标记已画过
-            markMap[siteMov[i].yGrid][siteMov[i].xGrid] = id;
+            markMap[siteMov[i].yGrid][siteMov[i].xGrid] = order;
         }
 
         //遍历 siteHit 数组,画格子
         if(typeMark == FeTypeMark.RED){
             for(int i = 0; i < siteHit.length; i++){
                 //这个点刚才没有画过移动范围?
-                if(markMap[siteHit[i].yGrid][siteHit[i].xGrid] != id)
+                if(markMap[siteHit[i].yGrid][siteHit[i].xGrid] != order)
                     canvas.drawPath(siteHit[i].path, paintR);
             }
         }
@@ -162,7 +163,7 @@ public class FeViewMark extends FeView {
         else{
             for(int i = 0; i < siteSpecial.length; i++){
                 //这个点刚才没有画过移动范围?
-                if(markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] != id)
+                if(markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] != order)
                     canvas.drawPath(siteSpecial[i].path, paintR);
             }
         }
