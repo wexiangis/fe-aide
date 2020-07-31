@@ -56,11 +56,9 @@ public class FeViewUnit extends FeView {
         bitmap = FePallet.replace(unit.getProfessionAnim(), unit.camp());
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
-        setAnim(FeTypeAnim.STAY);
+        anim(FeTypeAnim.STAY);
         //胶片每帧高度
         frameHeight = bitmap.getWidth();
-        //设置初始位置
-        xy(unit.x(), unit.y());
         //图片扣取位置计算
         bitmapBody.left = 0;
         bitmapBody.top = frameHeight*frameSkipByAnimMode[this.anim.ordinal()];
