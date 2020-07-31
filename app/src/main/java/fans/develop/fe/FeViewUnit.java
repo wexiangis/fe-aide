@@ -17,17 +17,10 @@ public class FeViewUnit extends FeView {
 
     private FeSectionCallback sectionCallback;
 
-    //动画相对地图的偏移量
-    private float leftMargin = 0, topMargin = 0;
     //每帧图片实际高度
     private int frameHeight = 56;
-    //地图人物唯一order
-    private int order = 0, id = 0;
     //动画模式和颜色模式
     private FeTypeAnim anim = FeTypeAnim.STAY;
-    private FeTypeCamp camp = FeTypeCamp.BLUE;
-    //当前人物所在格子
-    private int gridX = 0, gridY = 0;
     //根据动画模式0~5,图像胶片上移帧数
     private final int[] frameSkipByAnimMode = new int[]{15, 12, 8, 4, 0, 0};
     //画图
@@ -42,34 +35,32 @@ public class FeViewUnit extends FeView {
     private FeInfoSite site;
     //动画输出位置
     private Rect bitmapDist = new Rect(0,0,0,0);
+    //参数总集
+    public FeUnit unit;
 
     /*
         order: 地图人物唯一order
         gridX, gridY: 所在格子
      */
-    public FeViewUnit(Context context, 
-        int order, int gridX, int gridY, FeTypeCamp camp,
-        FeSectionCallback sectionCallback)
+    public FeViewUnit(Context context, int order, FeSectionCallback sectionCallback)
     {
         super(context);
         this.sectionCallback = sectionCallback;
-        this.camp = camp;
-        this.order = order;
-        this.id = sectionCallback.getAssetsSX().saveCache.unit.getId(order);
+        this.unit = new FeUnit(sectionCallback.getAssets(), sectionCallback.getAssetsSX(), order);
         //画笔初始化
         paint = new Paint();
         paint.setColor(Color.GREEN);
 //        paint.setAntiAlias(true);
 //        paint.setBitmapFilter(true);
         //图片加载和颜色变换
-        bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp);
+        bitmap = FePallet.replace(unit.getProfessionAnim(), unit.camp());
         matrix.postScale(-1, 1);
         //根据动画类型使用对应的心跳
         setAnim(FeTypeAnim.STAY);
-        //
+        //胶片每帧高度
         frameHeight = bitmap.getWidth();
-        //
-        moveGridTo(gridX, gridY);
+        //设置初始位置
+        xy(unit.x(), unit.y());
         //图片扣取位置计算
         bitmapBody.left = 0;
         bitmapBody.top = frameHeight*frameSkipByAnimMode[this.anim.ordinal()];
@@ -82,49 +73,29 @@ public class FeViewUnit extends FeView {
     }
 
     //人物order
-    public int getOrder(){
-        return order;
+    public int order(){
+        return unit.order();
     }
 
     //方格位置
-    public void setGrid(int x, int y){
-        gridX = x;
-        gridY = y;
-        leftMargin = x*sectionCallback.getSectionMap().xGridPixel;
-        topMargin = y*sectionCallback.getSectionMap().yGridPixel;
+    public void xy(int x, int y){
+        unit.x(x);
+        unit.y(y);
     }
-
-    public int getGridX(){
-        return gridX;
+    public int x(){
+        return unit.x();
     }
-    public int getGridY(){
-        return gridY;
-    }
-
-    //移动到方格
-    public void moveGridTo(int x, int y){
-        gridX = x;
-        gridY = y;
-        leftMargin = x*sectionCallback.getSectionMap().xGridPixel;
-        topMargin = y*sectionCallback.getSectionMap().yGridPixel;
+    public int y(){
+        return unit.y();
     }
 
     //阵营
-    public void setCamp(FeTypeCamp camp){
-        if(this.camp != camp) {
-            synchronized (paint) {
-                bitmap.recycle();
-                bitmap = FePallet.replace(sectionCallback.getAssets().unit.getProfessionAnim(id), camp);
-                this.camp = camp;
-            }
-        }
-    }
-    public FeTypeCamp getCamp(){
-        return camp;
+    public FeTypeCamp camp(){
+        return unit.camp();
     }
 
     //动画模式
-    public void setAnim(FeTypeAnim anim){
+    public void anim(FeTypeAnim anim){
         if(this.anim != anim){
             //镜像和恢复
             if(this.anim == FeTypeAnim.RIGHT || anim == FeTypeAnim.RIGHT) {
@@ -146,7 +117,7 @@ public class FeViewUnit extends FeView {
             upgradeHeartType(anim);
         }
     }
-    public FeTypeAnim getAnim(){
+    public FeTypeAnim anim(){
         return anim;
     }
 
@@ -161,7 +132,7 @@ public class FeViewUnit extends FeView {
     }
 
     //位置信息
-    public FeInfoSite getSite(){
+    public FeInfoSite site(){
         return site;
     }
 
@@ -182,7 +153,7 @@ public class FeViewUnit extends FeView {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
         //跟地图要位置
-        sectionCallback.getSectionMap().getRectByGrid(gridX, gridY, site);
+        sectionCallback.getSectionMap().getRectByGrid(unit.x(), unit.y(), site);
         //扩大矩阵的上、左、右边界
         bitmapDist.left = site.rect.left - site.rect.width()/2;
         bitmapDist.right = site.rect.right + site.rect.width()/2;

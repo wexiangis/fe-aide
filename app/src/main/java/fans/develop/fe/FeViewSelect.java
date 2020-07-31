@@ -95,7 +95,7 @@ public class FeViewSelect extends FeView {
         }
         else if(sectionCallback.onUnitSelect() && sectionCallback.getSectionUnit().viewUnit != null){
             //选中人物位置
-            FeInfoSite unitSite = sectionCallback.getSectionUnit().viewUnit.getSite();
+            FeInfoSite unitSite = sectionCallback.getSectionUnit().viewUnit.site();
             //计算输出位置
             rectDistSelect.left = unitSite.rect.left - unitSite.rect.width()/4;
             rectDistSelect.right = unitSite.rect.right + unitSite.rect.width()/4;

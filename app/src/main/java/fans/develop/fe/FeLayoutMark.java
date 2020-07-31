@@ -66,7 +66,7 @@ public class FeLayoutMark extends FeLayout {
     /*
         显示特定人物的mark范围
      */
-    public void markUnit(int order, int mov, FeTypeMark typeMark){
+    public void markUnit(int order, FeTypeMark typeMark){
         FeViewMark viewMark = getViewMark(order);
         if(viewMark == null)
             addView(new FeViewMark(context, typeMark, order, mov, sectionCallback));
@@ -109,16 +109,16 @@ public class FeLayoutMark extends FeLayout {
         //清mark
         _removeViewAll(this);
         //己方人物?
-        if (sectionUnit.viewUnit.getCamp() == FeTypeCamp.BLUE) {
+        if (sectionUnit.viewUnit.camo() == FeTypeCamp.BLUE) {
             //移动人物
-            sectionUnit.viewUnit.setGrid(hitSite.xGrid, hitSite.yGrid);
+            sectionUnit.viewUnit.xy(hitSite.xGrid, hitSite.yGrid);
             //削减移动力
             int mov = hitViewMark.getMov();
             mov -= Math.abs(certenXY[0] - hitSite.xGrid) + Math.abs(certenXY[1] - hitSite.yGrid);
             //还有移动力剩余?
             if(mov > 0)
                 //更新移动范围
-                markUnit(sectionUnit.viewUnit.getOrder(), mov, FeTypeMark.RED);
+                markUnit(sectionUnit.viewUnit.order(), mov, FeTypeMark.RED);
             else
                 //显示unitMenu
                 ;

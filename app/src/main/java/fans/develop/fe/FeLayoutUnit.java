@@ -49,7 +49,7 @@ public class FeLayoutUnit extends FeLayout {
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++) {
             viewUnit = (FeViewUnit)getChildAt(i);
-            if (viewUnit.getOrder() == order)
+            if (viewUnit.order() == order)
                 return viewUnit;
         }
         return null;
@@ -62,7 +62,7 @@ public class FeLayoutUnit extends FeLayout {
         FeViewUnit viewUnit = getViewUnit(order);
         if(viewUnit == null)
             return null;
-        return viewUnit.getSite();
+        return viewUnit.site();
     }
 
     /*
@@ -144,9 +144,9 @@ public class FeLayoutUnit extends FeLayout {
         for (int i = 0; i < getChildCount(); i++) {
             viewUnit = (FeViewUnit)getChildAt(i);
             if(viewUnit == target)
-                viewUnit.setAnim(anim);
-            else if (viewUnit.getAnim() != FeTypeAnim.STAY)
-                viewUnit.setAnim(FeTypeAnim.STAY);
+                viewUnit.anim(anim);
+            else if (viewUnit.anim() != FeTypeAnim.STAY)
+                viewUnit.anim(FeTypeAnim.STAY);
         }
     }
 
@@ -157,7 +157,7 @@ public class FeLayoutUnit extends FeLayout {
         if(hitViewUnit == null)
             return;
         //自己阵营?
-        if(hitViewUnit.getCamp() == FeTypeCamp.BLUE)
+        if(hitViewUnit.camp() == FeTypeCamp.BLUE)
             setAnim(hitViewUnit, FeTypeAnim.ACTIVITY);
         else
             setAnim(hitViewUnit, FeTypeAnim.STAY);
@@ -169,7 +169,7 @@ public class FeLayoutUnit extends FeLayout {
         //透传点击地图
         FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
         if(layoutMap != null)
-            layoutMap.hitMap(hitViewUnit.getSite().rect.left + 1, hitViewUnit.getSite().rect.top + 1);
+            layoutMap.hitMap(hitViewUnit.site().rect.left + 1, hitViewUnit.site().rect.top + 1);
     }
 
     /*
@@ -179,11 +179,11 @@ public class FeLayoutUnit extends FeLayout {
         if(hitViewUnit == null)
             return;
         //自己阵营?
-        if(hitViewUnit.getCamp() == FeTypeCamp.BLUE) {
+        if(hitViewUnit.camp() == FeTypeCamp.BLUE) {
             setAnim(hitViewUnit, FeTypeAnim.DOWN);
             //移至居中
             sectionCallback.getLayoutMap().moveCenter(
-                hitViewUnit.getSite().xGrid, hitViewUnit.getSite().yGrid);
+                hitViewUnit.site().xGrid, hitViewUnit.site().yGrid);
         }
         else
             setAnim(hitViewUnit, FeTypeAnim.STAY);
@@ -191,12 +191,10 @@ public class FeLayoutUnit extends FeLayout {
         sectionCallback.getSectionUnit().viewUnit = hitViewUnit;
         //置标志
         sectionCallback.onUnitMove(true);
-        //得到移动范围
-        int mov = sectionCallback.getAssets().unit.getProfessionAbilityMov(hitViewUnit.getId());
         //显示移动范围
         FeLayoutMark layoutMark = sectionCallback.getLayoutMark();
         if(layoutMark != null)
-            layoutMark.markUnit(hitViewUnit.getOrder(), mov, FeTypeMark.RED);
+            layoutMark.markUnit(hitViewUnit.order(), hitViewUnit.unit.getAbilityMov(), FeTypeMark.RED);
     }
 
     /*
@@ -206,7 +204,7 @@ public class FeLayoutUnit extends FeLayout {
         if(hitViewUnit == null)
             return;
         //自己阵营?
-        if(hitViewUnit.getCamp() == FeTypeCamp.BLUE) {
+        if(hitViewUnit.camp() == FeTypeCamp.BLUE) {
             setAnim(hitViewUnit, FeTypeAnim.ACTIVITY);
             //移动结束,显示unitMenu
             ;
@@ -245,7 +243,7 @@ public class FeLayoutUnit extends FeLayout {
             else {
                 //清选中状态
                 if (sectionCallback.getSectionUnit().viewUnit != null)
-                    sectionCallback.getSectionUnit().viewUnit.setAnim(FeTypeAnim.STAY);
+                    sectionCallback.getSectionUnit().viewUnit.anim(FeTypeAnim.STAY);
                 //请标记
                 sectionCallback.getSectionUnit().viewUnit = hitViewUnit = null;
                 sectionCallback.onUnitSelect(false);
