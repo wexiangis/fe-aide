@@ -31,8 +31,8 @@ public class FeMark {
         rangeHit = getRangeHit(rangeMov, hit, hitSpace);
         //获得特效范围
         rangeSpecial = getRangeSpecial(rangeMov, special);
-        rangeHit.cut();
         rangeMov.cut();
+        rangeHit.cut();
         rangeSpecial.cut();
     }
 
@@ -275,12 +275,12 @@ public class FeMark {
                 yGridCenter += yGridStart;
                 yGridStart = 0;
             }
-//            //切掉超出屏幕右边沿部分
-//            if(xGridStart + width > mapWidth)
-//                width = mapWidth - xGridStart;
-//            //切掉超出屏幕下边沿部分
-//            if(yGridStart + height > mapHeight)
-//                height = mapHeight - yGridStart;
+            //切掉超出屏幕右边沿部分
+            if(xGridStart + width > mapWidth)
+                width = mapWidth - xGridStart;
+            //切掉超出屏幕下边沿部分
+            if(yGridStart + height > mapHeight)
+                height = mapHeight - yGridStart;
             //还有剩余不?
             if(width < 1 || height < 1)
                 return;//实在不知道怎么处理...

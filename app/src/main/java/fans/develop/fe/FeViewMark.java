@@ -35,7 +35,7 @@ public class FeViewMark extends FeView {
      */
     public FeViewMark(Context context,
             FeTypeMark typeMark,
-            int prder,
+            int order,
             int mov,
             FeSectionCallback sectionCallback)
     {
@@ -99,7 +99,7 @@ public class FeViewMark extends FeView {
         for(int x = 0; x < markMap[0].length; x++)
             for(int y = 0; y < markMap.length; y++)
                 if(markMap[y][x] == order)
-                    markMap[y][x] = 0;
+                    markMap[y][x] = -1;
     }
 
     //绘图回调

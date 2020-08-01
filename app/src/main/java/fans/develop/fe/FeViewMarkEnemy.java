@@ -77,7 +77,7 @@ public class FeViewMarkEnemy extends FeView {
             for(int y = 0; y < markEnemyMap.length; y++)
                 for(int i = 0; i < markEnemyMap[0][0].length; i++)
                     if(markEnemyMap[y][x][i] == order)
-                        markEnemyMap[y][x][i] = 0;
+                        markEnemyMap[y][x][i] = -1;
     }
 
     //绘图回调
@@ -139,7 +139,7 @@ public class FeViewMarkEnemy extends FeView {
             //遍历 siteTarget 数组,画格子
             for(int i = 0; i < siteTarget.length; i++){
                 //没有画过这个格子?
-                if(markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] == 0){
+                if(markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] == -1){
                     //标记格子
                     markEnemyMap[siteTarget[i].yGrid][siteTarget[i].xGrid][_typeMark] = order;
                     //画格子

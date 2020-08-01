@@ -68,6 +68,8 @@ public class FeLayoutMark extends FeLayout {
      */
     public void markUnit(int order, int mov, FeTypeMark typeMark){
         FeViewMark viewMark = getViewMark(order);
+        //清掉其它,每次只mark一个人
+        _removeViewAll(this);
         if(viewMark == null)
             addView(new FeViewMark(context, typeMark, order, mov, sectionCallback));
         else{
