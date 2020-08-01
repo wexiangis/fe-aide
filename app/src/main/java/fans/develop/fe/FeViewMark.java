@@ -75,7 +75,7 @@ public class FeViewMark extends FeView {
 
     public FeInfoSite checkHit(int xGrid, int yGrid){
         //非移动范围
-        if(typeMark != FeTypeMark.BLUE || siteMov == null)
+        if(siteMov == null)
             return null;
         //遍历 siteMov
         for(int i = 0; i < siteMov.length; i++)

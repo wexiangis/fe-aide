@@ -218,7 +218,7 @@ public class FeLayoutUnit extends FeLayout {
         //关闭移动范围
         FeLayoutMark layoutMark = sectionCallback.getLayoutMark();
         if(layoutMark != null)
-            layoutMark._removeViewAll(this);
+            layoutMark._removeViewAll(layoutMark);
     }
 
     /*
