@@ -125,9 +125,7 @@ public class FeViewMark extends FeView {
             mark = new FeMark(
                 siteUnit.xGrid, siteUnit.yGrid,
                 sectionCallback.getSectionMap().mapInfo,
-                mov,
-                sectionCallback.getAssets().unit.getProfessionType(id),
-                1, 0, 2);
+                sectionCallback.getLayoutUnit().getUnit(order));
         }
 
         //获取位置数组

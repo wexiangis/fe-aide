@@ -103,9 +103,7 @@ public class FeViewMarkEnemy extends FeView {
             FeMark mark = new FeMark(
                 siteUnit.xGrid, siteUnit.yGrid,
                 sectionCallback.getSectionMap().mapInfo,
-                sectionCallback.getAssets().unit.getProfessionAbilityMov(id),
-                sectionCallback.getAssets().unit.getProfessionType(id),
-                1, 0, 2);
+                sectionCallback.getLayoutUnit().getUnit(order));
             //获取位置数组
             siteMov = mark.rangeMov.getGridInfo(sectionCallback.getSectionMap());
             siteHit = mark.rangeHit.getGridInfo(sectionCallback.getSectionMap());

@@ -177,7 +177,7 @@ public class FeAssetsSaveCache {
 
     //----- class -----
 
-    class Round extends FeReaderFile{
+    public class Round extends FeReaderFile{
 
         public int getTurn(){ return getInt(0, 0); }
         public int getCamp(){ return getInt(0, 1); }
@@ -200,7 +200,7 @@ public class FeAssetsSaveCache {
         }
     }
 
-    class Unit extends FeReaderFile{
+    public class Unit extends FeReaderFile{
 
         //移除
         public void remove(int order){
@@ -244,7 +244,7 @@ public class FeAssetsSaveCache {
         }
     }
 
-    class CampUnit extends FeReaderFile{
+    public class CampUnit extends FeReaderFile{
 
         //链表信息
         private CampUnit next = null, last = null;

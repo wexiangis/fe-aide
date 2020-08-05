@@ -286,7 +286,7 @@ class FeAssetsSaveUnit {
     //----- class -----
 
     //人物列表
-    class Unit extends FeReaderFile {
+    public class Unit extends FeReaderFile {
         public int getId(int line){ return getInt(line, 0); }
         public int getAbility(int line){ return getInt(line, 1); }
         public int getGrow(int line){ return getInt(line, 2); }
@@ -318,7 +318,7 @@ class FeAssetsSaveUnit {
     }
 
     //职业能力列表
-    class Ability extends FeReaderFile {
+    public class Ability extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -348,7 +348,7 @@ class FeAssetsSaveUnit {
     }
 
     //成长率列表
-    class Grow extends FeReaderFile {
+    public class Grow extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -378,7 +378,7 @@ class FeAssetsSaveUnit {
     }
 
     //技能列表
-    class Skill extends FeReaderFile {
+    public class Skill extends FeReaderFile {
         public int getSword(int line){ return getInt(line, 0); }
         public int getGun(int line){ return getInt(line, 1); }
         public int getAxe(int line){ return getInt(line, 2); }
@@ -404,7 +404,7 @@ class FeAssetsSaveUnit {
     }
 
     //个人特技列表
-    class Special extends FeReaderFile {
+    public class Special extends FeReaderFile {
         public int getSpe1(int line){ return getInt(line, 0); }
         public int getSpe2(int line){ return getInt(line, 1); }
         public int getSpe3(int line){ return getInt(line, 2); }
@@ -422,7 +422,7 @@ class FeAssetsSaveUnit {
     }
 
     //人物物品列表
-    class Item extends FeReaderFile {
+    public class Item extends FeReaderFile {
         public int getIt1(int line){ return getInt(line, 0); }
         public int getIt2(int line){ return getInt(line, 1); }
         public int getIt3(int line){ return getInt(line, 2); }
@@ -446,7 +446,7 @@ class FeAssetsSaveUnit {
     }
 
     //人物战绩
-    class Record extends FeReaderFile {
+    public class Record extends FeReaderFile {
         public int getRecord(int line){ return getInt(line, 0); }
         public int getWin(int line){ return getInt(line, 1); }
         public int getDie(int line){ return getInt(line, 2); }

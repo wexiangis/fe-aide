@@ -21,34 +21,43 @@ public class FeAssetsParam {
     }
     // items.txt
     public int getItemsType(int id){
-        return items.getType(id);
+        return items.getType(id%1000);
     }
     public String getItemsName(int id){
-        return items.getName(id);
+        return items.getName(id%1000);
     }
     public String getItemsSummary(int id){
-        return items.getSummary(id);
+        return items.getSummary(id%1000);
     }
     public Bitmap getItemsPicture(int id){
-        return getItemsBitmap(items.getPicture(id));
+        return getItemsBitmap(items.getPicture(id%1000));
     }
     public int getItemsLevel(int id){
-        return items.getLevel(id);
+        return items.getLevel(id%1000);
     }
     public int getItemsRange(int id){
-        return items.getRange(id);
+        return items.getRange(id%1000);
+    }
+    public int getItemsRangeSpace(int id){
+        return items.getRangeSpace(id%1000);
     }
     public int getItemsWeight(int id){
-        return items.getWeight(id);
+        return items.getWeight(id%1000);
     }
     public int getItemsPower(int id){
-        return items.getPower(id);
+        return items.getPower(id%1000);
     }
     public int getItemsHit(int id){
-        return items.getHit(id);
+        return items.getHit(id%1000);
     }
     public int getItemsCritical(int id){
-        return items.getCritical(id);
+        return items.getCritical(id%1000);
+    }
+    public int getItemsCapacity(int id){
+        return items.getCapacity(id%1000);
+    }
+    public int getItemsBelongId(int id){
+        return items.getBelongId(id%1000);
     }
     // skill_level.txt
     public int getSkillLevelE(){
@@ -139,14 +148,10 @@ public class FeAssetsParam {
     //----- class -----
 
     //职业类型列表
-    class Types extends FeReaderFile {
+    public class Types extends FeReaderFile {
         public String getName(int line){ return getString(line, 0); }
         public String getSummary(int line){ return getString(line, 1); }
         public int getPicture(int line){ return getInt(line, 2); }
-
-        public void setName(int line, String name){ setValue(name, line, 0); }
-        public void setSummary(int line, String summary){ setValue(summary, line, 1); }
-        public void setPicture(int line, int picture){ setValue(picture, line, 2); }
 
         public Types(String folder, String name, String split){
             super(folder, name, split);
@@ -154,28 +159,20 @@ public class FeAssetsParam {
     }
 
     //物品列表
-    class Items extends FeReaderFile {
+    public class Items extends FeReaderFile {
         public int getType(int line){ return getInt(line, 0); }
         public String getName(int line){ return getString(line, 1); }
         public String getSummary(int line){ return getString(line, 2); }
         public int getPicture(int line){ return getInt(line, 3); }
         public int getLevel(int line){ return getInt(line, 4); }
         public int getRange(int line){ return getInt(line, 5); }
-        public int getWeight(int line){ return getInt(line, 6); }
-        public int getPower(int line){ return getInt(line, 7); }
-        public int getHit(int line){ return getInt(line, 8); }
-        public int getCritical(int line){ return getInt(line, 9); }
-
-        public void setType(int line, int type){ setValue(type, line, 0); }
-        public void setName(int line, String name){ setValue(name, line, 1); }
-        public void setSummary(int line, String summary){ setValue(summary, line, 2); }
-        public void setPicture(int line, int picture){ setValue(picture, line, 3); }
-        public void setLevel(int line, int level){ setValue(level, line, 4); }
-        public void setRange(int line, int range){ setValue(range, line, 5); }
-        public void setWeight(int line, int weight){ setValue(weight, line, 6); }
-        public void setPower(int line, int power){ setValue(power, line, 7); }
-        public void setHit(int line, int hit){ setValue(hit, line, 8); }
-        public void setCritical(int line, int critical){ setValue(critical, line, 9); }
+        public int getRangeSpace(int line){ return getInt(line, 6); }
+        public int getWeight(int line){ return getInt(line, 7); }
+        public int getPower(int line){ return getInt(line, 8); }
+        public int getHit(int line){ return getInt(line, 9); }
+        public int getCritical(int line){ return getInt(line, 10); }
+        public int getCapacity(int line){ return getInt(line, 11); }
+        public int getBelongId(int line){ return getInt(line, 12); }
 
         public Items(String folder, String name, String split){
             super(folder, name, split);
@@ -183,14 +180,10 @@ public class FeAssetsParam {
     }
 
     //特技列表
-    class Specials extends FeReaderFile {
+    public class Specials extends FeReaderFile {
         public String getName(int line){ return getString(line, 0); }
         public String getSummary(int line){ return getString(line, 1); }
         public int getPicture(int line){ return getInt(line, 2); }
-
-        public void setName(int line, String name){ setValue(name, line, 0); }
-        public void setSummary(int line, String summary){ setValue(summary, line, 1); }
-        public void setPicture(int line, int picture){ setValue(picture, line, 2); }
 
         public Specials(String folder, String name, String split){
             super(folder, name, split);
@@ -198,7 +191,7 @@ public class FeAssetsParam {
     }
 
     //技能等级
-    class SkillLevel extends FeReaderFile {
+    public class SkillLevel extends FeReaderFile {
         public int getE(int line){ return getInt(line, 0); }
         public int getD(int line){ return getInt(line, 1); }
         public int getC(int line){ return getInt(line, 2); }
@@ -213,7 +206,7 @@ public class FeAssetsParam {
     }
 
     //能力上限
-    class AbilityLimit extends FeReaderFile {
+    public class AbilityLimit extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }

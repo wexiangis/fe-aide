@@ -66,6 +66,16 @@ public class FeLayoutUnit extends FeLayout {
     }
 
     /*
+        根据order找人物参数
+     */
+    public FeUnit getUnit(int order){
+        FeViewUnit viewUnit = getViewUnit(order);
+        if(viewUnit == null)
+            return null;
+        return viewUnit.unit;
+    }
+
+    /*
         人员增删
      */
     public void addUnit(int order, int y, int x, FeTypeCamp camp){

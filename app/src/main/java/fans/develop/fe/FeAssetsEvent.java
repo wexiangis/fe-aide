@@ -15,7 +15,7 @@ public class FeAssetsEvent {
 
     //----- class -----
 
-    class Event extends FeReaderFile{
+    public class Event extends FeReaderFile{
 
         public int getOrder(){ return getInt(0, 0); }
         public int getSummary(){ return getInt(0, 1); }
@@ -26,7 +26,7 @@ public class FeAssetsEvent {
         }
     }
 
-    class Target extends FeReaderFile{
+    public class Target extends FeReaderFile{
 
         public int getOrder(){ return getInt(0, 0); }
         public int getSummary(){ return getInt(0, 1); }
@@ -37,7 +37,7 @@ public class FeAssetsEvent {
         }
     }
 
-    class Trend extends FeReaderFile{
+    public class Trend extends FeReaderFile{
 
         public int getOrder(){ return getInt(0, 0); }
         public int getSummary(){ return getInt(0, 1); }

@@ -358,7 +358,7 @@ public class FeAssetsUnit {
     //----- class -----
 
     //人物列表
-    class Unit extends FeReaderFile {
+    public class Unit extends FeReaderFile {
         public int getName(int line){ return getInt(line, 0); }
         public int getHead(int line){ return getInt(line, 1); }
         public int getProfession(int line){ return getInt(line, 2); }
@@ -379,7 +379,7 @@ public class FeAssetsUnit {
     }
 
     //人物名称列表
-    class Name extends FeReaderFile {
+    public class Name extends FeReaderFile {
         public String getName(int line){ return getString(line, 0); }
         public String getSummary(int line){ return getString(line, 1); }
 
@@ -392,7 +392,7 @@ public class FeAssetsUnit {
     }
 
     //人物物品列表
-    class Item extends FeReaderFile {
+    public class Item extends FeReaderFile {
         public int getIt1(int line){ return getInt(line, 0); }
         public int getIt2(int line){ return getInt(line, 1); }
         public int getIt3(int line){ return getInt(line, 2); }
@@ -415,7 +415,7 @@ public class FeAssetsUnit {
     }
 
     //人物加成列表
-    class Addition extends FeReaderFile {
+    public class Addition extends FeReaderFile {
         public int getAbility(int line){ return getInt(line, 0); }
         public int getGrow(int line){ return getInt(line, 1); }
         public int getSkill(int line){ return getInt(line, 2); }
@@ -432,7 +432,7 @@ public class FeAssetsUnit {
     }
 
     //人物能力加成列表
-    class A_Ability extends FeReaderFile {
+    public class A_Ability extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -461,7 +461,7 @@ public class FeAssetsUnit {
     }
 
     //人物成长率加成列表
-    class A_Grow extends FeReaderFile {
+    public class A_Grow extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -490,7 +490,7 @@ public class FeAssetsUnit {
     }
 
     //人物技能加成列表
-    class A_Skill extends FeReaderFile {
+    public class A_Skill extends FeReaderFile {
         public int getSword(int line){ return getInt(line, 0); }
         public int getGun(int line){ return getInt(line, 1); }
         public int getAxe(int line){ return getInt(line, 2); }
@@ -515,7 +515,7 @@ public class FeAssetsUnit {
     }
 
     //人物特技列表
-    class A_Special extends FeReaderFile {
+    public class A_Special extends FeReaderFile {
         public int getSpe1(int line){ return getInt(line, 0); }
         public int getSpe2(int line){ return getInt(line, 1); }
         public int getSpe3(int line){ return getInt(line, 2); }
@@ -532,7 +532,7 @@ public class FeAssetsUnit {
     }
 
     //职业列表
-    class Profession extends FeReaderFile {
+    public class Profession extends FeReaderFile {
         public int getName(int line){ return getInt(line, 0); }
         public int getAnim(int line){ return getInt(line, 1); }
         public int getFight(int line){ return getInt(line, 2); }
@@ -563,7 +563,7 @@ public class FeAssetsUnit {
     }
 
     //职业名称列表
-    class P_Name extends FeReaderFile {
+    public class P_Name extends FeReaderFile {
         public String getName(int line){ return getString(line, 0); }
         public String getSummary(int line){ return getString(line, 1); }
 
@@ -576,7 +576,7 @@ public class FeAssetsUnit {
     }
 
     //职业能力列表
-    class P_Ability extends FeReaderFile {
+    public class P_Ability extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -605,7 +605,7 @@ public class FeAssetsUnit {
     }
 
     //职业升级加点列表
-    class P_Upgrade extends FeReaderFile {
+    public class P_Upgrade extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -634,7 +634,7 @@ public class FeAssetsUnit {
     }
 
     //职业成长率列表
-    class P_Grow extends FeReaderFile {
+    public class P_Grow extends FeReaderFile {
         public int getHp(int line){ return getInt(line, 0); }
         public int getStr(int line){ return getInt(line, 1); }
         public int getMag(int line){ return getInt(line, 2); }
@@ -663,7 +663,7 @@ public class FeAssetsUnit {
     }
 
     //职业技能列表
-    class P_Skill extends FeReaderFile {
+    public class P_Skill extends FeReaderFile {
         public int getSword(int line){ return getInt(line, 0); }
         public int getGun(int line){ return getInt(line, 1); }
         public int getAxe(int line){ return getInt(line, 2); }
@@ -688,7 +688,7 @@ public class FeAssetsUnit {
     }
 
     //职业特技列表
-    class P_Special extends FeReaderFile {
+    public class P_Special extends FeReaderFile {
         public int getSpe1(int line){ return getInt(line, 0); }
         public int getSpe2(int line){ return getInt(line, 1); }
         public int getSpe3(int line){ return getInt(line, 2); }

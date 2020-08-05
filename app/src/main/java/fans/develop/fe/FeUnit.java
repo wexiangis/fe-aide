@@ -10,7 +10,8 @@ public class FeUnit{
     private FeAssets assets;
     private FeAssetsUnit assetsUnit;
     private FeAssetsSX assetsSX;
-    private FeAssetsSaveCache.CampUnit campUnit;
+    
+    public FeAssetsSaveCache.CampUnit campUnit;
 
     public FeUnit(FeAssets assets, FeAssetsSX sX, int order){
         this.assets = assets;
@@ -28,6 +29,9 @@ public class FeUnit{
     }
     public int id(){
         return assetsSX.saveCache.unit.getId(campUnit.order());
+    }
+    public int professionType(){
+        return assetsUnit.getProfessionType(id());
     }
     //失能/使能/保存
     public void on(){
@@ -72,183 +76,237 @@ public class FeUnit{
     public Bitmap getProfessionAnim(){
         return assetsUnit.getProfessionAnim(id());
     }
+    // 状态
+    public void standby(Boolean b){
+        campUnit.setStandby(b ? 1 : 0);
+    }
+    public Boolean standby(){
+        return campUnit.getStandby() > 0 ? true : false;
+    }
+    public void state(int s){
+        campUnit.setState(s);
+    }
+    public int state(){
+        return campUnit.getState();
+    }
+    public void levelUp(){
+        campUnit.setLevel(campUnit.getLevel() + 1);
+    }
+    public int level(){
+        return campUnit.getLevel();
+    }
+    public void exp(int exp){
+        campUnit.setExp(exp);
+    }
+    public int exp(){
+        return campUnit.getExp();
+    }
     // ability
-    public int[] getAbility(){
+    public int[] ability(){
         return campUnit.getLineInt(1);
     }
-    public int getAbilityHp(){
+    public int hp(){
         return campUnit.getHp();
     }
-    public int getAbilityStr(){
+    public int str(){
         return campUnit.getStr();
     }
-    public int getAbilityMag(){
+    public int mag(){
         return campUnit.getMag();
     }
-    public int getAbilitySkill(){
+    public int skill(){
         return campUnit.getSkill();
     }
-    public int getAbilitySpe(){
+    public int spe(){
         return campUnit.getSpe();
     }
-    public int getAbilityLuk(){
+    public int luk(){
         return campUnit.getLuk();
     }
-    public int getAbilityDef(){
+    public int def(){
         return campUnit.getDef();
     }
-    public int getAbilityMde(){
+    public int mde(){
         return campUnit.getMde();
     }
-    public int getAbilityWeig(){
+    public int weig(){
         return campUnit.getWeig();
     }
-    public int getAbilityMov(){
+    public int mov(){
         return campUnit.getMov();
     }
+    // add
+    public int[] add(){
+        return campUnit.getLineInt(2);
+    }
+    public int addHp(){
+        return campUnit.getAddHp();
+    }
+    public int addStr(){
+        return campUnit.getAddStr();
+    }
+    public int addMag(){
+        return campUnit.getAddMag();
+    }
+    public int addSkill(){
+        return campUnit.getAddSkill();
+    }
+    public int addSpe(){
+        return campUnit.getAddSpe();
+    }
+    public int addLuk(){
+        return campUnit.getAddLuk();
+    }
+    public int addDef(){
+        return campUnit.getAddDef();
+    }
+    public int addMde(){
+        return campUnit.getAddMde();
+    }
+    public int addWeig(){
+        return campUnit.getAddWeig();
+    }
+    public int addMov(){
+        return campUnit.getAddMov();
+    }
+    // skillLevel
+    public int[] skillLevel(){
+        return campUnit.getLineInt(3);
+    }
+    public int sward(){
+        return campUnit.getSward();
+    }
+    public int gun(){
+        return campUnit.getGun();
+    }
+    public int axe(){
+        return campUnit.getAxe();
+    }
+    public int arrow(){
+        return campUnit.getArrow();
+    }
+    public int phy(){
+        return campUnit.getPhy();
+    }
+    public int light(){
+        return campUnit.getLight();
+    }
+    public int dark(){
+        return campUnit.getDark();
+    }
+    public int stick(){
+        return campUnit.getStick();
+    }
     // upgrade
-    public int[] getProfessionUpgrade(){
+    public int[] upgrade(){
         return assetsUnit.getProfessionUpgrade(id());
     }
-    public int getUpgradeHp(){
+    public int upgradeHp(){
         return assetsUnit.getProfessionUpgradeHp(id());
     }
-    public int getUpgradeStr(){
+    public int upgradeStr(){
         return assetsUnit.getProfessionUpgradeStr(id());
     }
-    public int getUpgradeMag(){
+    public int upgradeMag(){
         return assetsUnit.getProfessionUpgradeMag(id());
     }
-    public int getUpgradeSkill(){
+    public int upgradeSkill(){
         return assetsUnit.getProfessionUpgradeSkill(id());
     }
-    public int getUpgradeSpe(){
+    public int upgradeSpe(){
         return assetsUnit.getProfessionUpgradeSpe(id());
     }
-    public int getUpgradeLuk(){
+    public int upgradeLuk(){
         return assetsUnit.getProfessionUpgradeLuk(id());
     }
-    public int getUpgradeDef(){
+    public int upgradeDef(){
         return assetsUnit.getProfessionUpgradeDef(id());
     }
-    public int getUpgradeMde(){
+    public int upgradeMde(){
         return assetsUnit.getProfessionUpgradeMde(id());
     }
-    public int getUpgradeWeig(){
+    public int upgradeWeig(){
         return assetsUnit.getProfessionUpgradeWeig(id());
     }
-    public int getUpgradeMov(){
+    public int upgradeMov(){
         return assetsUnit.getProfessionUpgradeMov(id());
     }
     // grow
-    public int[] getGrow(){
+    public int[] grow(){
         return assetsUnit.getProfessionGrow(id());
     }
-    public int getGrowHp(){
+    public int growHp(){
         return assetsUnit.getProfessionGrowHp(id());
     }
-    public int getGrowStr(){
+    public int growStr(){
         return assetsUnit.getProfessionGrowStr(id());
     }
-    public int getGrowMag(){
+    public int growMag(){
         return assetsUnit.getProfessionGrowMag(id());
     }
-    public int getGrowSkill(){
+    public int growSkill(){
         return assetsUnit.getProfessionGrowSkill(id());
     }
-    public int getGrowSpe(){
+    public int growSpe(){
         return assetsUnit.getProfessionGrowSpe(id());
     }
-    public int getGrowLuk(){
+    public int growLuk(){
         return assetsUnit.getProfessionGrowLuk(id());
     }
-    public int getGrowDef(){
+    public int growDef(){
         return assetsUnit.getProfessionGrowDef(id());
     }
-    public int getGrowMde(){
+    public int growMde(){
         return assetsUnit.getProfessionGrowMde(id());
     }
-    public int getGrowWeig(){
+    public int growWeig(){
         return assetsUnit.getProfessionGrowWeig(id());
     }
-    public int getGrowMov(){
+    public int growMov(){
         return assetsUnit.getProfessionGrowMov(id());
     }
-    // add
-    public int[] getAddition(){
-        return campUnit.getLineInt(2);
-    }
-    public int getAdditionHp(){
-        return campUnit.getAddHp();
-    }
-    public int getAdditionStr(){
-        return campUnit.getAddStr();
-    }
-    public int getAdditionMag(){
-        return campUnit.getAddMag();
-    }
-    public int getAdditionSkill(){
-        return campUnit.getAddSkill();
-    }
-    public int getAdditionSpe(){
-        return campUnit.getAddSpe();
-    }
-    public int getAdditionLuk(){
-        return campUnit.getAddLuk();
-    }
-    public int getAdditionDef(){
-        return campUnit.getAddDef();
-    }
-    public int getAdditionMde(){
-        return campUnit.getAddMde();
-    }
-    public int getAdditionWeig(){
-        return campUnit.getAddWeig();
-    }
-    public int getAdditionMov(){
-        return campUnit.getAddMov();
-    }
     // special
-    public int[] getSpecial(){
+    public int[] special(){
         return campUnit.getLineInt(5);
     }
-    public int getSpecial1(){
+    public int special1(){
         return campUnit.getSpe1();
     }
-    public int getSpecial2(){
+    public int special2(){
         return campUnit.getSpe2();
     }
-    public int getSpecial3(){
+    public int special3(){
         return campUnit.getSpe3();
     }
-    public int getSpecial4(){
+    public int special4(){
         return campUnit.getSpe4();
     }
     public int getLevel(){
         return campUnit.getLevel();
     }
-    public int[] getItem(){
+    // items
+    public int[] item(){
         return campUnit.getLineInt(4);
     }
-    public int getItem1(){
+    public int item1(){
         return campUnit.getIt1();
     }
-    public int getItem2(){
+    public int item2(){
         return campUnit.getIt2();
     }
-    public int getItem3(){
+    public int item3(){
         return campUnit.getIt3();
     }
-    public int getItem4(){
+    public int item4(){
         return campUnit.getIt4();
     }
-    public int getItem5(){
+    public int item5(){
         return campUnit.getIt5();
     }
-    public int getItem6(){
+    public int item6(){
         return campUnit.getIt6();
     }
-    public int getEquip(){
+    public int equip(){
         return campUnit.getEquip();
     }
 }

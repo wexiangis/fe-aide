@@ -33,7 +33,7 @@ public class FeAssetsSection {
 
     //----- class -----
 
-    class Unit extends FeReaderFile{
+    public class Unit extends FeReaderFile{
 
         public int getTrigger(int line){ return getInt(line, 0); }
         public int getTurn(int line){ return getInt(line, 1); }
@@ -51,7 +51,7 @@ public class FeAssetsSection {
         }
     }
 
-    class Site extends FeReaderFile{
+    public class Site extends FeReaderFile{
 
         public int getTrigger(int line){ return getInt(line, 0); }
         public int getTurn(int line){ return getInt(line, 1); }
@@ -67,7 +67,7 @@ public class FeAssetsSection {
         }
     }
 
-    class Target extends FeReaderFile{
+    public class Target extends FeReaderFile{
 
         public int getCondition(int line){ return getInt(line, 0); }
         public int getId(int line){ return getInt(line, 1); }
@@ -83,7 +83,7 @@ public class FeAssetsSection {
         }
     }
 
-    class Talk extends FeReaderFile{
+    public class Talk extends FeReaderFile{
         
         public int total(){ return line(); }
         public Talk(String folder, String name, String split){
@@ -91,7 +91,7 @@ public class FeAssetsSection {
         }
     }
 
-    class Bgm extends FeReaderFile{
+    public class Bgm extends FeReaderFile{
         
         public int total(){ return line(); }
         public Bgm(String folder, String name, String split){

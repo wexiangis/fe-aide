@@ -3,8 +3,9 @@ package fans.develop.fe;
 import android.util.Log;
 
 /*
-    移动范围计算
-    调用构造函数即可得到 rangeMov(移动范围)、rangeHit(攻击范围)、rangeSpecial(特效范围)、
+    根据人物移动力、职业类型和地图信息计算范围
+    调用构造函数即可得到 rangeMov(移动范围)、rangeHit(攻击范围)、rangeSpecial(特效范围)
+    进一步调用 rangeMov.getGridInfo() 可得到移动格子的位置数组
  */
 public class FeMark {
 
@@ -17,20 +18,18 @@ public class FeMark {
 
     /*
         xGrid, yGrid: 地图上的坐标
-        typeProfession: 职业类型
-        hit: 攻击距离
-        hitSpace: 近身空当(比如弓箭空档为1)
-        special: 特效(杖、回复等)范围
      */
-    public FeMark(int xGrid, int yGrid, FeInfoMap mapInfo, int mov, int typeProfession, int hit, int hitSpace, int special){
+    public FeMark(int xGrid, int yGrid, FeInfoMap mapInfo, FeUnit unit){
+        int mov = unit.mov() + unit.addMov();
+        FeInfoItems itemsInfo = new FeInfoItems(unit.item(), unit.skillLevel(), unit.state());
         //范围初始化
         rangeMov = new Range(xGrid, yGrid, mov, mapInfo.width, mapInfo.height);
         //递归获得移动范围
-        loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, mapInfo, mov + 1, typeProfession, rangeMov, 0);
+        loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, mapInfo, mov + 1, unit.professionType(), rangeMov, 0);
         //获得攻击范围
-        rangeHit = getRangeHit(rangeMov, hit, hitSpace);
+        rangeHit = getRangeHit(rangeMov, itemsInfo.hit, itemsInfo.hitSpace);
         //获得特效范围
-        rangeSpecial = getRangeSpecial(rangeMov, special);
+        rangeSpecial = getRangeSpecial(rangeMov, itemsInfo.special);
         rangeMov.cut();
         rangeHit.cut();
         rangeSpecial.cut();
@@ -160,13 +159,13 @@ public class FeMark {
      */
     public class Range{
 
-        //宽高
+        //矩阵宽高格子数
         public int width, height;
-        //矩阵左上角坐标(相对于地图)
+        //矩阵左上角在地图中的坐标(相对于地图)
         public int xGridStart, yGridStart;
         //矩阵中心坐标(相对于矩阵自身)
         public int xGridCenter, yGridCenter;
-        //输出范围
+        //矩阵,大于0的点为标注点
         public int[][] array;
         //地图范围
         public int mapWidth, mapHeight;

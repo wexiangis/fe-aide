@@ -147,7 +147,7 @@ public class FeAssetsSX {
 
     //----- class -----
 
-    class Info extends FeReaderFile{
+    public class Info extends FeReaderFile{
 
         public int getSection(){ return getInt(0, 0); }
         public int getIrq(){ return getInt(0, 1); }
@@ -168,14 +168,14 @@ public class FeAssetsSX {
         }
     }
 
-    class Setting extends FeReaderFile{
+    public class Setting extends FeReaderFile{
         
         public Setting(String folder, String name, String split){
             super(folder, name, split);
         }
     }
 
-    class Site extends FeReaderFile{
+    public class Site extends FeReaderFile{
 
         public int getTrigger(int line){ return getInt(line, 0); }
         public int getTurn(int line){ return getInt(line, 1); }
