@@ -79,6 +79,7 @@ public class FeViewUnit extends FeView {
     public void xy(int x, int y){
         unit.x(x);
         unit.y(y);
+				invalidate();
     }
     public int x(){
         return unit.x();

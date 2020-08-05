@@ -67,15 +67,9 @@ public class FeLayoutMark extends FeLayout {
         显示特定人物的mark范围
      */
     public void markUnit(int order, int mov, FeTypeMark typeMark){
-        FeViewMark viewMark = getViewMark(order);
         //清掉其它,每次只mark一个人
         _removeViewAll(this);
-        if(viewMark == null)
-            addView(new FeViewMark(context, typeMark, order, mov, sectionCallback));
-        else{
-            viewMark.setMov(mov);
-            viewMark.setTypeMark(typeMark);
-        }
+        addView(new FeViewMark(context, typeMark, order, mov, sectionCallback));
     }
 
     /*
