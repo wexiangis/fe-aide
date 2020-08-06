@@ -15,7 +15,7 @@ public class FeViewMarkEnemy extends FeView {
     //画笔
     private Paint paint;
     //颜色模式
-    private FeTypeMark typeMark;
+    private int typeMark;
     //标记unit的id
     private int order = 0, id = 0;
     //人物的移动、攻击、特效范围
@@ -30,7 +30,7 @@ public class FeViewMarkEnemy extends FeView {
         order: 地图人物唯一order
      */
     public FeViewMarkEnemy(Context context,
-            FeTypeMark typeMark,
+            int typeMark,
             int order,
             FeSectionCallback sectionCallback)
     {
@@ -45,11 +45,11 @@ public class FeViewMarkEnemy extends FeView {
         sectionCallback.addHeartUnit(heartUnit);
     }
 
-    public void setTypeMark(FeTypeMark typeMark){
+    public void setTypeMark(int typeMark){
         this.typeMark = typeMark;
     }
 
-    public FeTypeMark getTypeMark(){
+    public int getTypeMark(){
         return typeMark;
     }
 

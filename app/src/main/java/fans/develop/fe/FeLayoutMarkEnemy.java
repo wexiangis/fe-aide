@@ -46,7 +46,7 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         显示特定人物的mark范围
      */
-    public void markUnit(int order, FeTypeMark typeMark){
+    public void markUnit(int order, int typeMark){
         FeViewMarkEnemy viewMarkEnemy = getViewMarkEnemy(order);
         if(viewMarkEnemy == null)
             addView(new FeViewMarkEnemy(context, typeMark, order, sectionCallback));

@@ -29,11 +29,6 @@ public class FeSectionMap {
     //用于累积各个敌军的攻击、移动、特效范围
     public int[][][] markEnemyMap;
 
-    //当前选中人物范围
-    //数组: [mapHeigth][mapEidth], 值为order, -1表示空
-    //用于画攻击范围时避免覆盖移动范围
-    public int[][] markMap;
-
     //地图中人物站位情况
     //数组: [mapHeigth][mapEidth][2]: [0]/填写order, [1]/填写阵营camp, -1表示空
     //用于绘制人物移动范围时,考虑其它人物站位影响
@@ -79,11 +74,7 @@ public class FeSectionMap {
             for(int y = 0; y < markEnemyMap.length; y++)
                 for(int c = 0; c < markEnemyMap[0][0].length; c++)
                     markEnemyMap[y][x][c] = -1;
-        //数组初始化
-        markMap = new int[mapInfo.height][mapInfo.width];
-        for(int x = 0; x < markMap[0].length; x++)
-            for(int y = 0; y < markMap.length; y++)
-                markMap[y][x] = -1;
+
         //数组初始化
         unitMap = new int[mapInfo.height][mapInfo.width][2];
         for(int x = 0; x < unitMap[0].length; x++)
