@@ -24,8 +24,8 @@ public class FeUnit{
     public int order(){
         return campUnit.order();
     }
-    public FeTypeCamp camp(){
-        return FeTypeCamp.values()[campUnit.camp()];
+    public int camp(){
+        return campUnit.camp();
     }
     public int id(){
         return assetsSX.saveCache.unit.getId(campUnit.order());

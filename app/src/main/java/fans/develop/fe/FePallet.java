@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 public class FePallet {
 
     //camp: 0/原色 1/红色 2/绿色 3/灰色 4/橙色 5/紫色 6/不蓝不绿
-    public static Bitmap replace(Bitmap oldBitmap, FeTypeCamp camp){
+    public static Bitmap replace(Bitmap oldBitmap, int camp){
         if(camp == FeTypeCamp.BLUE)   //使用原色
             return oldBitmap;
         //转换格式

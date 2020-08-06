@@ -5,8 +5,6 @@ package fans.develop.fe;
  */
 public class FeSectionUnit {
 
-    // ----------- 选中信息 -----------
-
     //当前选中的unit
     public FeViewUnit viewUnit = null;
 

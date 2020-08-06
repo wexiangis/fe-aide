@@ -78,7 +78,7 @@ public class FeLayoutUnit extends FeLayout {
     /*
         人员增删
      */
-    public void addUnit(int order, int y, int x, FeTypeCamp camp){
+    public void addUnit(int order, int y, int x){
         addView(new FeViewUnit(context, order, sectionCallback));
     }
     public void removeUnit(int order){
@@ -112,7 +112,7 @@ public class FeLayoutUnit extends FeLayout {
     /*
         人员阵营
      */
-    public void setCamp(int order, FeTypeCamp camp){
+    public void setCamp(int order, int camp){
         ;
     }
 

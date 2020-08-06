@@ -46,7 +46,7 @@ public class FeViewUnit extends FeView {
     {
         super(context);
         this.sectionCallback = sectionCallback;
-        this.unit = new FeUnit(sectionCallback.getAssets(), sectionCallback.getAssetsSX(), order);
+        unit = new FeUnit(sectionCallback.getAssets(), sectionCallback.getAssetsSX(), order);
         //画笔初始化
         paint = new Paint();
         paint.setColor(Color.GREEN);
@@ -68,6 +68,10 @@ public class FeViewUnit extends FeView {
         sectionCallback.addHeartUnit(heartUnit);
         //地图中的位置信息管理结构
         site = new FeInfoSite();
+        //填写在地图中的位置
+        int[][][] unitMap = sectionCallback.getSectionMap().unitMap;
+        unitMap[unit.y()][unit.x()][0] = unit.order();
+        unitMap[unit.y()][unit.x()][1] = unit.camp();
     }
 
     //人物order
@@ -77,9 +81,21 @@ public class FeViewUnit extends FeView {
 
     //方格位置
     public void xy(int x, int y){
+        //检查该位置有人?
+        int[][][] unitMap = sectionCallback.getSectionMap().unitMap;
+        if(unitMap[y][x][0] >= 0)
+            return;
+        //移除旧位置
+        unitMap[unit.y()][unit.x()][0] = -1;
+        unitMap[unit.y()][unit.x()][1] = -1;
+        //
         unit.x(x);
         unit.y(y);
-				invalidate();
+        //设置新位置
+        unitMap[unit.y()][unit.x()][0] = unit.order();
+        unitMap[unit.y()][unit.x()][1] = unit.camp();
+        //更新动画
+        invalidate();
     }
     public int x(){
         return unit.x();
@@ -89,7 +105,7 @@ public class FeViewUnit extends FeView {
     }
 
     //阵营
-    public FeTypeCamp camp(){
+    public int camp(){
         return unit.camp();
     }
 

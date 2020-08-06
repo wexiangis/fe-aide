@@ -24,11 +24,20 @@ public class FeSectionMap {
 
     //----- mark记录 -----
 
-    //mark点覆盖情况,用于避免重复标记同一格,标记值为上面order号
-    //敌军范围: [mapHeigth][mapEidth][3]: [0]/移动范围,[1]/攻击范围,[2]/特效范围,值为order
+    //敌军mark点覆盖情况,用于避免重复标记同一格
+    //数组: [mapHeigth][mapEidth][3]: [0]/移动范围, [1]/攻击范围, [2]/特效范围, 值为order, -1表示空
+    //用于累积各个敌军的攻击、移动、特效范围
     public int[][][] markEnemyMap;
-    //选中人物范围: 值为order
+
+    //当前选中人物范围
+    //数组: [mapHeigth][mapEidth], 值为order, -1表示空
+    //用于画攻击范围时避免覆盖移动范围
     public int[][] markMap;
+
+    //地图中人物站位情况
+    //数组: [mapHeigth][mapEidth][2]: [0]/填写order, [1]/填写阵营camp, -1表示空
+    //用于绘制人物移动范围时,考虑其它人物站位影响
+    public int[][][] unitMap;
 
     //----- 地图基本信息 -----
 
@@ -64,16 +73,23 @@ public class FeSectionMap {
         bitmap = Bitmap.createBitmap(mapInfo.bitmap, 0, 0,
                 (int)mapInfo.bitmap.getWidth(), (int)mapInfo.bitmap.getHeight(), matrix, true);
 
-        //mark点覆盖情况,用于避免重复标记同一格,标记值为上面order号
+        //数组初始化
         markEnemyMap = new int[mapInfo.height][mapInfo.width][3];
         for(int x = 0; x < markEnemyMap[0].length; x++)
             for(int y = 0; y < markEnemyMap.length; y++)
                 for(int c = 0; c < markEnemyMap[0][0].length; c++)
                     markEnemyMap[y][x][c] = -1;
+        //数组初始化
         markMap = new int[mapInfo.height][mapInfo.width];
         for(int x = 0; x < markMap[0].length; x++)
             for(int y = 0; y < markMap.length; y++)
                 markMap[y][x] = -1;
+        //数组初始化
+        unitMap = new int[mapInfo.height][mapInfo.width][2];
+        for(int x = 0; x < unitMap[0].length; x++)
+            for(int y = 0; y < unitMap.length; y++)
+                for(int c = 0; c < unitMap[0][0].length; c++)
+                    unitMap[y][x][c] = -1;
     }
 
     //地图适配屏幕

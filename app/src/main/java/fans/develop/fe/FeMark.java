@@ -16,16 +16,46 @@ public class FeMark {
     //特效范围
     public Range rangeSpecial;
 
+    private FeInfoMap mapInfo;
+    private int[][][] unitMap;
+    private FeUnit unit;
+
+    /*
+        地形 + 人物站位 影响移动范围计算
+        返回移动力削减量
+     */
+    private int movReduce(int xGrid, int yGrid, int typeProfession){
+        //超出地图范围
+        if(xGrid < 0 || yGrid < 0 || xGrid >= mapInfo.width || yGrid >= mapInfo.height)
+            return 9999;
+        //该点有站人?
+        if(unitMap[yGrid][xGrid][1] >= 0)
+        {
+            //非友方阵营?
+            if(!FeTypeCamp.isFriendCamp(unit.camp(), unitMap[yGrid][xGrid][1]))
+                return 9999;
+        }
+        //地形影响
+        return mapInfo.movReduce(xGrid, yGrid, typeProfession);
+    }
+
     /*
         xGrid, yGrid: 地图上的坐标
+        mapInfo: 地图地形信息
+        unitMap: 人物在地图的站位信息(参见FeSectionMap.unitMap)
+        unit: 人物参数
      */
-    public FeMark(int xGrid, int yGrid, FeInfoMap mapInfo, FeUnit unit){
+    public FeMark(int xGrid, int yGrid, FeInfoMap mapInfo, int[][][] unitMap, FeUnit unit){
+        this.mapInfo = mapInfo;
+        this.unitMap = unitMap;
+        this.unit = unit;
+        //
         int mov = unit.mov() + unit.addMov();
         FeInfoItems itemsInfo = new FeInfoItems(unit.item(), unit.skillLevel(), unit.state());
         //范围初始化
         rangeMov = new Range(xGrid, yGrid, mov, mapInfo.width, mapInfo.height);
         //递归获得移动范围
-        loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, mapInfo, mov + 1, unit.professionType(), rangeMov, 0);
+        loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, mov + 1, unit.professionType(), rangeMov, 0);
         //获得攻击范围
         rangeHit = getRangeHit(rangeMov, itemsInfo.hit, itemsInfo.hitSpace);
         //获得特效范围
@@ -39,14 +69,14 @@ public class FeMark {
         往数组 range 的坐标 (xGrid, yGrid) 中投放一个递归点, 每次往上下左右递归检查移动范围
         dir: 用于避免递归到上一个点, 定义 0/投放点 1/上 2/下 3/左 4/右
      */
-    private void loopRangeMov(int xGrid, int yGrid, FeInfoMap mapInfo, int mov, int typeProfession, Range range, int dir){
+    private void loopRangeMov(int xGrid, int yGrid, int mov, int typeProfession, Range range, int dir){
         //移动力剩余不足?是则结束递归
         if(mov < 0 || xGrid < 0 || yGrid < 0 || xGrid >= range.width || yGrid >= range.height)
             return;
         //投放点不计算地形影响
         if(dir != 0) {
             //减去地形对移动力的影响
-            mov -= mapInfo.movReduce(xGrid + range.xGridStart, yGrid + range.yGridStart, typeProfession);
+            mov -= movReduce(xGrid + range.xGridStart, yGrid + range.yGridStart, typeProfession);
             //没有剩余移动力了
             if (mov < 0)
                 return;
@@ -58,16 +88,16 @@ public class FeMark {
         range.array[yGrid][xGrid] = mov;
         //上
         if(dir != 2)
-            loopRangeMov(xGrid, yGrid - 1, mapInfo, mov, typeProfession, range, 1);
+            loopRangeMov(xGrid, yGrid - 1, mov, typeProfession, range, 1);
         //下
         if(dir != 1)
-            loopRangeMov(xGrid, yGrid + 1, mapInfo, mov, typeProfession, range, 2);
+            loopRangeMov(xGrid, yGrid + 1, mov, typeProfession, range, 2);
         //左
         if(dir != 4)
-            loopRangeMov(xGrid - 1, yGrid, mapInfo, mov, typeProfession, range, 3);
+            loopRangeMov(xGrid - 1, yGrid, mov, typeProfession, range, 3);
         //右
         if(dir != 3)
-            loopRangeMov(xGrid + 1, yGrid, mapInfo, mov, typeProfession, range, 4);
+            loopRangeMov(xGrid + 1, yGrid, mov, typeProfession, range, 4);
     }
 
     /*

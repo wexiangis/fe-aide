@@ -103,6 +103,7 @@ public class FeViewMarkEnemy extends FeView {
             FeMark mark = new FeMark(
                 siteUnit.xGrid, siteUnit.yGrid,
                 sectionCallback.getSectionMap().mapInfo,
+                sectionCallback.getSectionMap().unitMap,
                 sectionCallback.getLayoutUnit().getUnit(order));
             //获取位置数组
             siteMov = mark.rangeMov.getGridInfo(sectionCallback.getSectionMap());

@@ -125,6 +125,7 @@ public class FeViewMark extends FeView {
             mark = new FeMark(
                 siteUnit.xGrid, siteUnit.yGrid,
                 sectionCallback.getSectionMap().mapInfo,
+                sectionCallback.getSectionMap().unitMap,
                 sectionCallback.getLayoutUnit().getUnit(order));
         }
 
