@@ -133,6 +133,11 @@ public class FeViewMark extends FeView {
         siteHit = mark.rangeHit.getGridInfo(sectionCallback.getSectionMap());
         siteSpecial = mark.rangeSpecial.getGridInfo(sectionCallback.getSectionMap());
 
+        if(siteHit == null)
+            siteHit = siteMov;
+        if(siteSpecial == null)
+            siteSpecial = siteMov;
+
         //按颜色取渲染
         paintB.setShader(sectionCallback.getSectionShader().getShaderB());
         paintR.setShader(sectionCallback.getSectionShader().getShaderR());

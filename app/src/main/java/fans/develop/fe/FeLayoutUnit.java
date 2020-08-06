@@ -204,7 +204,7 @@ public class FeLayoutUnit extends FeLayout {
         //显示移动范围
         FeLayoutMark layoutMark = sectionCallback.getLayoutMark();
         if(layoutMark != null)
-            layoutMark.markUnit(hitViewUnit.order(), hitViewUnit.unit.getAbilityMov(), FeTypeMark.RED);
+            layoutMark.markUnit(hitViewUnit.order(), hitViewUnit.unit.mov(), FeTypeMark.RED);
     }
 
     /*

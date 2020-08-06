@@ -33,51 +33,56 @@ public class FeInfoItems {
         usage = new USAGE[items.length];
         //遍历物品列表
         for(int i = 0; i < items.length; i++){
+            //暂且认为不可用
+            usage[i] = USAGE.USELESS;
+            //没有物品
+            if(items[i] == 0)
+                continue;
             //物品id
             int id = items[i]%1000;
             //已使用次数
             int use = items[i]/1000;
+            //超过使用次数?
+            int capacity = param.getItemsCapacity(id);
+            if(use >= capacity){
+                usage[i] = USAGE.BROKEN;
+                continue;
+            }
+            //物品类型
+            int type = param.getItemsType(id);
             //这是普通物品?
-            if(param.getItemsType(id) >= skillLevel.length)
+            if(type >= skillLevel.length)
                 usage[i] = USAGE.USE;
             //这是武器
             else{
-                //暂且认为不可用
-                usage[i] = USAGE.USELESS;
-                //当前技能等级达标?
-                if(skillLevel[i] >= param.getItemsLevel(id)){
-                    //还有使用剩余?
-                    if(use < param.getItemsCapacity(id)){
-                        
-                        //状态检查
-                        ;
+                //当前技能等级达标? (等于0表示不可用)
+                if(skillLevel[type] > 0 && skillLevel[type] >= param.getItemsLevel(id)){
+                    //状态检查
+                    ;
 
-                        //可以使用
-                        usage[i] = USAGE.USE;
+                    //可以使用
+                    usage[i] = USAGE.USE;
 
-                        //计算攻击范围
-                        if(usage[i] == USAGE.USE){
-                            int range = param.getItemsRange(id);
-                            int rangeSpace = param.getItemsRangeSpace(id);
-                            //这是杖?
-                            if(param.getItemsType(id) == 7){
-                                //使用更大的范围
-                                if(this.special < range)
-                                    this.special = range;
-                            }
-                            //这是武器
-                            else{
-                                //使用更大的范围
-                                if(this.hit < range)
-                                    this.hit = range;
-                                //使用更小的空当
-                                if(this.hitSpace > rangeSpace)
-                                    this.hitSpace = rangeSpace;
-                            }
+                    //计算攻击范围
+                    if(usage[i] == USAGE.USE){
+                        int range = param.getItemsRange(id);
+                        int rangeSpace = param.getItemsRangeSpace(id);
+                        //这是杖?
+                        if(param.getItemsType(id) == 7){
+                            //使用更大的范围
+                            if(this.special < range)
+                                this.special = range;
+                        }
+                        //这是武器
+                        else{
+                            //使用更大的范围
+                            if(this.hit < range)
+                                this.hit = range;
+                            //使用更小的空当
+                            if(this.hitSpace > rangeSpace)
+                                this.hitSpace = rangeSpace;
                         }
                     }
-                    else
-                        usage[i] = USAGE.BROKEN;
                 }
             }
         }
