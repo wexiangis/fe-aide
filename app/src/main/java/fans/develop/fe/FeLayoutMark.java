@@ -1,9 +1,6 @@
 package fans.develop.fe;
 
 import android.content.Context;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.view.View;
 
 /*
     地板标记图层,显示各个人物的行动范围
@@ -102,24 +99,27 @@ public class FeLayoutMark extends FeLayout {
         //是否调用过 checkHit ?
         if(!flag.checkFlag(FeFlagHit.HIT_MARK) || hitSite == null)
             return;
-        //清mark
-        _removeViewAll(this);
         //己方人物?
         if (sectionUnit.viewUnit.camp() == FeTypeCamp.BLUE) {
-            //移动人物
-            sectionUnit.viewUnit.xy(hitSite.xGrid, hitSite.yGrid);
-            //削减移动力
-            int mov = hitViewMark.getMov();
-            mov -= Math.abs(certenXY[0] - hitSite.xGrid) + Math.abs(certenXY[1] - hitSite.yGrid);
-            //还有移动力剩余?
-            if(mov > 0)
-                //更新移动范围
-                markUnit(sectionUnit.viewUnit.order(), mov, FeTypeMark.RED);
-            else
-                //显示unitMenu
-                ;
+            //计算移动路经
+            int[][] movPath = hitViewMark.getPath(
+                new int[]{sectionUnit.viewUnit.x(), sectionUnit.viewUnit.y()},
+                new int[]{hitSite.xGrid, hitSite.yGrid});
+            if(movPath != null) {
+                //移动人物
+                sectionUnit.viewUnit.xy(hitSite.xGrid, hitSite.yGrid);
+                //减去移动力消耗
+                hitViewMark.movReduceByPath(movPath);
+                //移动力用完,显示菜单
+                if (hitViewMark.getMov() == 0) {
+                    //显示菜单
+                    ;
+                }
+            }
         }
         else{
+            //清mark
+            _removeViewAll(this);
             //非己方的移动范围,透传点击地图
             sectionCallback.onUnitSelect(false);
             FeLayoutMap layoutMap = sectionCallback.getLayoutMap();

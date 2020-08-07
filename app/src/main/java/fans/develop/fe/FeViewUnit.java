@@ -94,6 +94,8 @@ public class FeViewUnit extends FeView {
         //设置新位置
         unitMap[unit.y()][unit.x()][0] = unit.order();
         unitMap[unit.y()][unit.x()][1] = unit.camp();
+        //更新地图位置
+        sectionCallback.getSectionMap().getRectByGrid(unit.x(), unit.y(), site);
         //更新动画
         invalidate();
     }

@@ -41,21 +41,24 @@ public class FeMark {
 
     /*
         xGrid, yGrid: 地图上的坐标
+        mov: 参考移动力, -1时自动填充
         mapInfo: 地图地形信息
         unitMap: 人物在地图的站位信息(参见FeSectionMap.unitMap)
         unit: 人物参数
      */
-    public FeMark(int xGrid, int yGrid, FeInfoMap mapInfo, int[][][] unitMap, FeUnit unit){
+    public FeMark(int xGrid, int yGrid, int mov, FeInfoMap mapInfo, int[][][] unitMap, FeUnit unit){
         this.mapInfo = mapInfo;
         this.unitMap = unitMap;
         this.unit = unit;
         //
-        int mov = unit.mov() + unit.addMov();
+        int _mov = mov;
+        if(_mov < 0)
+            _mov = unit.mov() + unit.addMov();
         FeInfoItems itemsInfo = new FeInfoItems(unit.item(), unit.skillLevel(), unit.state());
         //范围初始化
-        rangeMov = new Range(xGrid, yGrid, mov, mapInfo.width, mapInfo.height);
+        rangeMov = new Range(xGrid, yGrid, _mov, mapInfo.width, mapInfo.height);
         //递归获得移动范围
-        loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, mov + 1, unit.professionType(), rangeMov, 0);
+        loopRangeMov(rangeMov.xGridCenter, rangeMov.yGridCenter, _mov + 1, unit.professionType(), rangeMov, 0);
         //获得攻击范围
         rangeHit = getRangeHit(rangeMov, itemsInfo.hit, itemsInfo.hitSpace);
         //获得特效范围
@@ -141,7 +144,7 @@ public class FeMark {
         loopMark(hit, hit, rangeStayHit, hit, 1);
         //扣掉 hitSpace 范围
         if(hitSpace > 0)
-            loopMark(hit, hit, rangeStayHit, hitSpace, 1);
+            loopMark(hit, hit, rangeStayHit, hitSpace, 0);
         //遍历 rangeMov 中所有可移动点
         for(int x = 0; x < rangeMov.width; x++){
             for(int y = 0; y < rangeMov.height; y++){

@@ -2,7 +2,6 @@ package fans.develop.fe;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 /*
@@ -17,7 +16,7 @@ public class FeViewMark extends FeView {
     //颜色模式
     private int typeMark;
     //标记unit的id
-    private int order = 0, id = 0;
+    private int order = 0;
     //标记unit的mov
     private int mov;
     //人物的移动、攻击、特效范围
@@ -44,7 +43,6 @@ public class FeViewMark extends FeView {
         super(context);
         this.typeMark = typeMark;
         this.order = order;
-        this.id = sectionCallback.getAssetsSX().saveCache.unit.getId(order);
         this.mov = mov;
         this.sectionCallback = sectionCallback;
         //画笔
@@ -82,8 +80,25 @@ public class FeViewMark extends FeView {
     }
 
     /*
+        根据路径逐个减去消耗的移动力
+        path[N][2]: N 为路径点数, [2]为x、y坐标
+     */
+    public void movReduceByPath(int[][] path){
+        FeInfoMap mapInfo = sectionCallback.getSectionMap().mapInfo;
+        int typeProfession = sectionCallback.getSectionUnit().viewUnit.unit.professionType();
+        for(int i = 1; i < path.length; i++) {
+            //按照路径逐个格子减去移动力消耗
+            mov -= mapInfo.movReduce(path[i][0], path[i][1], typeProfession);
+            if(mov <= 0)
+                break;
+        }
+        if(mov < 0)
+            mov = 0;
+    }
+
+    /*
         给出起始点和终止点,解路经
-        返回: int[N][2], 即N个(x,y)坐标
+        返回: int[N][2], 即N个(x,y)坐标, N-1 为移动力消耗
      */
     public int[][] getPath(int[] start, int[] end){
         //起始或结束坐标 不在地图范围
@@ -104,9 +119,9 @@ public class FeViewMark extends FeView {
             for(int j = 0; j < result[0].length; j++)
                 result[i][j] = current[i][j] = -1;
         //递归
-        getPathLoop(start[0], start[1], markMap, end, current, 0, result);
+        getPathLoop(start[0], start[1], 0, markMap, end, current, 0, result);
         //检查结果数组并得到实际长度
-        int resultLen = 0;
+        int resultLen = result.length;
         for(int i = 0; i < result.length; i++){
             if(result[i][0] < 0 || result[i][1] < 0){
                 resultLen = i;
@@ -121,7 +136,6 @@ public class FeViewMark extends FeView {
             retArray[i][0] = result[i][0];
             retArray[i][1] = result[i][1];
         }
-        //
         return retArray;
     }
 
@@ -196,11 +210,11 @@ public class FeViewMark extends FeView {
             }
         }
         //result现存的路径更短?
-        if(countResult <= count)
+        if(countResult < count)
             return;
         //否则拷贝当前
         int c = 0;
-        for(; c < count; c++){
+        for(; c <= count; c++){
             result[c][0] = current[c][0];
             result[c][1] = current[c][1];
         }
@@ -268,10 +282,12 @@ public class FeViewMark extends FeView {
             || this.siteUnit.xGrid != siteUnit.xGrid
             || this.siteUnit.yGrid != siteUnit.yGrid){
             //更新位置
-            this.siteUnit = siteUnit;
+            if(this.siteUnit == null)
+                this.siteUnit = new FeInfoSite();
+            sectionCallback.getSectionMap().getRectByGrid(siteUnit.xGrid, siteUnit.yGrid, this.siteUnit);
             //计算范围
             mark = new FeMark(
-                siteUnit.xGrid, siteUnit.yGrid,
+                this.siteUnit.xGrid, this.siteUnit.yGrid, mov,
                 sectionCallback.getSectionMap().mapInfo,
                 sectionCallback.getSectionMap().unitMap,
                 sectionCallback.getLayoutUnit().getUnit(order));
@@ -306,7 +322,7 @@ public class FeViewMark extends FeView {
                     //这个点刚才没有画过移动范围?
                     if(markMap[siteHit[i].yGrid][siteHit[i].xGrid] != FeTypeMark.BLUE){
                         //标记已画过
-                        markMap[siteMov[i].yGrid][siteMov[i].xGrid] = FeTypeMark.RED;
+                        markMap[siteHit[i].yGrid][siteHit[i].xGrid] = FeTypeMark.RED;
                         canvas.drawPath(siteHit[i].path, paintR);
                     }
                 }
@@ -321,7 +337,7 @@ public class FeViewMark extends FeView {
                     //这个点刚才没有画过移动范围?
                     if(markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] != FeTypeMark.BLUE){
                         //标记已画过
-                        markMap[siteMov[i].yGrid][siteMov[i].xGrid] = FeTypeMark.GREEN;
+                        markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] = FeTypeMark.GREEN;
                         canvas.drawPath(siteSpecial[i].path, paintR);
                     }
                 }

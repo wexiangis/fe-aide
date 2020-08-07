@@ -27,12 +27,15 @@ public class FeInfoItems {
         state: 人物状态(沉默、睡眠...)
      */
     public FeInfoItems(int[] items, int[] skillLevel, int state){
+        //是否填充过 this.hitSpace 标志, 用于第一次赋值
+        Boolean fitHitSpace = false;
         //数据库
         FeAssetsParam param = FeData.assets.param;
         //可用结果
         usage = new USAGE[items.length];
         //遍历物品列表
-        for(int i = 0; i < items.length; i++){
+        for(int i = 0; i < items.length; i++)
+        {
             //暂且认为不可用
             usage[i] = USAGE.USELESS;
             //没有物品
@@ -54,15 +57,14 @@ public class FeInfoItems {
             if(type >= skillLevel.length)
                 usage[i] = USAGE.USE;
             //这是武器
-            else{
-                //当前技能等级达标? (等于0表示不可用)
+            else
+            {
+                //当前技能等级达标? (skillLevel[type] = 0 是不可用的)
                 if(skillLevel[type] > 0 && skillLevel[type] >= param.getItemsLevel(id)){
                     //状态检查
                     ;
-
                     //可以使用
                     usage[i] = USAGE.USE;
-
                     //计算攻击范围
                     if(usage[i] == USAGE.USE){
                         int range = param.getItemsRange(id);
@@ -79,8 +81,14 @@ public class FeInfoItems {
                             if(this.hit < range)
                                 this.hit = range;
                             //使用更小的空当
-                            if(this.hitSpace > rangeSpace)
+                            if(fitHitSpace) {
+                                if (this.hitSpace > rangeSpace)
+                                    this.hitSpace = rangeSpace;
+                            }else{
+                                //第一次赋值
+                                fitHitSpace = true;
                                 this.hitSpace = rangeSpace;
+                            }
                         }
                     }
                 }
