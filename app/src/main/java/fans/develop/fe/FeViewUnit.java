@@ -38,6 +38,13 @@ public class FeViewUnit extends FeView {
     //参数总集
     public FeUnit unit;
 
+    //人物移动路径
+    private int[][] movPath = null;
+    //当前 movPath 所在点
+    private int movPathCount = 0;
+    //在原有站位基础上微调位置,该值达到佚格时则移动一格,该计数清零
+    private int movX = 0, movY = 0;
+
     /*
         order: 地图人物唯一order
         gridX, gridY: 所在格子
@@ -153,6 +160,119 @@ public class FeViewUnit extends FeView {
         return site;
     }
 
+    //检查坐标是否在当前人物上
+    public boolean checkHit(float x, float y){
+        if(site.rect.contains((int)x, (int)y))
+            return true;
+        return false;
+    }
+
+    /*
+        按路经移动
+        path[N][2]: N个点, [2]表示x、y坐标
+     */
+    public void move(int[][] path){
+        //准备
+        movPathCount = movX = movY = 0;
+        movPath = path;
+        //禁止全局触屏
+        sectionCallback.onTouchDisable(true);
+        sectionCallback.onUnitMoveing(true);
+        //启动人物移动心跳
+        sectionCallback.addHeartUnit(heartMov);
+        //开线程,等待人物移动到位
+        FeThread t = new FeThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //等待人物移动到位
+                    while (movPath != null)
+                        Thread.sleep(100);
+                }catch (java.lang.InterruptedException e){
+                    ;
+                }
+                //移除人物移动心跳
+                sectionCallback.removeHeartUnit(heartMov);
+                //解除全局触屏禁止
+                sectionCallback.onTouchDisable(false);
+                sectionCallback.onUnitMoveing(false);
+            }
+        });
+        //开始线程
+        t.start();
+    }
+
+    //路径移动心跳回调
+    private FeHeartUnit heartMov = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART_QUICK, new FeHeartUnit.TimeOutTask(){
+        public void run(int count){
+            //参数检查
+            if(movPath == null)
+                return;
+            //已到达预定点?准备下一个点
+            if(site.xGrid == movPath[movPathCount][0] && site.yGrid == movPath[movPathCount][1] && movX == 0 && movY == 0){
+                movPathCount += 1;
+                //已经是最后一个点?结束移动
+                if(movPathCount >= movPath.length){
+                    movPath = null;
+                    movPathCount = 0;
+                    //地图跟着移动
+                    FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
+                    if(layoutMap != null)
+                        layoutMap.moveCenter(site.xGrid, site.yGrid);
+                    return;
+                }
+            }
+            //移动速度
+            int div = site.rect.width()/5;
+            //根据目标点与当前点的位置,移动 movX, movY
+            if(site.yGrid != movPath[movPathCount][1]){
+                movX = 0;
+                //目标点在上边
+                if(site.yGrid > movPath[movPathCount][1]) {
+                    movY -= div;
+                    anim(FeTypeAnim.UP);
+                }
+                //目标点在下边
+                else{
+                    movY += div;
+                    anim(FeTypeAnim.DOWN);
+                }
+            }
+            else if(site.xGrid != movPath[movPathCount][0]){
+                movY = 0;
+                //目标点在左边
+                if(site.xGrid > movPath[movPathCount][0]){
+                    movX -= div;
+                    anim(FeTypeAnim.LEFT);
+                }
+                //目标点在右边
+                else{
+                    movX += div;
+                    anim(FeTypeAnim.RIGHT);
+                }
+            }
+            //移动量满一格的时候,跳动一格
+            if(movX > site.rect.width()){
+                unit.x(site.xGrid + 1);
+                movX = 0;
+            }
+            else if(movX < -site.rect.width()){
+                unit.x(site.xGrid - 1);
+                movX = 0;
+            }
+            if(movY > site.rect.height()){
+                unit.y(site.yGrid + 1);
+                movY = 0;
+            }
+            else if(movY < -site.rect.height()){
+                unit.y(site.yGrid - 1);
+                movY = 0;
+            }
+            //刷新
+            FeViewUnit.this.invalidate();
+        }
+    });
+
     //动画心跳回调
     private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_ANIM_STAY, new FeHeartUnit.TimeOutTask(){
         public void run(int count){
@@ -172,20 +292,13 @@ public class FeViewUnit extends FeView {
         //跟地图要位置
         sectionCallback.getSectionMap().getRectByGrid(unit.x(), unit.y(), site);
         //扩大矩阵的上、左、右边界
-        bitmapDist.left = site.rect.left - site.rect.width()/2;
-        bitmapDist.right = site.rect.right + site.rect.width()/2;
-        bitmapDist.top = site.rect.bottom - site.rect.width()*2;
-        bitmapDist.bottom = site.rect.bottom;
+        bitmapDist.left = site.rect.left - site.rect.width()/2 + movX;
+        bitmapDist.right = site.rect.right + site.rect.width()/2 + movX;
+        bitmapDist.top = site.rect.bottom - site.rect.width()*2 + movY;
+        bitmapDist.bottom = site.rect.bottom + movY;
         //绘图
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));//抗锯齿
         canvas.drawBitmap(bitmap, bitmapBody, bitmapDist, paint);
-    }
-
-    //检查坐标是否在当前人物上
-    public boolean checkHit(float x, float y){
-        if(site.rect.contains((int)x, (int)y))
-            return true;
-        return false;
     }
 
     /* ---------- abstract interface ---------- */

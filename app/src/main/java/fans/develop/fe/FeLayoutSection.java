@@ -180,9 +180,6 @@ public class FeLayoutSection extends FeLayout{
                     @Override
                     public void run(FeLayoutSection obj, String result) {
 
-                        //移除loading界面
-                        obj._removeViewAll(obj);
-
                         //初始化失败
                         if(result != null){
                             Toast.makeText(feData.activity, result, Toast.LENGTH_SHORT).show();
@@ -400,6 +397,14 @@ public class FeLayoutSection extends FeLayout{
         }
         public Boolean onUnitMove(){
             return onUnitMove;
+        }
+
+        private Boolean onUnitMoveing = false;
+        public void onUnitMoveing(Boolean on){
+            onUnitMoveing = on;
+        }
+        public Boolean onUnitMoveing(){
+            return onUnitMoveing;
         }
 
         private Boolean onUnitMenu = false;

@@ -45,6 +45,9 @@ public interface FeSectionCallback{
     void onUnitMove(Boolean on);
     Boolean onUnitMove();
 
+    void onUnitMoveing(Boolean on);
+    Boolean onUnitMoveing();
+
     void onUnitMenu(Boolean on);
     Boolean onUnitMenu();
 

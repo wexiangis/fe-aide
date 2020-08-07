@@ -75,7 +75,7 @@ public class FeViewSelect extends FeView {
         super.onDraw(canvas);
 
         //移动中不绘制
-        if(sectionCallback.onMapMove())
+        if(sectionCallback.onMapMove() || sectionCallback.onUnitMoveing())
             return;
 
         //画选中框

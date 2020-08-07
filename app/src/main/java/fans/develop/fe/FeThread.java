@@ -4,6 +4,10 @@ import android.os.Handler;
 
 /*
     批量异步线程操作
+    使用:
+    FeThread t = new FeThread(xxx);
+    t.start();
+    t.join();//如果需要
  */
 public class FeThread extends Thread{
 
@@ -27,9 +31,8 @@ public class FeThread extends Thread{
      */
     public FeThread(Runnable ... runnables){
         this.handler = null;
-        this.delay = null;
         this.runnables = new Runnable[runnables.length];
-        for(int i = 0; i < runnables.length && i < delay.length; i++)
+        for(int i = 0; i < runnables.length; i++)
             this.runnables[i] = runnables[i];
     }
 

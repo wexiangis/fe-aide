@@ -2,6 +2,7 @@ package fans.develop.fe;
 
 import android.content.Context;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -130,6 +131,10 @@ public class FeLayoutLoading extends FeLayout{
             public void onPostExecute(FeLayoutLoading layoutLoading, String result) {
                 if(layoutLoading.doInFinal != null)
                     layoutLoading.doInFinal.run(layoutLoading.obj, result);
+                //从父控件中脱离
+                ViewGroup vg = (ViewGroup)layoutLoading.getParent();
+                if(vg != null)
+                    vg.removeView(layoutLoading);
             }
         });
 

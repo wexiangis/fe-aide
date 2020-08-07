@@ -12,6 +12,7 @@ public class FeLayoutOpening extends FeLayout {
     private FeData feData;
     private TextView textView;
     private FeAsyncTask asyncTask = null;
+    private Boolean startFlag = false;
 
     //触屏事件回调函数
     private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
@@ -19,7 +20,8 @@ public class FeLayoutOpening extends FeLayout {
             //触屏UP时, 跳过openning动画
             if(event.getAction() == MotionEvent.ACTION_UP){
                 //关闭后台线程
-                asyncTask.cancel(true);
+                // asyncTask.cancel(true);
+                startFlag = true;
                 //界面跳转
                 feData.flow.loadTheme();
                 //内存回收
@@ -33,6 +35,7 @@ public class FeLayoutOpening extends FeLayout {
     public void reload(){
 
         this._removeViewAll(this);
+        startFlag = false;
         
         asyncTask = new FeAsyncTask(this, new FeAsyncTask.Callback<FeLayoutOpening>() {
 
@@ -65,6 +68,8 @@ public class FeLayoutOpening extends FeLayout {
                         for(int i = 0; i < 100; i++){
                             if(asyncTask.isCancelled())
                                 return "break";
+                            else if(startFlag)
+                                return null;
                             Thread.sleep(10);
                             asyncTask.setPercent(i);
                         }

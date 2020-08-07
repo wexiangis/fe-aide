@@ -107,14 +107,9 @@ public class FeLayoutMark extends FeLayout {
                 new int[]{hitSite.xGrid, hitSite.yGrid});
             if(movPath != null) {
                 //移动人物
-                sectionUnit.viewUnit.xy(hitSite.xGrid, hitSite.yGrid);
+                sectionUnit.viewUnit.move(movPath);
                 //减去移动力消耗
                 hitViewMark.movReduceByPath(movPath);
-                //移动力用完,显示菜单
-                if (hitViewMark.getMov() == 0) {
-                    //显示菜单
-                    ;
-                }
             }
         }
         else{

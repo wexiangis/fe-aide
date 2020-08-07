@@ -271,6 +271,11 @@ public class FeViewMark extends FeView {
         //没有unit图层?
         if(sectionCallback.getLayoutUnit() == null)
             return;
+
+        //人物正在移动
+        if(sectionCallback.onUnitMoveing())
+            return;
+
         //获得unit位置
         FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(order);
         //order人物没有绘制?
