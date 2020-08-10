@@ -90,8 +90,9 @@ public class FeViewSelect extends FeView {
             //抗锯齿
             canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             //画图
-//            canvas.drawPath(mapSite.path, paintSelct);
-            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
+            paintSelct.setColor(0x800000FF);
+            canvas.drawPath(mapSite.path, paintSelct);
+//            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
         }
         else if(sectionCallback.onUnitSelect() && sectionCallback.getSectionUnit().viewUnit != null){
             //选中人物位置
@@ -107,8 +108,9 @@ public class FeViewSelect extends FeView {
             //抗锯齿
             canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             //画图
-//            canvas.drawPath(mapSite.path, paintSelct);
-            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
+            paintSelct.setColor(0x800000FF);
+            canvas.drawPath(unitSite.path, paintSelct);
+//            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
         }
     }
 

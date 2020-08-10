@@ -20,6 +20,8 @@ class FeReaderMap {
     //关键路径
     private String feSdRootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEX";
     private String assetsFilePath, sdFilePath;
+    //找不到当前地图时,切换到默认文件夹
+    private final String default_path = "/assets/map/default/";
 
     private class FeFileAllLine{
         public String line;
@@ -126,6 +128,10 @@ class FeReaderMap {
             }
             else {
                 InputStream is = getClass().getResourceAsStream(assetsFilePath + "grid.txt");
+                if(is == null){
+                    assetsFilePath = default_path;
+                    is = getClass().getResourceAsStream(assetsFilePath + "grid.txt");
+                }
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader br = new BufferedReader(isr);
                 //分行读取
@@ -152,10 +158,12 @@ class FeReaderMap {
         else{
             try{
                 InputStream is = getClass().getResourceAsStream(assetsFilePath + "map.jpg");
-                if(is != null){
-                    mapInfo.bitmap = BitmapFactory.decodeStream(is);
-                    is.close();
+                if(is == null){
+                    assetsFilePath = default_path;
+                    is = getClass().getResourceAsStream(assetsFilePath + "map.png");
                 }
+                mapInfo.bitmap = BitmapFactory.decodeStream(is);
+                is.close();
             } catch (java.io.FileNotFoundException e) {
                 Log.d("FeInfoMap.load_map_jpg", "not found : map.jpg");
             } catch (IOException e) {
@@ -184,6 +192,10 @@ class FeReaderMap {
             }
             else {
                 InputStream is = getClass().getResourceAsStream(assetsFilePath + "size.txt");
+                if(is == null){
+                    assetsFilePath = default_path;
+                    is = getClass().getResourceAsStream(assetsFilePath + "size.txt");
+                }
                 byte[] line = new byte[100];
                 if (is.read(line) > 0)
                     _load_size_txt(mapInfo, line);
