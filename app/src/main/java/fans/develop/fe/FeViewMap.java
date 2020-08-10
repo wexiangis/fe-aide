@@ -92,7 +92,7 @@ public class FeViewMap extends FeView {
                 if(yGridErr >= div) {
                     yGridErr -= div;
                     sectionCallback.getSectionMap().yGridErr += div;
-                }else if(yGridErr <= div) {
+                }else if(yGridErr <= -div) {
                     yGridErr += div;
                     sectionCallback.getSectionMap().yGridErr -= div;
                 }
@@ -114,6 +114,24 @@ public class FeViewMap extends FeView {
                 //调用一次onDraw
                 FeViewMap.this.invalidate();
             }
+						else{
+								if(Math.abs(xGridErr) > 0){
+										xGridErr = 0;
+										sectionCallback.getSectionMap().xGridErr = 
+												Math.round(sectionCallback.getSectionMap().xGridErr);
+								}
+								if(Math.abs(yGridErr) > 0){
+										yGridErr = 0;
+										sectionCallback.getSectionMap().yGridErr = 
+												Math.round(sectionCallback.getSectionMap().yGridErr);
+								}
+								if(sectionCallback.getSectionMap().xGridErr % 1 != 0)
+										sectionCallback.getSectionMap().xGridErr = 
+												Math.round(sectionCallback.getSectionMap().xGridErr);
+								if(sectionCallback.getSectionMap().yGridErr % 1 != 0)
+										sectionCallback.getSectionMap().yGridErr = 
+												Math.round(sectionCallback.getSectionMap().yGridErr);
+						}
         }
     });
 

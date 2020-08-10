@@ -179,7 +179,7 @@ public class FeSectionMap {
             grid[line][3] = value;
         }
         public float xSize(int line){
-            return grid[line][2];
+            return grid[line][3];
         }
 
         public TrapeaoidGrid(int height){
