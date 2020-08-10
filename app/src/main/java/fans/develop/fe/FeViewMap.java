@@ -14,7 +14,7 @@ public class FeViewMap extends FeView {
     private FeSectionCallback sectionCallback;
 
     //地图移动格子数
-    private int xGridErr = 0, yGridErr = 0;
+    private float xGridErr = 0.0f, yGridErr = 0.0f;
     //画笔
     private Paint paintMap;
 
@@ -32,14 +32,12 @@ public class FeViewMap extends FeView {
 
     //动态挪动地图,x>0时地图往右移,y>0时地图往下移
     public void moveGrid(int xGrid, int yGrid){
-        xGridErr -= xGrid;
-        yGridErr -= yGrid;
+        xGridErr = Math.round(xGridErr - xGrid);
+        yGridErr = Math.round(yGridErr - yGrid);
     }
 
     //动态挪动地图,设置(x,y)所在格子为地图中心
     public void moveCenter(int xGrid, int yGrid){
-        //先把挪动停止
-        xGridErr = yGridErr = 0;
         //居中比较
         xGridErr = xGrid - sectionCallback.getSectionMap().srcGridCenter.centerX();
         yGridErr = yGrid - sectionCallback.getSectionMap().srcGridCenter.centerY();
@@ -47,8 +45,6 @@ public class FeViewMap extends FeView {
 
     //动态挪动地图,设置(x,y)所在格子到地图能包围到
     public void moveInclude(int xGrid, int yGrid){
-        //先把挪动停止
-        // xGridErr = yGridErr = 0;
         //把需要移动的量先记到xGridErr,yGridErr, 动画心跳回调会慢慢把这些差值吃掉
         if(xGrid < sectionCallback.getSectionMap().srcGridCenter.left)
             xGridErr = xGrid - sectionCallback.getSectionMap().srcGridCenter.left;
@@ -81,23 +77,24 @@ public class FeViewMap extends FeView {
     //动画心跳回调
     private FeHeartUnit heartMapMov = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART_QUICK, new FeHeartUnit.TimeOutTask(){
         public void run(int count){
+            float div = 0.25f;
             //需要挪图?
-            if(xGridErr != 0 || yGridErr != 0)
+            if(Math.abs(xGridErr) >= div || Math.abs(yGridErr) >= div)
             {
-                //每次移动一格
-                if(xGridErr > 0) {
-                    xGridErr -= 1;
-                    sectionCallback.getSectionMap().xGridErr += 1;
-                }else if(xGridErr < 0) {
-                    xGridErr += 1;
-                    sectionCallback.getSectionMap().xGridErr -= 1;
+                //每次移动1/4格
+                if(xGridErr >= div) {
+                    xGridErr -= div;
+                    sectionCallback.getSectionMap().xGridErr += div;
+                }else if(xGridErr <= -div) {
+                    xGridErr += div;
+                    sectionCallback.getSectionMap().xGridErr -= div;
                 }
-                if(yGridErr > 0) {
-                    yGridErr -= 1;
-                    sectionCallback.getSectionMap().yGridErr += 1;
-                }else if(yGridErr < 0) {
-                    yGridErr += 1;
-                    sectionCallback.getSectionMap().yGridErr -= 1;
+                if(yGridErr >= div) {
+                    yGridErr -= div;
+                    sectionCallback.getSectionMap().yGridErr += div;
+                }else if(yGridErr <= div) {
+                    yGridErr += div;
+                    sectionCallback.getSectionMap().yGridErr -= div;
                 }
                 //防止地图移出屏幕
                 if (sectionCallback.getSectionMap().xGridErr < 0){
@@ -124,8 +121,10 @@ public class FeViewMap extends FeView {
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
         //相对布局位置偏移
-        sectionCallback.getSectionMap().mapDist.left = (int)this.getTranslationX() - (int)(sectionCallback.getSectionMap().xGridErr*sectionCallback.getSectionMap().xGridPixel);
-        sectionCallback.getSectionMap().mapDist.top = (int)this.getTranslationY() - (int)(sectionCallback.getSectionMap().yGridErr*sectionCallback.getSectionMap().yGridPixel);
+        sectionCallback.getSectionMap().mapDist.left = 
+            (int)this.getTranslationX() - (int)(sectionCallback.getSectionMap().xGridErr*sectionCallback.getSectionMap().xGridPixel);
+        sectionCallback.getSectionMap().mapDist.top = 
+            (int)this.getTranslationY() - (int)(sectionCallback.getSectionMap().yGridErr*sectionCallback.getSectionMap().yGridPixel);
         sectionCallback.getSectionMap().mapDist.right = sectionCallback.getSectionMap().mapDist.left + sectionCallback.getSectionMap().width;
         sectionCallback.getSectionMap().mapDist.bottom = sectionCallback.getSectionMap().mapDist.top + sectionCallback.getSectionMap().height;
         //更新梯形变换信息
