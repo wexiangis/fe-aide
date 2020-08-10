@@ -40,8 +40,10 @@ public class FeSectionMap {
     public int screenWidth = 1920, screenHeight = 1080;
     //地图实际显示区域
     public Rect mapDist = null;
-    //地图移动格子数
+    //地图左上角偏移格子数,一般都为负值
     public int xGridErr = 0, yGridErr = 0;
+    //地图一格以内的偏移量占比(0.0~1.0),例如: xPixelErr = 0.5f 表示地图向右偏移了半格
+    public float xPixelErr = 0.0f, yPixelErr = 0.0f;
     //地图实际显示宽高像素
     public int width = 1920, height = 1080;
     //屏幕横纵向格数
@@ -146,6 +148,7 @@ public class FeSectionMap {
         }
         //
         xGridErr = yGridErr = 0;
+        xPixelErr = yPixelErr = 0.0f;
     }
 
     //----- 地图梯形变换 -----
@@ -171,6 +174,7 @@ public class FeSectionMap {
 
     //获取梯形转换矩阵,用于绘制
     public void upgradeMatrix(){
+        //mapDist为当前地图显示区域
         srcPoint[0] = -mapDist.left;
         srcPoint[1] = -mapDist.top;
         srcPoint[2] = -mapDist.left;
@@ -179,7 +183,7 @@ public class FeSectionMap {
         srcPoint[5] = -mapDist.top + screenHeight;
         srcPoint[6] = -mapDist.left + screenWidth;
         srcPoint[7] = -mapDist.top;
-        //梯形左右和上边缩进格数
+        //梯形左右和上边缩进格数*每格像素 = 缩进像素
         reduce = xGridPixel*transferGrid;
         //地图靠近边界时逐渐恢复比例
         if(reduce > width - srcPoint[6])
@@ -188,20 +192,20 @@ public class FeSectionMap {
             reduce = srcPoint[0];
         if(reduce > srcPoint[1])
             reduce = srcPoint[1];
-        //梯形变换
+        //把矩形的上边左右各拉宽reduce, 同时往上拉高reduce, 变成倒梯形
         srcPoint[0] -= reduce;
         srcPoint[6] += reduce;
         srcPoint[1] -= reduce;
         srcPoint[7] -= reduce;
         //防止梯形出屏
-//        if(srcPoint[0] < 0) srcPoint[0] = 0;
-//        if(srcPoint[6] > width) srcPoint[6] = width;
-//        if(srcPoint[1] < 0) srcPoint[1] = 0;
-//        if(srcPoint[7] < 0) srcPoint[7] = 0;
-        //
+        // if(srcPoint[0] < 0) srcPoint[0] = 0;
+        // if(srcPoint[6] > width) srcPoint[6] = width;
+        // if(srcPoint[1] < 0) srcPoint[1] = 0;
+        // if(srcPoint[7] < 0) srcPoint[7] = 0;
+        //bitmap像素坐标和屏幕像素坐标的比值
         float xPow = (float)bitmap.getWidth()/width;
         float yPow = (float)bitmap.getHeight()/height;
-        //
+        //把刚才算到的倒梯形坐标转换为bitmap上的坐标
         srcPointBitmap[0] = srcPoint[0]*xPow;
         srcPointBitmap[1] = srcPoint[1]*yPow;
         srcPointBitmap[2] = srcPoint[2]*xPow;
@@ -210,7 +214,7 @@ public class FeSectionMap {
         srcPointBitmap[5] = srcPoint[5]*yPow;
         srcPointBitmap[6] = srcPoint[6]*xPow;
         srcPointBitmap[7] = srcPoint[7]*yPow;
-        //
+        //输出范围为屏幕大小
         distPoint[0] = 0;
         distPoint[1] = 0;
         distPoint[2] = 0;
@@ -219,7 +223,7 @@ public class FeSectionMap {
         distPoint[5] = screenHeight;
         distPoint[6] = screenWidth;
         distPoint[7] = 0;
-        //梯形变换
+        //梯形变换: 在地图上抠出一块倒梯形区域,然后显示到矩形的屏幕上,就形成了近大远小的显示效果
         matrix.setPolyToPoly(srcPointBitmap, 0, distPoint, 0, 4);
 
         //关键参数提取
