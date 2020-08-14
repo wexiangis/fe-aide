@@ -334,10 +334,15 @@ public class FeSectionMap {
             //屏幕棋盘格子所在坐标
             int x = xG - srcGridXStart;
             int y = yG - srcGridYStart;
+						//偏移矫正
+//						int xC = (int)(xGridErr % 1 * trapGrid.xSize(y));
+//						int yC = (int)(yGridErr % 1 * trapGrid.ySize(y));
+						int xC = 0;//(int)(0.5 * trapGrid.xSize(y));
+						int yC = 0;//(int)(0.5 % 1 * trapGrid.ySize(y));
             //取矩阵
-            fig.rect.top = (int)(trapGrid.ySizeTotal(y) - trapGrid.ySize(y));
-            fig.rect.bottom = (int)trapGrid.ySizeTotal(y);
-            fig.rect.left = (int)(x * trapGrid.xSize(y) - trapGrid.xOffset(y));
+            fig.rect.top = (int)(trapGrid.ySizeTotal(y) - trapGrid.ySize(y)) + yC;
+            fig.rect.bottom = (int)trapGrid.ySizeTotal(y) + yC;
+            fig.rect.left = (int)(x * trapGrid.xSize(y) - trapGrid.xOffset(y)) + xC;
             fig.rect.right = (int)(fig.rect.left + trapGrid.xSize(y));
             //取多边形路径
             if(y == 0){

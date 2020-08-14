@@ -71,24 +71,26 @@ public class FeSectionOperation {
                 float tMoveY = event.getY();
                 float xErr = tMoveX - tDownX;
                 float yErr = tMoveY - tDownY;
-                //产生的拖动格数
-                int xGridErr = 0, yGridErr = 0;
-                //横向拖动是否满一格像素,是就拖动一格
-                if (Math.abs(xErr) > sectionCallback.getSectionMap().xGridPixel) {
-                    xGridErr = xErr < 0 ? (1) : (-1);
-                    //更新坐标
-                    tDownX = tMoveX;
-                    //置标记
-                    isMove = true;
-                }
-                //纵向拖动是否满一格像素,是就拖动一格
-                if (Math.abs(yErr) > sectionCallback.getSectionMap().yGridPixel) {
-                    yGridErr = yErr < 0 ? (1) : (-1);
-                    //更新坐标
-                    tDownY = tMoveY;
-                    //置标记
-                    isMove = true;
-                }
+                //横向拖动是否满半格像素,是就开始拖动
+								if(!isMove){
+               		 if (Math.abs(xErr) > sectionCallback.getSectionMap().xGridPixel/2)
+                    		//置标记
+                    		isMove = true;
+										//横向拖动是否满半格像素,是就开始拖动
+                		if (Math.abs(yErr) > sectionCallback.getSectionMap().yGridPixel/2)
+                    		//置标记
+                    		isMove = true;
+								}
+								//已经开始移动了？
+								if(isMove){
+										//更新坐标
+										tDownX = tMoveX;
+										tDownY = tMoveY;
+								}
+								//否则无移动量
+								else{
+										xErr = yErr = 0;
+								}
                 //谁需要拖动事件?
                 if(flagMove.checkFlag(FeFlagHit.HIT_SYS_MENU)){
                     ;
@@ -112,7 +114,7 @@ public class FeSectionOperation {
                     ;
                 }
                 else if(flagMove.checkFlag(FeFlagHit.HIT_MAP)){
-                    sectionCallback.getLayoutMap().move(xGridErr, yGridErr);
+                    sectionCallback.getLayoutMap().move(xErr, yErr);
                 }
             }
             break;

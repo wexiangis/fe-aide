@@ -35,6 +35,15 @@ public class FeViewMap extends FeView {
         xGridErr = Math.round(xGridErr - xGrid);
         yGridErr = Math.round(yGridErr - yGrid);
     }
+		
+		/*
+				像素移动,x>0时地图往右移,y>0时地图往下移
+				注意xy为格子数，例如: x = 3.5 表示向右移动3.5格
+		 */
+		public void move(float x, float y){
+				xGridErr -= x;
+				yGridErr -= y;
+		}
 
     //动态挪动地图,设置(x,y)所在格子为地图中心
     public void moveCenter(int xGrid, int yGrid){
@@ -81,6 +90,8 @@ public class FeViewMap extends FeView {
             //需要挪图?
             if(Math.abs(xGridErr) >= div || Math.abs(yGridErr) >= div)
             {
+								//倍数移动
+								;
                 //每次移动1/4格
                 if(xGridErr >= div) {
                     xGridErr -= div;
@@ -111,10 +122,13 @@ public class FeViewMap extends FeView {
                     sectionCallback.getSectionMap().yGridErr = sectionCallback.getSectionMap().mapInfo.height - sectionCallback.getSectionMap().screenYGrid;
                     yGridErr = 0;
                 }
+								//置状态
+								sectionCallback.onMapMove(true);
                 //调用一次onDraw
                 FeViewMap.this.invalidate();
             }
 						else{
+								//剩余的一点差值丢弃
 								if(Math.abs(xGridErr) > 0){
 										xGridErr = 0;
 										sectionCallback.getSectionMap().xGridErr = 
@@ -125,12 +139,15 @@ public class FeViewMap extends FeView {
 										sectionCallback.getSectionMap().yGridErr = 
 												Math.round(sectionCallback.getSectionMap().yGridErr);
 								}
+								//结束移动时，地图偏移量必须为整数格
 								if(sectionCallback.getSectionMap().xGridErr % 1 != 0)
 										sectionCallback.getSectionMap().xGridErr = 
 												Math.round(sectionCallback.getSectionMap().xGridErr);
 								if(sectionCallback.getSectionMap().yGridErr % 1 != 0)
 										sectionCallback.getSectionMap().yGridErr = 
 												Math.round(sectionCallback.getSectionMap().yGridErr);
+								//清状态
+								sectionCallback.onMapMove(false);
 						}
         }
     });
