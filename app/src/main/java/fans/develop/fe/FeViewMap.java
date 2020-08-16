@@ -90,36 +90,37 @@ public class FeViewMap extends FeView {
             //需要挪图?
             if(Math.abs(xGridErr) >= div || Math.abs(yGridErr) >= div)
             {
+								FeSectionMap sectionMap = sectionCallback.getSectionMap();
 								//倍数移动
 								;
                 //每次移动1/4格
                 if(xGridErr >= div) {
                     xGridErr -= div;
-                    sectionCallback.getSectionMap().xGridErr += div;
+                    sectionMap.xGridErr -= div;
                 }else if(xGridErr <= -div) {
                     xGridErr += div;
-                    sectionCallback.getSectionMap().xGridErr -= div;
+                    sectionMap.xGridErr += div;
                 }
                 if(yGridErr >= div) {
                     yGridErr -= div;
-                    sectionCallback.getSectionMap().yGridErr += div;
+                    sectionMap.yGridErr -= div;
                 }else if(yGridErr <= -div) {
                     yGridErr += div;
-                    sectionCallback.getSectionMap().yGridErr -= div;
+                    sectionMap.yGridErr += div;
                 }
                 //防止地图移出屏幕
-                if (sectionCallback.getSectionMap().xGridErr < 0){
-                    sectionCallback.getSectionMap().xGridErr = 0;
+                if (sectionMap.xGridErr > 0){
+                    sectionMap.xGridErr = 0;
                     xGridErr = 0;
-                }else if (sectionCallback.getSectionMap().xGridErr + sectionCallback.getSectionMap().screenXGrid > sectionCallback.getSectionMap().mapInfo.width){
-                    sectionCallback.getSectionMap().xGridErr = sectionCallback.getSectionMap().mapInfo.width - sectionCallback.getSectionMap().screenXGrid;
+                }else if (sectionMap.xGridErr + sectionMap.mapInfo.width < sectionMap.screenXGrid){
+                    sectionMap.xGridErr = sectionMap.screenXGrid - sectionMap.mapInfo.width;
                     xGridErr = 0;
                 }
-                if (sectionCallback.getSectionMap().yGridErr < 0){
-                    sectionCallback.getSectionMap().yGridErr = 0;
+                if (sectionMap.yGridErr > 0){
+                    sectionMap.yGridErr = 0;
                     yGridErr = 0;
-                }else if (sectionCallback.getSectionMap().yGridErr + sectionCallback.getSectionMap().screenYGrid > sectionCallback.getSectionMap().mapInfo.height){
-                    sectionCallback.getSectionMap().yGridErr = sectionCallback.getSectionMap().mapInfo.height - sectionCallback.getSectionMap().screenYGrid;
+                }else if (sectionMap.yGridErr + sectionMap.mapInfo.height < sectionMap.screenYGrid){
+                    sectionMap.yGridErr = sectionMap.screenYGrid - sectionMap.mapInfo.height;
                     yGridErr = 0;
                 }
 								//置状态
@@ -127,17 +128,15 @@ public class FeViewMap extends FeView {
                 //调用一次onDraw
                 FeViewMap.this.invalidate();
             }
-						else{
+						else if(!sectionCallback.onTouchMov()){
 								//剩余的一点差值丢弃
 								if(Math.abs(xGridErr) > 0){
 										xGridErr = 0;
-										sectionCallback.getSectionMap().xGridErr = 
-												Math.round(sectionCallback.getSectionMap().xGridErr);
+										//sectionCallback.getSectionMap().xGridErr = Math.round(sectionCallback.getSectionMap().xGridErr);
 								}
 								if(Math.abs(yGridErr) > 0){
 										yGridErr = 0;
-										sectionCallback.getSectionMap().yGridErr = 
-												Math.round(sectionCallback.getSectionMap().yGridErr);
+										//sectionCallback.getSectionMap().yGridErr = Math.round(sectionCallback.getSectionMap().yGridErr);
 								}
 								//结束移动时，地图偏移量必须为整数格
 								if(sectionCallback.getSectionMap().xGridErr % 1 != 0)
@@ -155,17 +154,16 @@ public class FeViewMap extends FeView {
     //
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
+				FeSectionMap sectionMap = sectionCallback.getSectionMap();
         //相对布局位置偏移
-        sectionCallback.getSectionMap().mapDist.left = 
-            (int)this.getTranslationX() - (int)(sectionCallback.getSectionMap().xGridErr*sectionCallback.getSectionMap().xGridPixel);
-        sectionCallback.getSectionMap().mapDist.top = 
-            (int)this.getTranslationY() - (int)(sectionCallback.getSectionMap().yGridErr*sectionCallback.getSectionMap().yGridPixel);
-        sectionCallback.getSectionMap().mapDist.right = sectionCallback.getSectionMap().mapDist.left + sectionCallback.getSectionMap().width;
-        sectionCallback.getSectionMap().mapDist.bottom = sectionCallback.getSectionMap().mapDist.top + sectionCallback.getSectionMap().height;
+        sectionMap.mapDist.left = (int)(sectionMap.xGridErr*sectionMap.xGridPixel);
+        sectionMap.mapDist.top = (int)(sectionMap.yGridErr*sectionMap.yGridPixel);
+        sectionMap.mapDist.right = sectionMap.mapDist.left + sectionMap.width;
+        sectionMap.mapDist.bottom = sectionMap.mapDist.top + sectionMap.height;
         //更新梯形变换信息
-        sectionCallback.getSectionMap().upgradeMatrix();
+        sectionMap.upgradeMatrix();
         //显示地图
-        canvas.drawBitmap(sectionCallback.getSectionMap().bitmap, sectionCallback.getSectionMap().matrix, paintMap);
+        canvas.drawBitmap(sectionMap.bitmap, sectionMap.matrix, paintMap);
         //地图移动了,刷新其他信息
         sectionCallback.refresh();
     }

@@ -367,6 +367,14 @@ public class FeLayoutSection extends FeLayout{
             return onTouchDisable;
         }
 
+        private Boolean onTouchMov = false;
+        public void onTouchMov(Boolean on){
+            onTouchMov = on;
+        }
+        public Boolean onTouchMov(){
+            return onTouchMov;
+        }
+
         private Boolean onMapMove = false;
         public void onMapMove(Boolean on){
             onMapMove = on;

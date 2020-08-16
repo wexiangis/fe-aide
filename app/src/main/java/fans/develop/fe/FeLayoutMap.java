@@ -111,8 +111,18 @@ public class FeLayoutMap extends FeLayout {
     public void move(float xErr, float yErr){
         if(viewMap != null){
             FeSectionMap sectionMap = sectionCallback.getSectionMap();
-            //累积差值,该差值会在 FeViewMap 的心跳函数内慢慢吃掉,最后恢复为0
-            viewMap.move(xErr/sectionMap.xGridPixel, yErr/sectionMap.yGridPixel);
+            //累积差值
+						sectionMap.xGridErr += xErr/sectionMap.xGridPixel;
+						sectionMap.yGridErr += yErr/sectionMap.yGridPixel;
+						//防止地图移出屏幕
+						if (sectionMap.xGridErr > 0)
+								sectionMap.xGridErr = 0;
+						else if (sectionMap.xGridErr + sectionMap.mapInfo.width < sectionMap.screenXGrid)
+								sectionMap.xGridErr = sectionMap.screenXGrid - sectionMap.mapInfo.width;
+						if (sectionMap.yGridErr > 0)
+								sectionMap.yGridErr = 0;
+						else if (sectionMap.yGridErr + sectionMap.mapInfo.height < sectionMap.screenYGrid)
+								sectionMap.yGridErr = sectionMap.screenYGrid - sectionMap.mapInfo.height;
             //输入坐标求格子位置,更新地图选中点信息
             //sectionCallback.getSectionMap().getRectByGrid(xGridErr, yGridErr, sectionCallback.getSectionMap().selectSite);
             //置标记

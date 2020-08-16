@@ -32,6 +32,9 @@ public interface FeSectionCallback{
 
     void onTouchDisable(Boolean disable);
     Boolean onTouchDisable();
+		
+		void onTouchMov(Boolean disable);
+    Boolean onTouchMov();
 
     void onMapMove(Boolean on);
     Boolean onMapMove();
