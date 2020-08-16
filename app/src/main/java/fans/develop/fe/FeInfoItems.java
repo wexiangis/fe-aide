@@ -5,7 +5,7 @@ package fans.develop.fe;
  */
 public class FeInfoItems {
 
-    public enum USAGE{
+    public enum USAGE {
         USELESS,//不可用
         USE,    //可用
         BROKEN, //损坏
@@ -13,7 +13,7 @@ public class FeInfoItems {
 
     //装备列表可用情况
     public USAGE usage[];
-    
+
     //攻击距离
     public int hit = 0;
     //攻击空当
@@ -26,7 +26,7 @@ public class FeInfoItems {
         skillLevel: 人物技能等级列表
         state: 人物状态(沉默、睡眠...)
      */
-    public FeInfoItems(int[] items, int[] skillLevel, int state){
+    public FeInfoItems(int[] items, int[] skillLevel, int state) {
         //是否填充过 this.hitSpace 标志, 用于第一次赋值
         Boolean fitHitSpace = false;
         //数据库
@@ -34,57 +34,55 @@ public class FeInfoItems {
         //可用结果
         usage = new USAGE[items.length];
         //遍历物品列表
-        for(int i = 0; i < items.length; i++)
-        {
+        for (int i = 0; i < items.length; i++) {
             //暂且认为不可用
             usage[i] = USAGE.USELESS;
             //没有物品
-            if(items[i] == 0)
+            if (items[i] == 0)
                 continue;
             //物品id
-            int id = items[i]%1000;
+            int id = items[i] % 1000;
             //已使用次数
-            int use = items[i]/1000;
+            int use = items[i] / 1000;
             //超过使用次数?
             int capacity = param.getItemsCapacity(id);
-            if(use >= capacity){
+            if (use >= capacity) {
                 usage[i] = USAGE.BROKEN;
                 continue;
             }
             //物品类型
             int type = param.getItemsType(id);
             //这是普通物品?
-            if(type >= skillLevel.length)
+            if (type >= skillLevel.length)
                 usage[i] = USAGE.USE;
-            //这是武器
-            else
-            {
+                //这是武器
+            else {
                 //当前技能等级达标? (skillLevel[type] = 0 是不可用的)
-                if(skillLevel[type] > 0 && skillLevel[type] >= param.getItemsLevel(id)){
+                if (skillLevel[type] > 0 && skillLevel[type] >= param.getItemsLevel(id)) {
                     //状态检查
                     ;
                     //可以使用
                     usage[i] = USAGE.USE;
                     //计算攻击范围
-                    if(usage[i] == USAGE.USE){
+                    if (usage[i] == USAGE.USE) {
                         int range = param.getItemsRange(id);
                         int rangeSpace = param.getItemsRangeSpace(id);
                         //这是杖?
-                        if(param.getItemsType(id) == 7){
+                        if (param.getItemsType(id) == 7) {
                             //使用更大的范围
-                            if(this.special < range)
+                            if (this.special < range)
                                 this.special = range;
                         }
                         //这是武器
-                        else{
+                        else {
                             //使用更大的范围
-                            if(this.hit < range)
+                            if (this.hit < range)
                                 this.hit = range;
                             //使用更小的空当
-                            if(fitHitSpace) {
+                            if (fitHitSpace) {
                                 if (this.hitSpace > rangeSpace)
                                     this.hitSpace = rangeSpace;
-                            }else{
+                            } else {
                                 //第一次赋值
                                 fitHitSpace = true;
                                 this.hitSpace = rangeSpace;

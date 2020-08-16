@@ -9,7 +9,7 @@ import android.os.Handler;
     t.start();
     t.join();//如果需要
  */
-public class FeThread extends Thread{
+public class FeThread extends Thread {
 
     private Runnable[] runnables;
     private Handler handler;
@@ -18,44 +18,42 @@ public class FeThread extends Thread{
     /*
         UI线程
      */
-    public FeThread(int[] delay, Runnable ... runnables){
+    public FeThread(int[] delay, Runnable... runnables) {
         this.handler = new Handler();
         this.delay = delay;
         this.runnables = new Runnable[runnables.length];
-        for(int i = 0; i < runnables.length && i < delay.length; i++)
+        for (int i = 0; i < runnables.length && i < delay.length; i++)
             this.runnables[i] = runnables[i];
     }
 
     /*
         普通线程
      */
-    public FeThread(Runnable ... runnables){
+    public FeThread(Runnable... runnables) {
         this.handler = null;
         this.runnables = new Runnable[runnables.length];
-        for(int i = 0; i < runnables.length; i++)
+        for (int i = 0; i < runnables.length; i++)
             this.runnables[i] = runnables[i];
     }
 
     @Override
-    public void run(){
-        if(delay != null)
-        {
-            for(int i = 0; i < runnables.length; i++)
+    public void run() {
+        if (delay != null) {
+            for (int i = 0; i < runnables.length; i++)
                 handler.postDelayed(runnables[i], delay[i]);
-        }
-        else
-        {
+        } else {
             Thread[] threads = new Thread[runnables.length];
             //start
-            for(int i = 0; i < runnables.length; i++) {
+            for (int i = 0; i < runnables.length; i++) {
                 threads[i] = new Thread(runnables[i]);
                 threads[i].start();
             }
             //使用join()等待所有任务结束
-            for(int i = 0; i < runnables.length; i++) {
+            for (int i = 0; i < runnables.length; i++) {
                 try {
                     threads[i].join();
-                }catch (java.lang.InterruptedException e){}
+                } catch (java.lang.InterruptedException e) {
+                }
             }
         }
     }

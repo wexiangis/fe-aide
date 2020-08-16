@@ -14,13 +14,13 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
     private long doubleClickExitTime = 0;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //点击应用图标,回到应用时的特殊处理
-        if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
         }
@@ -39,27 +39,23 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK )
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             boolean ret = false;
             //控件食用事件
             ret = FeData.layoutCurrent.onKeyBack();
             //控件不食用,则由系统食用
-            if(ret == false){
+            if (ret == false) {
                 //界面返回
                 ret = FeData.flow.loadLast();
                 //双击返回退出app
-                if(ret == false)
-                {
-                    if(System.currentTimeMillis() - doubleClickExitTime > 1000){
+                if (ret == false) {
+                    if (System.currentTimeMillis() - doubleClickExitTime > 1000) {
                         //更新时间
                         doubleClickExitTime = System.currentTimeMillis();
                         //提示
                         Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
-                    }
-                    else
+                    } else
                         System.exit(0);
                 }
             }

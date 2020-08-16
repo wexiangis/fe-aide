@@ -5,22 +5,24 @@ import android.widget.RelativeLayout;
 
 public class FeLayoutProfessionAnim extends FeLayout {
 
-    public FeLayoutProfessionAnim(Context context){
+    public FeLayoutProfessionAnim(Context context) {
         super(context);
         //
     }
 
     /* ---------- abstract interface ---------- */
-    
-    public boolean onKeyBack(){
+
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

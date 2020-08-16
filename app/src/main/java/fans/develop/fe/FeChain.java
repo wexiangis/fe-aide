@@ -6,7 +6,8 @@ package fans.develop.fe;
 public class FeChain<U> {
     public U data = null;
     public FeChain<U> previous = null, next = null;
-    public FeChain(U dat){
+
+    public FeChain(U dat) {
         data = dat;
     }
 }

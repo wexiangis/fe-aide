@@ -25,17 +25,17 @@ public class FeLayoutMap extends FeLayout {
     }
 
     /* ---------- function ---------- */
-    
-    public boolean checkHit(float x, float y){
-        if(viewMap != null)
+
+    public boolean checkHit(float x, float y) {
+        if (viewMap != null)
             return true;
         return false;
     }
-    
+
     /*
         刷新,一般在移动地图之后
      */
-    public void refresh(){
+    public void refresh() {
         for (int i = 0; i < getChildCount(); i++)
             getChildAt(i).invalidate();
     }
@@ -43,9 +43,9 @@ public class FeLayoutMap extends FeLayout {
     /*
         加载地图
      */
-    public void loadMap(int section){
+    public void loadMap(int section) {
         //只容存在一张地图
-        if(viewMap != null)
+        if (viewMap != null)
             _removeView(this, viewMap);
         //更换了地图,重新初始化参数
         sectionCallback.refreshSectionMap(section);
@@ -57,9 +57,9 @@ public class FeLayoutMap extends FeLayout {
     /*
         加载背景,将遮挡住地图,用于战斗、对话剧情等
      */
-    public void loadBackground(){
+    public void loadBackground() {
         //只容存在一张背景
-        if(viewBackground != null)
+        if (viewBackground != null)
             _removeView(this, viewBackground);
         //添加view
         viewBackground = new View(context);
@@ -70,37 +70,38 @@ public class FeLayoutMap extends FeLayout {
         捕捉,保持指定人物或地点在地图显示的中心
         id = -1 释放
      */
-    public void catchUnit(int id){
+    public void catchUnit(int id) {
         ;
     }
-    public void catchPoint(int xGrid, int yGrid){
+
+    public void catchPoint(int xGrid, int yGrid) {
         ;
     }
 
     //动态挪动地图,x>0时地图往右移,y>0时地图往下移
-    public void moveGrid(int xGrid, int yGrid){
-        if(viewMap == null)
+    public void moveGrid(int xGrid, int yGrid) {
+        if (viewMap == null)
             return;
         viewMap.moveGrid(xGrid, yGrid);
     }
 
     //动态挪动地图,设置(x,y)所在格子为地图中心
-    public void moveCenter(int xGrid, int yGrid){
-        if(viewMap == null)
+    public void moveCenter(int xGrid, int yGrid) {
+        if (viewMap == null)
             return;
         viewMap.moveCenter(xGrid, yGrid);
     }
 
     //动态挪动地图,设置(x,y)所在格子到地图能包围到
-    public void moveInclude(int xGrid, int yGrid){
-        if(viewMap == null)
+    public void moveInclude(int xGrid, int yGrid) {
+        if (viewMap == null)
             return;
         viewMap.moveInclude(xGrid, yGrid);
     }
 
     //设置(x,y)所在格子为地图中心
-    public void setCenter(int xGrid, int yGrid){
-        if(viewMap == null)
+    public void setCenter(int xGrid, int yGrid) {
+        if (viewMap == null)
             return;
         viewMap.setCenter(xGrid, yGrid);
     }
@@ -108,21 +109,21 @@ public class FeLayoutMap extends FeLayout {
     /*
         移动地图
      */
-    public void move(float xErr, float yErr){
-        if(viewMap != null){
+    public void move(float xErr, float yErr) {
+        if (viewMap != null) {
             FeSectionMap sectionMap = sectionCallback.getSectionMap();
             //累积差值
-						sectionMap.xGridErr += xErr/sectionMap.xGridPixel;
-						sectionMap.yGridErr += yErr/sectionMap.yGridPixel;
-						//防止地图移出屏幕
-						if (sectionMap.xGridErr > 0)
-								sectionMap.xGridErr = 0;
-						else if (sectionMap.xGridErr + sectionMap.mapInfo.width < sectionMap.screenXGrid)
-								sectionMap.xGridErr = sectionMap.screenXGrid - sectionMap.mapInfo.width;
-						if (sectionMap.yGridErr > 0)
-								sectionMap.yGridErr = 0;
-						else if (sectionMap.yGridErr + sectionMap.mapInfo.height < sectionMap.screenYGrid)
-								sectionMap.yGridErr = sectionMap.screenYGrid - sectionMap.mapInfo.height;
+            sectionMap.xGridErr += xErr / sectionMap.xGridPixel;
+            sectionMap.yGridErr += yErr / sectionMap.yGridPixel;
+            //防止地图移出屏幕
+            if (sectionMap.xGridErr > 0)
+                sectionMap.xGridErr = 0;
+            else if (sectionMap.xGridErr + sectionMap.mapInfo.width < sectionMap.screenXGrid)
+                sectionMap.xGridErr = sectionMap.screenXGrid - sectionMap.mapInfo.width;
+            if (sectionMap.yGridErr > 0)
+                sectionMap.yGridErr = 0;
+            else if (sectionMap.yGridErr + sectionMap.mapInfo.height < sectionMap.screenYGrid)
+                sectionMap.yGridErr = sectionMap.screenYGrid - sectionMap.mapInfo.height;
             //输入坐标求格子位置,更新地图选中点信息
             //sectionCallback.getSectionMap().getRectByGrid(xGridErr, yGridErr, sectionCallback.getSectionMap().selectSite);
             //置标记
@@ -135,16 +136,16 @@ public class FeLayoutMap extends FeLayout {
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y, FeFlagHit flag){
+    public void click(float x, float y, FeFlagHit flag) {
         //点击对象不是自己 或 点击的unit不是第一次点击操作
-        if(!flag.checkFlag(FeFlagHit.HIT_MAP) &&
-            (flag.checkFlag(FeFlagHit.HIT_UNIT) || sectionCallback.onUnitMove()))
+        if (!flag.checkFlag(FeFlagHit.HIT_MAP) &&
+                (flag.checkFlag(FeFlagHit.HIT_UNIT) || sectionCallback.onUnitMove()))
             return;
-        if(viewMap != null)
+        if (viewMap != null)
             hitMap(x, y);
     }
 
-    public void hitMap(float x, float y){
+    public void hitMap(float x, float y) {
         //输入坐标求格子位置,更新地图选中点信息
         sectionCallback.getSectionMap().getRectByLocation(x, y, sectionCallback.getSectionMap().selectSite);
         //置标记
@@ -153,15 +154,17 @@ public class FeLayoutMap extends FeLayout {
 
     /* ---------- abstract interface ---------- */
 
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

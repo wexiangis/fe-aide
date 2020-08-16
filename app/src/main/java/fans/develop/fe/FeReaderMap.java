@@ -23,10 +23,11 @@ class FeReaderMap {
     //找不到当前地图时,切换到默认文件夹
     private final String default_path = "/assets/map/default/";
 
-    private class FeFileAllLine{
+    private class FeFileAllLine {
         public String line;
         public FeFileAllLine next;
-        public FeFileAllLine(String line){
+
+        public FeFileAllLine(String line) {
             this.line = line;
         }
     }
@@ -40,49 +41,47 @@ class FeReaderMap {
         mapInfo.type = new int[total];
         mapInfo.typeFirst = new int[total];
         mapInfo.info = new String[total];
-        for(int i = 0; i < total && ffal != null; i++)
-        {
+        for (int i = 0; i < total && ffal != null; i++) {
             String[] lineData = ffal.line.split(";");
-            if(lineData.length > 1)  mapInfo.name[i] = lineData[1];
-            if(lineData.length > 2) mapInfo.defend[i] = (short)FeFormat.StringToInt(lineData[2]);
-            if(lineData.length > 3) mapInfo.avoid[i] = (short)FeFormat.StringToInt(lineData[3]);
-            if(lineData.length > 4) mapInfo.plus[i] = (short)FeFormat.StringToInt(lineData[4]);
-            if(lineData.length > 5) mapInfo.mov[i] = (short)FeFormat.StringToInt(lineData[5]);
-            if(lineData.length > 6) mapInfo.type[i] = FeFormat.HexStringToInt(lineData[6]);
-            if(lineData.length > 7) mapInfo.typeFirst[i] = FeFormat.HexStringToInt(lineData[7]);
-            if(lineData.length > 8) mapInfo.info[i] = lineData[8];
+            if (lineData.length > 1) mapInfo.name[i] = lineData[1];
+            if (lineData.length > 2) mapInfo.defend[i] = (short) FeFormat.StringToInt(lineData[2]);
+            if (lineData.length > 3) mapInfo.avoid[i] = (short) FeFormat.StringToInt(lineData[3]);
+            if (lineData.length > 4) mapInfo.plus[i] = (short) FeFormat.StringToInt(lineData[4]);
+            if (lineData.length > 5) mapInfo.mov[i] = (short) FeFormat.StringToInt(lineData[5]);
+            if (lineData.length > 6) mapInfo.type[i] = FeFormat.HexStringToInt(lineData[6]);
+            if (lineData.length > 7) mapInfo.typeFirst[i] = FeFormat.HexStringToInt(lineData[7]);
+            if (lineData.length > 8) mapInfo.info[i] = lineData[8];
             ffal = ffal.next;
         }
     }
 
-    private void load_map_info_txt(FeInfoMap mapInfo){
+    private void load_map_info_txt(FeInfoMap mapInfo) {
         FeFileAllLine ffal = null, next = null;
         int lineCount = 0;
         String line = null;
         //
         File sdGridInfoPath = new File(feSdRootPath + "/map/grid_info.txt");
         try {
-            if(sdGridInfoPath.exists()) {
+            if (sdGridInfoPath.exists()) {
                 FileInputStream fis = new FileInputStream(sdGridInfoPath.getPath());
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader br = new BufferedReader(isr);
                 //分行读取
                 while ((line = br.readLine()) != null) {
-                    if(next == null) ffal = next = new FeFileAllLine(line);
+                    if (next == null) ffal = next = new FeFileAllLine(line);
                     else next = next.next = new FeFileAllLine(line);
                     lineCount += 1;
                 }
                 br.close();
                 isr.close();
                 fis.close();
-            }
-            else {
+            } else {
                 InputStream is = getClass().getResourceAsStream("/assets/map/grid_info.txt");
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader br = new BufferedReader(isr);
                 //分行读取
                 while ((line = br.readLine()) != null) {
-                    if(next == null) ffal = next = new FeFileAllLine(line);
+                    if (next == null) ffal = next = new FeFileAllLine(line);
                     else next = next.next = new FeFileAllLine(line);
                     lineCount += 1;
                 }
@@ -101,34 +100,33 @@ class FeReaderMap {
 
     private void _load_grid_txt(FeInfoMap mapInfo, String line, int count) {
         String[] lineData = line.split(";");
-        for(int i = 0; i < mapInfo.width && i < lineData.length; i++)
-            mapInfo.grid[count][i] = (short)FeFormat.StringToInt(lineData[i]);
+        for (int i = 0; i < mapInfo.width && i < lineData.length; i++)
+            mapInfo.grid[count][i] = (short) FeFormat.StringToInt(lineData[i]);
     }
 
-    private void load_grid_txt(FeInfoMap mapInfo){
+    private void load_grid_txt(FeInfoMap mapInfo) {
         File sdGridPath = new File(sdFilePath + "grid.txt");
         String line = null;
         int count = 0;
         //重新分配二维数组
         mapInfo.grid = new short[mapInfo.height][mapInfo.width];
         try {
-            if(sdGridPath.exists()) {
+            if (sdGridPath.exists()) {
                 FileInputStream fis = new FileInputStream(sdGridPath.getPath());
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader br = new BufferedReader(isr);
                 //分行读取
                 while ((line = br.readLine()) != null) {
                     _load_grid_txt(mapInfo, line, count++);
-                    if(count >= mapInfo.height)
+                    if (count >= mapInfo.height)
                         break;
                 }
                 br.close();
                 isr.close();
                 fis.close();
-            }
-            else {
+            } else {
                 InputStream is = getClass().getResourceAsStream(assetsFilePath + "grid.txt");
-                if(is == null){
+                if (is == null) {
                     assetsFilePath = default_path;
                     is = getClass().getResourceAsStream(assetsFilePath + "grid.txt");
                 }
@@ -137,7 +135,7 @@ class FeReaderMap {
                 //分行读取
                 while ((line = br.readLine()) != null) {
                     _load_grid_txt(mapInfo, line, count++);
-                    if(count >= mapInfo.height)
+                    if (count >= mapInfo.height)
                         break;
                 }
                 br.close();
@@ -151,14 +149,14 @@ class FeReaderMap {
         }
     }
 
-    private void load_map_jpg(FeInfoMap mapInfo){
+    private void load_map_jpg(FeInfoMap mapInfo) {
         File sdBitmapPath = new File(sdFilePath + "map.jpg");
-        if(sdBitmapPath.exists())
+        if (sdBitmapPath.exists())
             mapInfo.bitmap = BitmapFactory.decodeFile(sdBitmapPath.getPath());
-        else{
-            try{
+        else {
+            try {
                 InputStream is = getClass().getResourceAsStream(assetsFilePath + "map.jpg");
-                if(is == null){
+                if (is == null) {
                     assetsFilePath = default_path;
                     is = getClass().getResourceAsStream(assetsFilePath + "map.png");
                 }
@@ -172,27 +170,26 @@ class FeReaderMap {
         }
     }
 
-    private void _load_size_txt(FeInfoMap mapInfo, byte[] line){
+    private void _load_size_txt(FeInfoMap mapInfo, byte[] line) {
         String[] dat = new String(line).split(";");
-        if(dat.length > 0) mapInfo.width = FeFormat.StringToInt(dat[0]);
-        if(dat.length > 1) mapInfo.height = FeFormat.StringToInt(dat[1]);
-        if(dat.length > 2) mapInfo.pixelPerGrid = FeFormat.StringToInt(dat[2]);
-        if(dat.length > 3) mapInfo.transferGrid = FeFormat.StringToInt(dat[3]);
+        if (dat.length > 0) mapInfo.width = FeFormat.StringToInt(dat[0]);
+        if (dat.length > 1) mapInfo.height = FeFormat.StringToInt(dat[1]);
+        if (dat.length > 2) mapInfo.pixelPerGrid = FeFormat.StringToInt(dat[2]);
+        if (dat.length > 3) mapInfo.transferGrid = FeFormat.StringToInt(dat[3]);
     }
 
-    private void load_size_txt(FeInfoMap mapInfo){
+    private void load_size_txt(FeInfoMap mapInfo) {
         File sdSizePath = new File(sdFilePath + "size.txt");
         try {
-            if(sdSizePath.exists()) {
+            if (sdSizePath.exists()) {
                 FileInputStream fis = new FileInputStream(sdSizePath.getPath());
                 byte[] line = new byte[100];
                 if (fis.read(line) > 0)
                     _load_size_txt(mapInfo, line);
                 fis.close();
-            }
-            else {
+            } else {
                 InputStream is = getClass().getResourceAsStream(assetsFilePath + "size.txt");
-                if(is == null){
+                if (is == null) {
                     assetsFilePath = default_path;
                     is = getClass().getResourceAsStream(assetsFilePath + "size.txt");
                 }
@@ -209,7 +206,7 @@ class FeReaderMap {
     }
 
     public void getFeMapInfo(FeInfoMap mapInfo, int section) {
-        String mapPath = "/map/map" + String.format("%02d/",section);
+        String mapPath = "/map/map" + String.format("%02d/", section);
         assetsFilePath = "/assets" + mapPath;
         sdFilePath = feSdRootPath + mapPath;
 

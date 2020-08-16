@@ -20,12 +20,12 @@ class FeReaderBitmap {
     //关键路径
     private String feSdRootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEX";
 
-    private Bitmap _load_bitmap(String path){
+    private Bitmap _load_bitmap(String path) {
         Bitmap ret = null;
-        if(path.indexOf("/assets") == 0) {
-            try{
+        if (path.indexOf("/assets") == 0) {
+            try {
                 InputStream is = getClass().getResourceAsStream(path);
-                if(is != null){
+                if (is != null) {
                     ret = BitmapFactory.decodeStream(is);
                     is.close();
                 }
@@ -34,8 +34,7 @@ class FeReaderBitmap {
             } catch (IOException e) {
                 Log.d("AssetsPng._load_bitmap", "IOException : " + path);
             }
-        }
-        else
+        } else
             ret = BitmapFactory.decodeFile(path);
         return ret;
     }
@@ -49,10 +48,10 @@ class FeReaderBitmap {
         File sdFileFolderPath = new File(feSdRootPath + folder);
         File sdFilePath = new File(feSdRootPath + folder + realName);
         //sd卡(内置存储)路径准备
-        if(!sdFileFolderPath.exists())
+        if (!sdFileFolderPath.exists())
             sdFileFolderPath.mkdirs();
         //存在sd卡(内置存储)配置则优先使用该配置
-        if(sdFilePath.exists())
+        if (sdFilePath.exists())
             return _load_bitmap(sdFilePath.getPath());
         else
             return _load_bitmap(assetsFilePath.getPath());
@@ -63,12 +62,12 @@ class FeReaderBitmap {
         id: 从0数起
      */
     public Bitmap load_png_byId(String folder, int id) {
-        String realName = String.format("%03d.png",id);
+        String realName = String.format("%03d.png", id);
         return load_bitmap(folder, realName);
     }
 
     public Bitmap load_jpg_byId(String folder, int id) {
-        String realName = String.format("%03d.jpg",id);
+        String realName = String.format("%03d.jpg", id);
         return load_bitmap(folder, realName);
     }
 }

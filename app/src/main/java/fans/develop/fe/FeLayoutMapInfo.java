@@ -21,11 +21,11 @@ public class FeLayoutMapInfo extends FeLayout {
 
     /* ---------- function ---------- */
 
-    public boolean checkHit(float x, float y){
+    public boolean checkHit(float x, float y) {
         return false;
     }
 
-    public void refresh(){
+    public void refresh() {
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++)
             getChildAt(i).invalidate();
@@ -34,8 +34,8 @@ public class FeLayoutMapInfo extends FeLayout {
     /*
         启动 地图光标、地图信息、地图人物头像信息 显示
      */
-    public void on(){
-        if(onFlag)
+    public void on() {
+        if (onFlag)
             return;
         addView(new FeViewSelect(context, sectionCallback));
         addView(new FeViewMapInfo(context, sectionCallback));
@@ -46,7 +46,7 @@ public class FeLayoutMapInfo extends FeLayout {
     /*
         关闭 地图光标、地图信息、地图人物头像信息 显示
      */
-    public void off(){
+    public void off() {
         _removeViewAll(this);
         onFlag = false;
     }
@@ -56,21 +56,23 @@ public class FeLayoutMapInfo extends FeLayout {
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y, FeFlagHit flag){
+    public void click(float x, float y, FeFlagHit flag) {
         ;
     }
 
     /* ---------- abstract interface ---------- */
 
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

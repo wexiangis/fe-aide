@@ -2,28 +2,30 @@ package fans.develop.fe;
 
 import android.view.*;
 
-public class FeLayoutSectionPlot extends FeLayout{
-    
+public class FeLayoutSectionPlot extends FeLayout {
+
     private FeData feData = null;
     // 存档数据
     private FeAssetsSX sxData = null;
 
-    public FeLayoutSectionPlot(FeData feData, FeAssetsSX sxData){
+    public FeLayoutSectionPlot(FeData feData, FeAssetsSX sxData) {
         super(feData.context);
         this.feData = feData;
         this.sxData = sxData;
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

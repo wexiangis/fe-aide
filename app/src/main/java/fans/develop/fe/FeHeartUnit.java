@@ -6,7 +6,7 @@ package fans.develop.fe;
 public class FeHeartUnit {
 
     //接口(回掉函数)定义
-    public interface TimeOutTask{
+    public interface TimeOutTask {
         //count: 根据type类型告诉当前动画应该切到第几帧
         void run(int count);
     }
@@ -18,7 +18,7 @@ public class FeHeartUnit {
     //接口(回掉函数)
     public FeHeartUnit.TimeOutTask task = null;
 
-    public FeHeartUnit(int t, FeHeartUnit.TimeOutTask ta){
+    public FeHeartUnit(int t, FeHeartUnit.TimeOutTask ta) {
         type = t;
         task = ta;
     }

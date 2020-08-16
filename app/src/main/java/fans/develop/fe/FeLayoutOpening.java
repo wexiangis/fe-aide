@@ -15,10 +15,10 @@ public class FeLayoutOpening extends FeLayout {
     private Boolean startFlag = false;
 
     //触屏事件回调函数
-    private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             //触屏UP时, 跳过openning动画
-            if(event.getAction() == MotionEvent.ACTION_UP){
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 //关闭后台线程
                 // asyncTask.cancel(true);
                 startFlag = true;
@@ -32,68 +32,68 @@ public class FeLayoutOpening extends FeLayout {
         }
     };
 
-    public void reload(){
+    public void reload() {
 
         this._removeViewAll(this);
         startFlag = false;
-        
+
         asyncTask = new FeAsyncTask(this, new FeAsyncTask.Callback<FeLayoutOpening>() {
 
-                @Override
-                public void onPreExecute(FeLayoutOpening layoutOpening) {
+            @Override
+            public void onPreExecute(FeLayoutOpening layoutOpening) {
 
-                    textView = new TextView(feData.context);
-                    textView.setText("Opening ...");
-                    textView.setTextSize(32);
-                    textView.setTextColor(0xFFFF0000);
+                textView = new TextView(feData.context);
+                textView.setText("Opening ...");
+                textView.setTextSize(32);
+                textView.setTextColor(0xFFFF0000);
 
-                    //text相对主界面的位置
-                    RelativeLayout.LayoutParams tvLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    tvLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                    textView.setLayoutParams(tvLayoutParams);
+                //text相对主界面的位置
+                RelativeLayout.LayoutParams tvLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                tvLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                textView.setLayoutParams(tvLayoutParams);
 
-                    //loading相对主界面的位置
-                    RelativeLayout.LayoutParams ldLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    ldLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                    layoutOpening.setLayoutParams(ldLayoutParams);
+                //loading相对主界面的位置
+                RelativeLayout.LayoutParams ldLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                ldLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                layoutOpening.setLayoutParams(ldLayoutParams);
 
-                    layoutOpening.addView(textView);
-                    layoutOpening.setBackgroundColor(0x80008080);
-                    layoutOpening.setOnTouchListener(onTouchListener);
-                }
+                layoutOpening.addView(textView);
+                layoutOpening.setBackgroundColor(0x80008080);
+                layoutOpening.setOnTouchListener(onTouchListener);
+            }
 
-                @Override
-                public String doInBackground(FeLayoutOpening layoutOpening, Integer... integers) {
-                    try{
-                        for(int i = 0; i < 100; i++){
-                            if(asyncTask.isCancelled())
-                                return "break";
-                            else if(startFlag)
-                                return null;
-                            Thread.sleep(10);
-                            asyncTask.setPercent(i);
-                        }
-                    }catch(java.lang.InterruptedException e) {
-                        return "break";
+            @Override
+            public String doInBackground(FeLayoutOpening layoutOpening, Integer... integers) {
+                try {
+                    for (int i = 0; i < 100; i++) {
+                        if (asyncTask.isCancelled())
+                            return "break";
+                        else if (startFlag)
+                            return null;
+                        Thread.sleep(10);
+                        asyncTask.setPercent(i);
                     }
-                    return null;
+                } catch (java.lang.InterruptedException e) {
+                    return "break";
                 }
+                return null;
+            }
 
-                @Override
-                public Integer onProgressUpdate(FeLayoutOpening layoutOpening, Integer... values) {
-                    if(values.length > 0)
-                        textView.setText(String.format("Opening .. %d", values[0]));
-                    else
-                        textView.setText("error percent !!");
-                    return null;
-                }
+            @Override
+            public Integer onProgressUpdate(FeLayoutOpening layoutOpening, Integer... values) {
+                if (values.length > 0)
+                    textView.setText(String.format("Opening .. %d", values[0]));
+                else
+                    textView.setText("error percent !!");
+                return null;
+            }
 
-                @Override
-                public void onPostExecute(FeLayoutOpening layoutOpening, String result) {
-                    if(result != "break")
-                        feData.flow.loadTheme();
-                }
-            });
+            @Override
+            public void onPostExecute(FeLayoutOpening layoutOpening, String result) {
+                if (result != "break")
+                    feData.flow.loadTheme();
+            }
+        });
 
         asyncTask.execute(0);
 
@@ -118,22 +118,24 @@ public class FeLayoutOpening extends FeLayout {
 //        this.setBackgroundColor(0xFF004040);
 //        this.setOnTouchListener(onTouchListener);
     }
-    
-    public FeLayoutOpening(FeData feData){
+
+    public FeLayoutOpening(FeData feData) {
         super(feData.context);
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         asyncTask.cancel(true);
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         this.reload();
     }
 }

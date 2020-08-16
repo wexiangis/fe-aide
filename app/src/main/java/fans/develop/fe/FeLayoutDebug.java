@@ -21,11 +21,11 @@ public class FeLayoutDebug extends FeLayout {
     //textView在线性布局中的位置
     LinearLayout.LayoutParams txLayoutParams;
 
-    public boolean checkHit(float x, float y){
+    public boolean checkHit(float x, float y) {
         return false;
     }
 
-    public void refresh(){
+    public void refresh() {
         //遍历所有子view
         for (int i = 0; i < getChildCount(); i++)
             getChildAt(i).invalidate();
@@ -54,40 +54,67 @@ public class FeLayoutDebug extends FeLayout {
         linearLayoutParamR.setMargins(0, 0, 10, 0);
 
         txLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        txLayoutParams.setMargins(0,0, 0, 30);
+        txLayoutParams.setMargins(0, 0, 0, 30);
 
         addView(linearLayoutL, linearLayoutParamL);
         addView(linearLayoutR, linearLayoutParamR);
     }
 
-    /* ----- debug 条目的增、删、 ----- */
+    /* ----- debug 条目的增、删 ----- */
 
-    public TextView addInfo(int color, boolean right){
+    private TextView add(LinearLayout layout, int color) {
         TextView textView = new TextView(sectionCallback.getContext());
         textView.setTextColor(color);
         textView.setTextSize(16);
-        if(right)
-            linearLayoutR.addView(textView, txLayoutParams);
-        else
-            linearLayoutL.addView(textView, txLayoutParams);
+        layout.addView(textView, txLayoutParams);
         return textView;
     }
 
-    public void delInfo(TextView textView){
-        linearLayoutL.removeView(textView);
-        linearLayoutR.removeView(textView);
+    /* ----- debug 设置 ----- */
+
+    private void _show(LinearLayout layout, String key, int color, String val) {
+        TextView tv = null;
+        String tvText = key + ": ";
+        //遍历所有子view
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            tv = (TextView) layout.getChildAt(i);
+            if (tv != null && tv.getText().toString().indexOf(tvText) == 0) {
+                //删除键值?
+                if (val == null)
+                    layout.removeView(tv);
+                    //修改键值
+                else {
+                    tv.setTextColor(color);
+                    tv.setText(tvText + val);
+                }
+                return;
+            }
+        }
+        //未找到,则增加键值
+        tv = add(layout, color);
+        tv.setText(key + ": " + val);
+    }
+
+    public void show(String key, int color, String val) {
+        _show(linearLayoutL, key, color, val);
+    }
+
+    public void show2(String key, int color, String val) {
+        _show(linearLayoutR, key, color, val);
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

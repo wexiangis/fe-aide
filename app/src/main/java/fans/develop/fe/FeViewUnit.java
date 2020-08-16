@@ -30,11 +30,11 @@ public class FeViewUnit extends FeView {
     //用来翻转图片的矩阵(左跑和右跑用的同一个动画)
     private Matrix matrix = new Matrix();
     //扣取图片位置
-    private Rect bitmapBody = new Rect(0,0,0,0);
+    private Rect bitmapBody = new Rect(0, 0, 0, 0);
     //当前人物在地图中的位置
     private FeInfoSite site;
     //动画输出位置
-    private Rect bitmapDist = new Rect(0,0,0,0);
+    private Rect bitmapDist = new Rect(0, 0, 0, 0);
     //参数总集
     public FeUnit unit;
 
@@ -49,8 +49,7 @@ public class FeViewUnit extends FeView {
         order: 地图人物唯一order
         gridX, gridY: 所在格子
      */
-    public FeViewUnit(Context context, int order, FeSectionCallback sectionCallback)
-    {
+    public FeViewUnit(Context context, int order, FeSectionCallback sectionCallback) {
         super(context);
         this.sectionCallback = sectionCallback;
         unit = new FeUnit(sectionCallback.getAssets(), sectionCallback.getAssetsSX(), order);
@@ -68,7 +67,7 @@ public class FeViewUnit extends FeView {
         frameHeight = bitmap.getWidth();
         //图片扣取位置计算
         bitmapBody.left = 0;
-        bitmapBody.top = frameHeight*frameSkipByAnimMode[this.anim.ordinal()];
+        bitmapBody.top = frameHeight * frameSkipByAnimMode[this.anim.ordinal()];
         bitmapBody.right = bitmap.getWidth();
         bitmapBody.bottom = bitmapBody.top + frameHeight;
         //引入心跳
@@ -82,15 +81,15 @@ public class FeViewUnit extends FeView {
     }
 
     //人物order
-    public int order(){
+    public int order() {
         return unit.order();
     }
 
     //方格位置
-    public void xy(int x, int y){
+    public void xy(int x, int y) {
         //检查该位置有人?
         int[][][] unitMap = sectionCallback.getSectionMap().unitMap;
-        if(unitMap[y][x][0] >= 0)
+        if (unitMap[y][x][0] >= 0)
             return;
         //移除旧位置
         unitMap[unit.y()][unit.x()][0] = -1;
@@ -106,23 +105,25 @@ public class FeViewUnit extends FeView {
         //更新动画
         invalidate();
     }
-    public int x(){
+
+    public int x() {
         return unit.x();
     }
-    public int y(){
+
+    public int y() {
         return unit.y();
     }
 
     //阵营
-    public int camp(){
+    public int camp() {
         return unit.camp();
     }
 
     //动画模式
-    public void anim(FeTypeAnim anim){
-        if(this.anim != anim){
+    public void anim(FeTypeAnim anim) {
+        if (this.anim != anim) {
             //镜像和恢复
-            if(this.anim == FeTypeAnim.RIGHT || anim == FeTypeAnim.RIGHT) {
+            if (this.anim == FeTypeAnim.RIGHT || anim == FeTypeAnim.RIGHT) {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, (int) bitmap.getWidth(), (int) bitmap.getHeight(), matrix, true);
                 matrix.postScale(1, 1);
             }
@@ -131,38 +132,38 @@ public class FeViewUnit extends FeView {
             //更新动画顺序
             upgradeHeartType(anim);
             //马上重绘
-            if(anim == FeTypeAnim.ACTIVITY)
+            if (anim == FeTypeAnim.ACTIVITY)
                 ;//heartUnit.task.run(2);//选中动画比较特殊,需从第2帧开始
             else
                 heartUnit.task.run(0);
-        }
-        else {
+        } else {
             this.anim = anim;
             upgradeHeartType(anim);
         }
     }
-    public FeTypeAnim anim(){
+
+    public FeTypeAnim anim() {
         return anim;
     }
 
     //根据动画模式,切换心跳类型
-    private void upgradeHeartType(FeTypeAnim anim){
-        if(anim == FeTypeAnim.STAY)
+    private void upgradeHeartType(FeTypeAnim anim) {
+        if (anim == FeTypeAnim.STAY)
             heartUnit.type = FeHeart.TYPE_ANIM_STAY;
-        else if(anim == FeTypeAnim.ACTIVITY)
+        else if (anim == FeTypeAnim.ACTIVITY)
             heartUnit.type = FeHeart.TYPE_ANIM_SELECT;
         else
             heartUnit.type = FeHeart.TYPE_ANIM_MOVE;
     }
 
     //位置信息
-    public FeInfoSite site(){
+    public FeInfoSite site() {
         return site;
     }
 
     //检查坐标是否在当前人物上
-    public boolean checkHit(float x, float y){
-        if(site.rect.contains((int)x, (int)y))
+    public boolean checkHit(float x, float y) {
+        if (site.rect.contains((int) x, (int) y))
             return true;
         return false;
     }
@@ -171,7 +172,7 @@ public class FeViewUnit extends FeView {
         按路经移动
         path[N][2]: N个点, [2]表示x、y坐标
      */
-    public void move(int[][] path){
+    public void move(int[][] path) {
         //准备
         movPathCount = movX = movY = 0;
         movPath = path;
@@ -188,7 +189,7 @@ public class FeViewUnit extends FeView {
                     //等待人物移动到位
                     while (movPath != null)
                         Thread.sleep(100);
-                }catch (java.lang.InterruptedException e){
+                } catch (java.lang.InterruptedException e) {
                     ;
                 }
                 //移除人物移动心跳
@@ -203,68 +204,65 @@ public class FeViewUnit extends FeView {
     }
 
     //路径移动心跳回调
-    private FeHeartUnit heartMov = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART_QUICK, new FeHeartUnit.TimeOutTask(){
-        public void run(int count){
+    private FeHeartUnit heartMov = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART_QUICK, new FeHeartUnit.TimeOutTask() {
+        public void run(int count) {
             //参数检查
-            if(movPath == null)
+            if (movPath == null)
                 return;
             //已到达预定点?准备下一个点
-            if(site.xGrid == movPath[movPathCount][0] && site.yGrid == movPath[movPathCount][1] && movX == 0 && movY == 0){
+            if (site.xGrid == movPath[movPathCount][0] && site.yGrid == movPath[movPathCount][1] && movX == 0 && movY == 0) {
                 movPathCount += 1;
                 //已经是最后一个点?结束移动
-                if(movPathCount >= movPath.length){
+                if (movPathCount >= movPath.length) {
                     movPath = null;
                     movPathCount = 0;
                     //地图跟着移动
                     FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
-                    if(layoutMap != null)
+                    if (layoutMap != null)
                         layoutMap.moveCenter(site.xGrid, site.yGrid);
                     return;
                 }
             }
             //移动速度
-            int div = site.rect.width()/5;
+            int div = site.rect.width() / 5;
             //根据目标点与当前点的位置,移动 movX, movY
-            if(site.yGrid != movPath[movPathCount][1]){
+            if (site.yGrid != movPath[movPathCount][1]) {
                 movX = 0;
                 //目标点在上边
-                if(site.yGrid > movPath[movPathCount][1]) {
+                if (site.yGrid > movPath[movPathCount][1]) {
                     movY -= div;
                     anim(FeTypeAnim.UP);
                 }
                 //目标点在下边
-                else{
+                else {
                     movY += div;
                     anim(FeTypeAnim.DOWN);
                 }
-            }
-            else if(site.xGrid != movPath[movPathCount][0]){
+            } else if (site.xGrid != movPath[movPathCount][0]) {
                 movY = 0;
                 //目标点在左边
-                if(site.xGrid > movPath[movPathCount][0]){
+                if (site.xGrid > movPath[movPathCount][0]) {
                     movX -= div;
                     anim(FeTypeAnim.LEFT);
                 }
                 //目标点在右边
-                else{
+                else {
                     movX += div;
                     anim(FeTypeAnim.RIGHT);
                 }
             }
             //移动量满一格的时候,跳动一格
-            if(movX > site.rect.width()){
+            if (movX > site.rect.width()) {
                 unit.x(site.xGrid + 1);
                 movX = 0;
-            }
-            else if(movX < -site.rect.width()){
+            } else if (movX < -site.rect.width()) {
                 unit.x(site.xGrid - 1);
                 movX = 0;
             }
-            if(movY > site.rect.height()){
+            if (movY > site.rect.height()) {
                 unit.y(site.yGrid + 1);
                 movY = 0;
-            }
-            else if(movY < -site.rect.height()){
+            } else if (movY < -site.rect.height()) {
                 unit.y(site.yGrid - 1);
                 movY = 0;
             }
@@ -274,11 +272,11 @@ public class FeViewUnit extends FeView {
     });
 
     //动画心跳回调
-    private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_ANIM_STAY, new FeHeartUnit.TimeOutTask(){
-        public void run(int count){
+    private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_ANIM_STAY, new FeHeartUnit.TimeOutTask() {
+        public void run(int count) {
             //移动框图(电影胶片)
             bitmapBody.left = 0;
-            bitmapBody.top = frameHeight*(frameSkipByAnimMode[anim.ordinal()] + count);
+            bitmapBody.top = frameHeight * (frameSkipByAnimMode[anim.ordinal()] + count);
             bitmapBody.right = bitmap.getWidth();
             bitmapBody.bottom = bitmapBody.top + frameHeight;
             //调用一次onDrow
@@ -287,23 +285,23 @@ public class FeViewUnit extends FeView {
     });
 
     //绘图回调
-    protected void onDraw(Canvas canvas){
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //跟地图要位置
         sectionCallback.getSectionMap().getRectByGrid(unit.x(), unit.y(), site);
         //扩大矩阵的上、左、右边界
-        bitmapDist.left = site.rect.left - site.rect.width()/2 + movX;
-        bitmapDist.right = site.rect.right + site.rect.width()/2 + movX;
-        bitmapDist.top = site.rect.bottom - site.rect.width()*2 + movY;
+        bitmapDist.left = site.rect.left - site.rect.width() / 2 + movX;
+        bitmapDist.right = site.rect.right + site.rect.width() / 2 + movX;
+        bitmapDist.top = site.rect.bottom - site.rect.width() * 2 + movY;
         bitmapDist.bottom = site.rect.bottom + movY;
         //绘图
-        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));//抗锯齿
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));//抗锯齿
         canvas.drawBitmap(bitmap, bitmapBody, bitmapDist, paint);
     }
 
     /* ---------- abstract interface ---------- */
 
-    public void onDestory(){
+    public void onDestory() {
         //解除心跳注册
         sectionCallback.removeHeartUnit(heartUnit);
     }

@@ -15,12 +15,13 @@ public class FeHeart {
     // ---------- 链表部分 ----------
 
     //本地定义一个链表头
-    private FeChain<FeHeartUnit> chain = new FeChain<FeHeartUnit>(new FeHeartUnit(0, new FeHeartUnit.TimeOutTask(){
-        public void run(int c){}
+    private FeChain<FeHeartUnit> chain = new FeChain<FeHeartUnit>(new FeHeartUnit(0, new FeHeartUnit.TimeOutTask() {
+        public void run(int c) {
+        }
     }));
 
     //添加链表单元的方式申请心跳
-    public void addUnit(FeHeartUnit u){
+    public void addUnit(FeHeartUnit u) {
         FeChain<FeHeartUnit> tmp = chain;
         while (tmp.next != null)
             tmp = tmp.next;
@@ -30,13 +31,13 @@ public class FeHeart {
     }
 
     //移除单元
-    public void removeUnit(FeHeartUnit u){
+    public void removeUnit(FeHeartUnit u) {
         FeChain<FeHeartUnit> tmp = chain.next;
-        while (tmp != null){
-            if(tmp.data == u){
+        while (tmp != null) {
+            if (tmp.data == u) {
                 FeChain<FeHeartUnit> tmp2 = tmp.next;
                 tmp.previous.next = tmp2;
-                if(tmp2 != null)
+                if (tmp2 != null)
                     tmp2.previous = tmp.previous;
                 break;
             }
@@ -45,7 +46,7 @@ public class FeHeart {
     }
 
     //根据type遍历链表,然后回掉接口函数,传参count为当前要播放第几帧
-    private boolean scanChain(int type, int count){
+    private boolean scanChain(int type, int count) {
         FeChain<FeHeartUnit> tmp = chain.next;
         boolean hit = false;
         try {
@@ -61,7 +62,7 @@ public class FeHeart {
                     hit = true;
                 }
             }
-        }catch (java.lang.RuntimeException e){
+        } catch (java.lang.RuntimeException e) {
             Log.e("Heart: scanChain()", "runtime error");
             return false;
         }
@@ -114,21 +115,21 @@ public class FeHeart {
     private Timer[] timerQuick = new Timer[TYPE_QUICK_TOTAL];
     private TimerTask[] timerTaskQuick = new TimerTask[TYPE_QUICK_TOTAL];
 
-    public void start(){
+    public void start() {
         /* ----- type 1 TYPE_ANIM_STAY ----- */
         timer[0] = new Timer();
         timerTask[0] = new TimerTask() {
             @Override
             public void run() {
-                if(++circleType1_timerCount > circleType1[circleType1_count]){
+                if (++circleType1_timerCount > circleType1[circleType1_count]) {
                     circleType1_timerCount = 1;
                     //
-                    if(circleType1_dir) {
+                    if (circleType1_dir) {
                         if (--circleType1_count <= 0) {
                             circleType1_count = 0;
                             circleType1_dir = !circleType1_dir;
                         }
-                    }else{
+                    } else {
                         if (++circleType1_count >= circleType1.length - 1) {
                             circleType1_count = circleType1.length - 1;
                             circleType1_dir = !circleType1_dir;
@@ -144,22 +145,22 @@ public class FeHeart {
         timerTask[1] = new TimerTask() {
             @Override
             public void run() {
-                if(++circleType2_timerCount > circleType2[circleType2_count]){
+                if (++circleType2_timerCount > circleType2[circleType2_count]) {
                     circleType2_timerCount = 1;
                     //
-                    if(circleType2_dir) {
+                    if (circleType2_dir) {
                         if (--circleType2_count <= 0) {
                             circleType2_count = 0;
                             circleType2_dir = !circleType2_dir;
                         }
-                    }else{
+                    } else {
                         if (++circleType2_count >= circleType2.length - 1) {
                             circleType2_count = circleType2.length - 1;
                             circleType2_dir = !circleType2_dir;
                         }
                     }
                     //
-                    if(!scanChain(TYPE_ANIM_SELECT, circleType2_count)) {
+                    if (!scanChain(TYPE_ANIM_SELECT, circleType2_count)) {
                         //随时就绪,下次有人被选中时从第一帧开始播放
                         circleType2_dir = false;
                         circleType2_count = 1;
@@ -172,10 +173,10 @@ public class FeHeart {
         timerTask[2] = new TimerTask() {
             @Override
             public void run() {
-                if(++circleType3_timerCount > circleType3[circleType3_count]){
+                if (++circleType3_timerCount > circleType3[circleType3_count]) {
                     circleType3_timerCount = 1;
                     //
-                    if(++circleType3_count >= circleType3.length)
+                    if (++circleType3_count >= circleType3.length)
                         circleType3_count = 0;
                     //
                     scanChain(TYPE_ANIM_MOVE, circleType3_count);
@@ -207,16 +208,16 @@ public class FeHeart {
             timer[i].schedule(timerTaskQuick[i], 200, TIMER_QUICK_PERIOD);
     }
 
-    public void stop(){
-        if(timer != null){
+    public void stop() {
+        if (timer != null) {
             // all cancel
-            for (int i = 0; i < timer.length; i++){
+            for (int i = 0; i < timer.length; i++) {
                 timerTask[i].cancel();
                 timerTask[i] = null;
                 timer[i].cancel();
                 timer[i] = null;
             }
-            for (int i = 0; i < timerQuick.length; i++){
+            for (int i = 0; i < timerQuick.length; i++) {
                 timerTaskQuick[i].cancel();
                 timerTaskQuick[i] = null;
                 timerQuick[i].cancel();

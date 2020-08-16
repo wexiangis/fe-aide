@@ -30,54 +30,61 @@ public class FeInfoMap {
     public int[] typeFirst;
     public String[] info;
 
-    public FeInfoMap(int section){
+    public FeInfoMap(int section) {
         this.section = section;
     }
 
     /*
         更具坐标获取各种地图信息
      */
-    public String name(int xGrid, int yGrid){
+    public String name(int xGrid, int yGrid) {
         return name[grid[yGrid][xGrid]];
     }
-    public short defend(int xGrid, int yGrid){
+
+    public short defend(int xGrid, int yGrid) {
         return defend[grid[yGrid][xGrid]];
     }
-    public short avoid(int xGrid, int yGrid){
+
+    public short avoid(int xGrid, int yGrid) {
         return avoid[grid[yGrid][xGrid]];
     }
-    public short plus(int xGrid, int yGrid){
+
+    public short plus(int xGrid, int yGrid) {
         return plus[grid[yGrid][xGrid]];
     }
-    public short mov(int xGrid, int yGrid){
+
+    public short mov(int xGrid, int yGrid) {
         return mov[grid[yGrid][xGrid]];
     }
-    public int type(int xGrid, int yGrid){
+
+    public int type(int xGrid, int yGrid) {
         return type[grid[yGrid][xGrid]];
     }
-    public int typeFirst(int xGrid, int yGrid){
+
+    public int typeFirst(int xGrid, int yGrid) {
         return typeFirst[grid[yGrid][xGrid]];
     }
-    public String info(int xGrid, int yGrid){
+
+    public String info(int xGrid, int yGrid) {
         return info[grid[yGrid][xGrid]];
     }
 
     /*
         移动力减损计算
      */
-    public int movReduce(int xGrid, int yGrid, int typeProfession){
+    public int movReduce(int xGrid, int yGrid, int typeProfession) {
         //超出地图范围
-        if(xGrid < 0 || yGrid < 0 || xGrid >= width || yGrid >= height)
+        if (xGrid < 0 || yGrid < 0 || xGrid >= width || yGrid >= height)
             return 9999;
         //
         int reduce = mov(xGrid, yGrid);
         //是否地图禁进入typeProfession?
-        if((type(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0)
+        if ((type(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0)
             return 9999;
         //是否优势通过?
-        if((typeFirst(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0){
+        if ((typeFirst(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0) {
             //这里预留可能出现负值的情况
-            if(reduce > 1)
+            if (reduce > 1)
                 reduce = 1;
         }
         //否则返回mov削减量

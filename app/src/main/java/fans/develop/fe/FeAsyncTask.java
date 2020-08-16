@@ -11,10 +11,13 @@ public class FeAsyncTask extends AsyncTask<Integer, Integer, String> {
     // 第二个参数：传入 onProgressUpdate() 方法的参数类型
     // 第三个参数：传入 onPostExecute() 方法的参数类型，也是 doInBackground() 方法返回的类型
 
-    public interface Callback<U>{
+    public interface Callback<U> {
         public void onPreExecute(U obj);// UI操作
+
         public String doInBackground(U obj, Integer... integers);// 后台操作
+
         public Integer onProgressUpdate(U obj, Integer... values);// UI操作
+
         public void onPostExecute(U obj, String result);// UI操作
     }
 
@@ -25,7 +28,7 @@ public class FeAsyncTask extends AsyncTask<Integer, Integer, String> {
         obj: 私有数据
         callback: 多了obj参数的回调函数,要"FeAsyncTask.Callback<XXX>"方式初始化
      */
-    public FeAsyncTask(Object obj, FeAsyncTask.Callback callback){
+    public FeAsyncTask(Object obj, FeAsyncTask.Callback callback) {
         this.obj = obj;
         this.callback = callback;
     }
@@ -33,7 +36,7 @@ public class FeAsyncTask extends AsyncTask<Integer, Integer, String> {
     /*
         在 doInBackground 发消息到 onProgressUpdate
      */
-    public void setPercent(Integer... percents){
+    public void setPercent(Integer... percents) {
         publishProgress(percents);
     }
 

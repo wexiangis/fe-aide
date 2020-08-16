@@ -34,10 +34,9 @@ public class FeViewMarkEnemy extends FeView {
         order: 地图人物唯一order
      */
     public FeViewMarkEnemy(Context context,
-                      int typeMark,
-                      int order,
-                      FeSectionCallback sectionCallback)
-    {
+                           int typeMark,
+                           int order,
+                           FeSectionCallback sectionCallback) {
         super(context);
         this.typeMark = typeMark;
         this.order = order;
@@ -51,38 +50,38 @@ public class FeViewMarkEnemy extends FeView {
         //初始化标记绘制范围
         FeInfoMap mapInfo = sectionCallback.getSectionMap().mapInfo;
         markMap = new int[mapInfo.height][mapInfo.width];
-        for(int x = 0; x < markMap[0].length; x++)
-            for(int y = 0; y < markMap.length; y++)
+        for (int x = 0; x < markMap[0].length; x++)
+            for (int y = 0; y < markMap.length; y++)
                 markMap[y][x] = -1;
     }
 
-    public void setTypeMark(int typeMark){
+    public void setTypeMark(int typeMark) {
         this.typeMark = typeMark;
     }
 
-    public int getTypeMark(){
+    public int getTypeMark() {
         return typeMark;
     }
 
-    public int getOrder(){
+    public int getOrder() {
         return order;
     }
 
-    public FeInfoSite checkHit(int xGrid, int yGrid){
+    public FeInfoSite checkHit(int xGrid, int yGrid) {
         //非移动范围
-        if(siteMov == null
+        if (siteMov == null
                 || xGrid < 0 || xGrid >= markMap[0].length
                 || yGrid < 0 || yGrid >= markMap.length)
             return null;
         //该格子在移动范围内?
-        if(markMap[yGrid][xGrid] == FeTypeMark.BLUE)
+        if (markMap[yGrid][xGrid] == FeTypeMark.BLUE)
             return sectionCallback.getSectionMap().getRectByGrid(xGrid, yGrid);
         return null;
     }
 
     //动画心跳回调
-    private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART, new FeHeartUnit.TimeOutTask(){
-        public void run(int count){
+    private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART, new FeHeartUnit.TimeOutTask() {
+        public void run(int count) {
             FeViewMarkEnemy.this.invalidate();
         }
     });
@@ -90,31 +89,31 @@ public class FeViewMarkEnemy extends FeView {
     /*
         擦除自己画过的格子
      */
-    private void cleanMarkMap(){
-        for(int x = 0; x < markMap[0].length; x++)
-            for(int y = 0; y < markMap.length; y++)
+    private void cleanMarkMap() {
+        for (int x = 0; x < markMap[0].length; x++)
+            for (int y = 0; y < markMap.length; y++)
                 markMap[y][x] = -1;
     }
 
     //绘图回调
-    protected void onDraw(Canvas canvas){
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         //没有unit图层?
-        if(sectionCallback.getLayoutUnit() == null)
+        if (sectionCallback.getLayoutUnit() == null)
             return;
         //获得unit位置
         FeInfoSite siteUnit = sectionCallback.getLayoutUnit().getUnitSite(order);
         //order人物没有绘制?
-        if(siteUnit == null)
+        if (siteUnit == null)
             return;
 
         //第一次初始化 或者 人物位置变动了, 更新range
-        if(this.siteUnit == null
+        if (this.siteUnit == null
                 || this.siteUnit.xGrid != siteUnit.xGrid
-                || this.siteUnit.yGrid != siteUnit.yGrid){
+                || this.siteUnit.yGrid != siteUnit.yGrid) {
             //更新位置
-            if(this.siteUnit == null)
+            if (this.siteUnit == null)
                 this.siteUnit = new FeInfoSite();
             sectionCallback.getSectionMap().getRectByGrid(siteUnit.xGrid, siteUnit.yGrid, this.siteUnit);
             //计算范围
@@ -141,9 +140,8 @@ public class FeViewMarkEnemy extends FeView {
         //int[][][] markEnemyMap = sectionCallback.getSectionMap().markEnemyMap;
 
         //遍历 siteMov 数组,画格子
-        if(typeMark == FeTypeMark.RED)
-        {
-            if(siteMov != null) {
+        if (typeMark == FeTypeMark.RED) {
+            if (siteMov != null) {
                 for (int i = 0; i < siteMov.length; i++) {
                     canvas.drawPath(siteMov[i].path, paintB);
                     //标记已画过
@@ -152,13 +150,11 @@ public class FeViewMarkEnemy extends FeView {
             }
         }
         //遍历 siteHit 数组,画格子
-        else if(typeMark == FeTypeMark.RED)
-        {
-            if(siteHit != null)
-            {
-                for(int i = 0; i < siteHit.length; i++){
+        else if (typeMark == FeTypeMark.RED) {
+            if (siteHit != null) {
+                for (int i = 0; i < siteHit.length; i++) {
                     //这个点刚才没有画过移动范围?
-                    if(markMap[siteHit[i].yGrid][siteHit[i].xGrid] != FeTypeMark.BLUE){
+                    if (markMap[siteHit[i].yGrid][siteHit[i].xGrid] != FeTypeMark.BLUE) {
                         //标记已画过
                         markMap[siteHit[i].yGrid][siteHit[i].xGrid] = FeTypeMark.RED;
                         canvas.drawPath(siteHit[i].path, paintR);
@@ -167,13 +163,11 @@ public class FeViewMarkEnemy extends FeView {
             }
         }
         //遍历 siteSpecial 数组,画格子
-        else
-        {
-            if(siteSpecial != null)
-            {
-                for(int i = 0; i < siteSpecial.length; i++){
+        else {
+            if (siteSpecial != null) {
+                for (int i = 0; i < siteSpecial.length; i++) {
                     //这个点刚才没有画过移动范围?
-                    if(markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] != FeTypeMark.BLUE){
+                    if (markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] != FeTypeMark.BLUE) {
                         //标记已画过
                         markMap[siteSpecial[i].yGrid][siteSpecial[i].xGrid] = FeTypeMark.GREEN;
                         canvas.drawPath(siteSpecial[i].path, paintR);
@@ -185,7 +179,7 @@ public class FeViewMarkEnemy extends FeView {
 
     /* ---------- abstract interface ---------- */
 
-    public void onDestory(){
+    public void onDestory() {
         //擦除自己画过的格子(每一层)
         cleanMarkMap();
         //解除心跳注册

@@ -28,31 +28,28 @@ public class FeLayoutSave extends FeLayout {
     int[][] saveState;
 
     //触屏事件回调函数
-    private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 //按下反馈
                 v.setAlpha(0.5f);
-            }
-            else if(event.getAction() == MotionEvent.ACTION_UP) {
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 //松开反馈
                 v.setAlpha(1.0f);
                 //遍历所有存档位置
-                for(int i = 0; i < bnSaveList.length; i++)
-                {
-                    if(v == bnSaveList[i])
-                    {
-                        switch(FeLayoutSave.this.ctrl){
+                for (int i = 0; i < bnSaveList.length; i++) {
+                    if (v == bnSaveList[i]) {
+                        switch (FeLayoutSave.this.ctrl) {
                             //新建
                             case 0:
                                 //确认为空存档
-                                if(bnSaveList[i].getText().toString().indexOf(default_name) == 0){
+                                if (bnSaveList[i].getText().toString().indexOf(default_name) == 0) {
                                     //新建
                                     feData.assets.save.newSx(i);
                                     //刷新
                                     refresh();
                                     //检查创建结果
-                                    if(bnSaveList[i].getText().toString().indexOf(default_name) == 0){
+                                    if (bnSaveList[i].getText().toString().indexOf(default_name) == 0) {
                                         //提示缺少存储权限
                                         Toast.makeText(feData.activity, "缺少存储权限,无法创建文件", Toast.LENGTH_SHORT).show();
                                         Toast.makeText(feData.activity, "请到设置->应用管理启用存储权限", Toast.LENGTH_SHORT).show();
@@ -62,20 +59,20 @@ public class FeLayoutSave extends FeLayout {
                             //继续游戏
                             case 1:
                                 //确认为非空存档且为中断记录
-                                if(bnSaveList[i].getText().toString().indexOf(default_name) != 0
-                                    && saveState[i][1] > 0)
+                                if (bnSaveList[i].getText().toString().indexOf(default_name) != 0
+                                        && saveState[i][1] > 0)
                                     feData.flow.loadSection(i, 1);
                                 break;
                             //读取记录
                             case 2:
                                 //确认为非空存档
-                                if(bnSaveList[i].getText().toString().indexOf(default_name) != 0)
+                                if (bnSaveList[i].getText().toString().indexOf(default_name) != 0)
                                     feData.flow.loadSection(i, 0);
                                 break;
                             //删除
                             case 3:
                                 //确认为非空存档
-                                if(bnSaveList[i].getText().toString().indexOf(default_name) != 0){
+                                if (bnSaveList[i].getText().toString().indexOf(default_name) != 0) {
                                     //删除
                                     feData.assets.save.delSx(i);
                                     //刷新
@@ -85,18 +82,18 @@ public class FeLayoutSave extends FeLayout {
                             //复制
                             case 4:
                                 //点击被复制项
-                                if(currnt_select < 0){
+                                if (currnt_select < 0) {
                                     //确认为非空存档
-                                    if(bnSaveList[i].getText().toString().indexOf(default_name) != 0){
+                                    if (bnSaveList[i].getText().toString().indexOf(default_name) != 0) {
                                         //标记
                                         currnt_select = i;
                                         v.setAlpha(0.5f);
                                     }
                                 }
                                 //点击复制到位置
-                                else{
+                                else {
                                     //不是选中那条
-                                    if(i != currnt_select){
+                                    if (i != currnt_select) {
                                         //复制
                                         feData.assets.save.copySx(i, currnt_select);
                                         //解除标记
@@ -122,7 +119,7 @@ public class FeLayoutSave extends FeLayout {
         }
     };
 
-    private Button buildButtonStyle(Context context, String text){
+    private Button buildButtonStyle(Context context, String text) {
         Button button = new Button(context);
         button.setText(text);
         button.setTextColor(0xFFFFFFFF);
@@ -137,15 +134,15 @@ public class FeLayoutSave extends FeLayout {
     /*
         刷新按键内容
      */
-    public void refresh(){
+    public void refresh() {
         //更新存档状态(saveState[][]的状态)
         saveState = feData.saveLoad();
         //更新词条
-        for(int i = 0; i < bnSaveList.length; i++){
-            int h = saveState[i][2]/3600;
-            int m = saveState[i][2]%3600/60;
-            int s = saveState[i][2]%60;
-            if(saveState[i][0] >= 0)
+        for (int i = 0; i < bnSaveList.length; i++) {
+            int h = saveState[i][2] / 3600;
+            int m = saveState[i][2] % 3600 / 60;
+            int s = saveState[i][2] % 60;
+            if (saveState[i][0] >= 0)
                 bnSaveList[i].setText(String.format("第%d章 XXX %02d:%02d:%02d", saveState[i][0], h, m, s));
             else
                 bnSaveList[i].setText(default_name);
@@ -164,11 +161,11 @@ public class FeLayoutSave extends FeLayout {
         saveState = feData.saveLoad();
         //初始化
         bnSaveList = new Button[feData.saveNum()];
-        for(int i = 0; i < bnSaveList.length; i++){
-            int h = saveState[i][2]/3600;
-            int m = saveState[i][2]%3600/60;
-            int s = saveState[i][2]%60;
-            if(saveState[i][0] >= 0)
+        for (int i = 0; i < bnSaveList.length; i++) {
+            int h = saveState[i][2] / 3600;
+            int m = saveState[i][2] % 3600 / 60;
+            int s = saveState[i][2] % 60;
+            if (saveState[i][0] >= 0)
                 bnSaveList[i] = buildButtonStyle(
                         feData.context, String.format("第%d章 XXX %02d:%02d:%02d", saveState[i][0], h, m, s));
             else
@@ -179,13 +176,13 @@ public class FeLayoutSave extends FeLayout {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         //创建线性布局窗体参数
         bnLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        bnLayoutParams.setMargins(0,0, 0, 30);
+        bnLayoutParams.setMargins(0, 0, 0, 30);
         //线性布局窗体相对主界面位置参数
         linearLayoutParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         linearLayoutParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
         linearLayoutParam.addRule(RelativeLayout.CENTER_VERTICAL);
         //添加条目到视图
-        for(int i = 0; i < bnSaveList.length; i++)
+        for (int i = 0; i < bnSaveList.length; i++)
             linearLayout.addView(bnSaveList[i], bnLayoutParams);
 
         //刷新按键内容
@@ -201,22 +198,24 @@ public class FeLayoutSave extends FeLayout {
     /*
         ctrl 0/新建 1/继续 2/加载(或继续) 3/删除 4/复制 5/通关存档
      */
-    public FeLayoutSave(FeData feData, int ctrl){
+    public FeLayoutSave(FeData feData, int ctrl) {
         super(feData.context);
         this.feData = feData;
         this.ctrl = ctrl;
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         this.reload();
     }
 }

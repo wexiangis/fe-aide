@@ -26,20 +26,20 @@ public class FeViewUnitInfo extends FeView {
     //是否绘制了图片?没有则不参与 checkHit()
     private boolean drawHead = false;
 
-    public FeViewUnitInfo(Context context, FeSectionCallback sectionCallback){
+    public FeViewUnitInfo(Context context, FeSectionCallback sectionCallback) {
         super(context);
         this.sectionCallback = sectionCallback;
         //
         bitmapHeadBg = sectionCallback.getAssets().menu.getMapHeader();
         //
-        pixelPowHead = sectionCallback.getSectionMap().yGridPixel*2/bitmapHeadBg.getHeight();
+        pixelPowHead = sectionCallback.getSectionMap().yGridPixel * 2 / bitmapHeadBg.getHeight();
         //
         rectSrcHeadBg = new Rect(0, 0, bitmapHeadBg.getWidth(), bitmapHeadBg.getHeight());
         rectDistHeadBg = new Rect(
-                (int)(sectionCallback.getSectionMap().xGridPixel/4),
-                (int)(sectionCallback.getSectionMap().yGridPixel/4),
-                (int)(sectionCallback.getSectionMap().xGridPixel/4 + bitmapHeadBg.getWidth()*pixelPowHead),
-                (int)(sectionCallback.getSectionMap().yGridPixel/4 + bitmapHeadBg.getHeight()*pixelPowHead));
+                (int) (sectionCallback.getSectionMap().xGridPixel / 4),
+                (int) (sectionCallback.getSectionMap().yGridPixel / 4),
+                (int) (sectionCallback.getSectionMap().xGridPixel / 4 + bitmapHeadBg.getWidth() * pixelPowHead),
+                (int) (sectionCallback.getSectionMap().yGridPixel / 4 + bitmapHeadBg.getHeight() * pixelPowHead));
         //
         paintHeadBg = new Paint();
         paintHeadBg.setColor(0xE00000FF);//半透明
@@ -48,7 +48,7 @@ public class FeViewUnitInfo extends FeView {
         paintHead.setColor(0xE00000FF);//半透明
         //
         paintParam = new Paint();
-        paintParam.setTextSize(rectDistHeadBg.height()/8);
+        paintParam.setTextSize(rectDistHeadBg.height() / 8);
 //        paintParam.setStyle(Paint.Style.FILL_AND_STROKE);
 //        paintParam.setStrokeWidth(2);
 //        paintParam.setAntiAlias(true);
@@ -56,63 +56,63 @@ public class FeViewUnitInfo extends FeView {
         paintParam.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
-    public boolean checkHit(float x, float y){
-        if(drawHead && rectDistHeadBg.contains((int)x, (int)y))
+    public boolean checkHit(float x, float y) {
+        if (drawHead && rectDistHeadBg.contains((int) x, (int) y))
             return true;
         return false;
     }
 
-    public void onDraw(Canvas canvas){
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         //移动中不绘制
-        if(sectionCallback.onMapMove()){
+        if (sectionCallback.onMapMove()) {
             drawHead = false;
             return;
         }
 
         //选中人物位置
-        if(sectionCallback.getSectionUnit().viewUnit == null)
+        if (sectionCallback.getSectionUnit().viewUnit == null)
             return;
         FeInfoSite unitSite = sectionCallback.getSectionUnit().viewUnit.site();
 
         //图像位置自动调整
-        if(unitSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
-            rectDistHeadBg.left = (int)(sectionCallback.getSectionMap().xGridPixel/4);
-            rectDistHeadBg.right = (int)(sectionCallback.getSectionMap().xGridPixel/4 + bitmapHeadBg.getWidth()*pixelPowHead);
-        }else{ //放到右边
-            rectDistHeadBg.left = (int)(sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel/4 - bitmapHeadBg.getWidth()*pixelPowHead);
-            rectDistHeadBg.right = (int)(sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel/4);
+        if (unitSite.rect.right > sectionCallback.getSectionMap().screenWidth / 2) { //放到左边
+            rectDistHeadBg.left = (int) (sectionCallback.getSectionMap().xGridPixel / 4);
+            rectDistHeadBg.right = (int) (sectionCallback.getSectionMap().xGridPixel / 4 + bitmapHeadBg.getWidth() * pixelPowHead);
+        } else { //放到右边
+            rectDistHeadBg.left = (int) (sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel / 4 - bitmapHeadBg.getWidth() * pixelPowHead);
+            rectDistHeadBg.right = (int) (sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel / 4);
         }
 
         //画人物头像
-        if(!sectionCallback.onMapHit() ||
-            unitSite.rect.left > sectionCallback.getSectionMap().screenWidth ||
-            unitSite.rect.right < 0 ||
-            unitSite.rect.top > sectionCallback.getSectionMap().screenHeight ||
-            unitSite.rect.bottom < 0){
+        if (!sectionCallback.onMapHit() ||
+                unitSite.rect.left > sectionCallback.getSectionMap().screenWidth ||
+                unitSite.rect.right < 0 ||
+                unitSite.rect.top > sectionCallback.getSectionMap().screenHeight ||
+                unitSite.rect.bottom < 0) {
             drawHead = false;
-        }else {
+        } else {
             drawHead = true;
-            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));//抗锯齿
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));//抗锯齿
             canvas.drawBitmap(bitmapHeadBg, rectSrcHeadBg, rectDistHeadBg, paintHeadBg);
             //填信息
             canvas.drawText(
-                sectionCallback.getAssets().unit.getName(0),
-                rectDistHeadBg.left + rectDistHeadBg.width()/4,
-                rectDistHeadBg.top + rectDistHeadBg.height()/4,
-                paintParam);
+                    sectionCallback.getAssets().unit.getName(0),
+                    rectDistHeadBg.left + rectDistHeadBg.width() / 4,
+                    rectDistHeadBg.top + rectDistHeadBg.height() / 4,
+                    paintParam);
             canvas.drawText(
                     sectionCallback.getAssets().unit.getSummary(0),
-                    rectDistHeadBg.left + rectDistHeadBg.width()/4,
-                    rectDistHeadBg.top + rectDistHeadBg.height()/2,
+                    rectDistHeadBg.left + rectDistHeadBg.width() / 4,
+                    rectDistHeadBg.top + rectDistHeadBg.height() / 2,
                     paintParam);
         }
     }
 
     /* ---------- abstract interface ---------- */
 
-    public void onDestory(){
+    public void onDestory() {
         ;
     }
 }

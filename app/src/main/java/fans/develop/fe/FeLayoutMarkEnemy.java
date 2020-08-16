@@ -20,12 +20,12 @@ public class FeLayoutMarkEnemy extends FeLayout {
     }
 
     /* ---------- function ---------- */
-    
-    public boolean checkHit(float x, float y){
+
+    public boolean checkHit(float x, float y) {
         return false;
     }
 
-    public void refresh(){
+    public void refresh() {
         for (int i = 0; i < getChildCount(); i++)
             getChildAt(i).invalidate();
     }
@@ -33,11 +33,11 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         根据id定位view
      */
-    public FeViewMarkEnemy getViewMarkEnemy(int order){
+    public FeViewMarkEnemy getViewMarkEnemy(int order) {
         FeViewMarkEnemy viewMarkEnemy;
-        for (int i = 0; i < getChildCount(); i++){
-            viewMarkEnemy = (FeViewMarkEnemy)getChildAt(i);
-            if(viewMarkEnemy.getOrder() == order)
+        for (int i = 0; i < getChildCount(); i++) {
+            viewMarkEnemy = (FeViewMarkEnemy) getChildAt(i);
+            if (viewMarkEnemy.getOrder() == order)
                 return viewMarkEnemy;
         }
         return null;
@@ -46,9 +46,9 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         显示特定人物的mark范围
      */
-    public void markUnit(int order, int typeMark){
+    public void markUnit(int order, int typeMark) {
         FeViewMarkEnemy viewMarkEnemy = getViewMarkEnemy(order);
-        if(viewMarkEnemy == null)
+        if (viewMarkEnemy == null)
             addView(new FeViewMarkEnemy(context, typeMark, order, sectionCallback));
         else
             viewMarkEnemy.setTypeMark(typeMark);
@@ -57,14 +57,14 @@ public class FeLayoutMarkEnemy extends FeLayout {
     /*
         关闭特定人物的mark范围
      */
-    public void cleanUnit(int order){
+    public void cleanUnit(int order) {
         ;
     }
 
     /*
         关闭全部人物的mark范围
      */
-    public void cleanAllUnit(){
+    public void cleanAllUnit() {
         _removeViewAll(this);
     }
 
@@ -73,21 +73,23 @@ public class FeLayoutMarkEnemy extends FeLayout {
         hitThis: 点击目标为当前控件
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
-    public void click(float x, float y, FeFlagHit flag){
+    public void click(float x, float y, FeFlagHit flag) {
         ;
     }
 
     /* ---------- abstract interface ---------- */
 
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

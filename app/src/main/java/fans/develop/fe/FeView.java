@@ -11,7 +11,7 @@ public abstract class FeView extends View {
     //即将销毁该view,在这里释放各种内存句柄
     public abstract void onDestory();
 
-    public FeView(Context context){
+    public FeView(Context context) {
         super(context);
     }
 }

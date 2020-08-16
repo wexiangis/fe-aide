@@ -35,45 +35,44 @@ public class FeFileRead {
     private int line = 0;//当前行数
 
     // 返回按分隔符分割好的一行数据
-    public String[] getContent(){
+    public String[] getContent() {
         return content;
     }
 
     // 返回一行原始数据
-    public String getLineContent(){
+    public String getLineContent() {
         return lineContent;
     }
 
     // 当前读取行号, 从0数起
-    public int getLine(){
+    public int getLine() {
         return line;
     }
 
     // 返回改行 String[count] 的数据
-    public int getInt(int count){
-        if(content != null && content.length > count)
+    public int getInt(int count) {
+        if (content != null && content.length > count)
             return FeFormat.StringToInt(content[count]);
         return -1;
     }
 
     // 返回改行 String[count] 的数据
-    public String getString(int count){
-        if(content != null && content.length > count)
+    public String getString(int count) {
+        if (content != null && content.length > count)
             return content[count];
         return "";
     }
 
     // spl: 分隔符, 一般为";"
-    public boolean readLine(String spl){
-        try{
-            if(br == null)
+    public boolean readLine(String spl) {
+        try {
+            if (br == null)
                 return false;
             lineContent = br.readLine();
-            if(lineContent == null)
+            if (lineContent == null)
                 return false;
             content = lineContent.split(spl);
-            if(content == null)
-            {
+            if (content == null) {
                 lineContent = null;
                 return false;
             }
@@ -94,12 +93,12 @@ public class FeFileRead {
         File sdFilePath = new File(feSdRootPath + folder + name);
         File sdFileFolderPath = new File(feSdRootPath + folder);
         //sd卡(内置存储)路径准备
-        if(!sdFileFolderPath.exists())
+        if (!sdFileFolderPath.exists())
             sdFileFolderPath.mkdirs();
         //存在sd卡(内置存储)配置则优先使用该配置
-        try{
+        try {
             //存在于手机内存
-            if(sdFilePath.exists()) {
+            if (sdFilePath.exists()) {
                 filePath = sdFilePath.getPath();
                 fis = new FileInputStream(filePath);
             }
@@ -109,11 +108,10 @@ public class FeFileRead {
                 is = getClass().getResourceAsStream(filePath);
             }
             //获得reader
-            if(fis != null){
+            if (fis != null) {
                 isr = new InputStreamReader(fis, "UTF-8");
                 br = new BufferedReader(isr);
-            }
-            else if (is != null) {
+            } else if (is != null) {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
             }
@@ -125,14 +123,14 @@ public class FeFileRead {
     }
 
     // 文件打开就绪
-    public Boolean ready(){
-        if(br != null)
+    public Boolean ready() {
+        if (br != null)
             return true;
         return false;
     }
 
     // 关闭各种句柄
-    public void exit(){
+    public void exit() {
         try {
             if (br != null)
                 br.close();
@@ -143,7 +141,7 @@ public class FeFileRead {
             if (is != null)
                 is.close();
             is = null;
-            if(fis != null)
+            if (fis != null)
                 fis.close();
             fis = null;
         } catch (IOException e) {

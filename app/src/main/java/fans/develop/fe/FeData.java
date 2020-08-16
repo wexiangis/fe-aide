@@ -15,15 +15,17 @@ public class FeData extends Application {
 
     //全局动画心跳(注意: addHeartUnit 过的控件销毁时要先 removeHeartUnit )
     private static FeHeart heart = null;
-    public static void addHeartUnit(FeHeartUnit heartUnit){
-        if(heart != null)
+
+    public static void addHeartUnit(FeHeartUnit heartUnit) {
+        if (heart != null)
             heart.addUnit(heartUnit);
     }
-    public static void removeHeartUnit(FeHeartUnit heartUnit){
-        if(heart != null)
+
+    public static void removeHeartUnit(FeHeartUnit heartUnit) {
+        if (heart != null)
             heart.removeUnit(heartUnit);
     }
-    
+
     //结构层
     public static FeAssets assets = null;//assets文件资源管理
     public static FeFlow flow = null;//界面流程管理
@@ -36,18 +38,19 @@ public class FeData extends Application {
     //[x][0]:章节
     //[x][1]:是否中断
     //[x][2]:时长(秒)
-    public static int[][] saveLoad(){
+    public static int[][] saveLoad() {
         return assets.save.getSx();
     }
+
     //存档槽数量
-    public static int saveNum(){
+    public static int saveNum() {
         return assets.save.saveNum();
     }
 
     /*
         系统启动,在 activity 的 onResume() 中调用
      */
-    public static void start(Activity act){
+    public static void start(Activity act) {
         //保留activity
         activity = act;
         //获取application的context
@@ -61,7 +64,7 @@ public class FeData extends Application {
     /*
         系统暂停,在 activity 的 onReonPausesume() 中调用
      */
-    public static void pause(){
+    public static void pause() {
         //关闭timer定时器
         heart.stop();
         //从当前activity中移除界面控件
@@ -71,7 +74,7 @@ public class FeData extends Application {
     /*
         系统销毁,在 activity 的 onDestroy() 中调用
      */
-    public static void destory(){
+    public static void destory() {
         ;
     }
 

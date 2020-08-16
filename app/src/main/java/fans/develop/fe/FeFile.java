@@ -11,7 +11,7 @@ import java.io.IOException;
 /*
     用来创建、查询手机内存FE文件夹中的文件(注意不包括assets文件夹)
  */
-public class FeFile{
+public class FeFile {
     //关键路径
     private String feSdRootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FEX";
 
@@ -23,11 +23,11 @@ public class FeFile{
         return new File(feSdRootPath + path).exists();
     }
 
-    public void delete(String path){
+    public void delete(String path) {
         _deleteFile(new File(feSdRootPath + path));
     }
 
-    private void _deleteFile(File file){
+    private void _deleteFile(File file) {
         if (!file.exists())
             return;
         else if (file.isFile())
@@ -40,12 +40,12 @@ public class FeFile{
         }
     }
 
-    public void copy(String dist, String src){
+    public void copy(String dist, String src) {
         delete(feSdRootPath + dist);
         copyFolder(feSdRootPath + dist, feSdRootPath + src);
     }
 
-    private void copyFolder(String dist, String src){
+    private void copyFolder(String dist, String src) {
 
         File srcFile = new File(src);
         File distFile = new File(dist);
@@ -55,13 +55,13 @@ public class FeFile{
             return;
 
         //文件直接拷贝
-        if(srcFile.isFile()){
+        if (srcFile.isFile()) {
             copyFile(distFile, srcFile);
             return;
         }
 
         //不是文件也不是文件夹
-        if(!srcFile.isDirectory())
+        if (!srcFile.isDirectory())
             return;
 
         //目标文件夹不存在则创建
@@ -75,21 +75,21 @@ public class FeFile{
             if (sf.isFile())
                 // File.separator分隔符在windows为"\",在linux为"/"
                 copyFile(new File(distFile.getPath() + File.separator + sf.getName()), sf);
-            // 复制文件夹
+                // 复制文件夹
             else if (sf.isDirectory())
                 //递归
                 copyFolder(distFile.getPath() + File.separator + sf.getName(), sf.getPath());
         }
     }
 
-    private void copyFile(File distFile, File srcFile){
-        try{
+    private void copyFile(File distFile, File srcFile) {
+        try {
             // I/O流
             FileInputStream inputStream = new FileInputStream(srcFile);
-            if(inputStream == null)
+            if (inputStream == null)
                 return;
             FileOutputStream outputStream = new FileOutputStream(distFile);
-            if(outputStream == null){
+            if (outputStream == null) {
                 inputStream.close();
                 return;
             }
@@ -103,9 +103,9 @@ public class FeFile{
             // 关闭流
             inputStream.close();
             outputStream.close();
-        }catch (java.io.FileNotFoundException e) {
+        } catch (java.io.FileNotFoundException e) {
             Log.d("FeFile.copyFile", "not found : src/" + srcFile.getPath() + " dist/" + distFile.getPath());
-        }catch (IOException e) {
+        } catch (IOException e) {
             Log.d("FeFile.copyFile", "IOException : src/" + srcFile.getPath() + " dist/" + distFile.getPath());
         }
     }
@@ -116,11 +116,11 @@ public class FeFile{
      */
     public String readFile(String path, String defaultRet, int readLen) {
         File file = new File(feSdRootPath + path);
-        if(!file.exists())
+        if (!file.exists())
             return defaultRet;
-        try{
+        try {
             FileInputStream fis = new FileInputStream(file.getPath());
-            if(fis == null)
+            if (fis == null)
                 return defaultRet;
             byte[] buff = new byte[readLen];
             fis.read(buff);
@@ -137,23 +137,22 @@ public class FeFile{
     /*
         创建或擦除写入文件
      */
-    public void writeFile(String folder, String name, String value){
+    public void writeFile(String folder, String name, String value) {
         File file = new File(feSdRootPath + folder + name);
         File fileParent = new File(feSdRootPath + folder);
-        if(!fileParent.exists())
+        if (!fileParent.exists())
             fileParent.mkdirs();
-        if(file.exists())
+        if (file.exists())
             file.delete();
         try {
             FileOutputStream fos = new FileOutputStream(file.getPath());
-            if(fos != null)
-            {
+            if (fos != null) {
                 fos.write(value.getBytes());
                 fos.close();
             }
-        }catch (java.io.FileNotFoundException e) {
+        } catch (java.io.FileNotFoundException e) {
             Log.d("FeFile.writeFile", "not found : " + file.getPath());
-        }catch (IOException e) {
+        } catch (IOException e) {
             Log.d("FeFile.writeFile", "IOException : " + file.getPath());
         }
     }

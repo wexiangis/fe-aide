@@ -8,7 +8,7 @@ import android.widget.*;
 /*
     章节运行关键参数之数据部分
  */
-public class FeLayoutSection extends FeLayout{
+public class FeLayoutSection extends FeLayout {
 
     private FeData feData = null;
     // 存档槽位,从0数起
@@ -35,12 +35,9 @@ public class FeLayoutSection extends FeLayout{
     private FeLayoutChat layoutChat = null;
     private FeLayoutInterlude layoutInterlude = null;
     private FeLayoutDebug layoutDebug = null;
-    //debug
-    private TextView dbTouchXY = null;
-    private TextView dbTouchGridXY = null;
 
     //sx: 存档位置 startMode: 0/重新加载 1/中断继续
-    public FeLayoutSection(FeData feData, int sx, int startMode){
+    public FeLayoutSection(FeData feData, int sx, int startMode) {
         super(feData.context);
         this.feData = feData;
         this.sx = sx;
@@ -48,19 +45,21 @@ public class FeLayoutSection extends FeLayout{
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         this.reload();
     }
 
-    public void reload(){
+    public void reload() {
 
         sectionOperation = null;
         this._removeViewAll(this);
@@ -74,7 +73,7 @@ public class FeLayoutSection extends FeLayout{
                             Thread.sleep(100);
 
                             //从文件加载章节存档数据
-                            if(startMode == 1)
+                            if (startMode == 1)
                                 sxData = feData.assets.save.recoverSx(sx);
                             else
                                 sxData = feData.assets.save.loadSx(sx);
@@ -82,7 +81,7 @@ public class FeLayoutSection extends FeLayout{
                             layoutLoading.setPercent(10);//百分比进度
 
                             //章节解析
-                            if(sxData != null)
+                            if (sxData != null)
                                 section = sxData.info.getSection();
                             else
                                 return "章节数据加载失败！！";
@@ -150,11 +149,11 @@ public class FeLayoutSection extends FeLayout{
                             layoutLoading.setPercent(70);//百分比进度
 
                             //人物加载
-                            for(int i = 0; i < sxData.saveCache.unit.total(); i++){
+                            for (int i = 0; i < sxData.saveCache.unit.total(); i++) {
                                 layoutUnit.addUnit(
-                                    sxData.saveCache.unit.getOrder(i),
-                                    sxData.saveCache.unit.getX(i),
-                                    sxData.saveCache.unit.getY(i));
+                                        sxData.saveCache.unit.getOrder(i),
+                                        sxData.saveCache.unit.getX(i),
+                                        sxData.saveCache.unit.getY(i));
                             }
 
                             layoutLoading.setPercent(75);//百分比进度
@@ -164,15 +163,12 @@ public class FeLayoutSection extends FeLayout{
 
                             layoutLoading.setPercent(80);//百分比进度
 
-                            //debug
-                            dbTouchXY = layoutDebug.addInfo(0x80800000, false);
-                            dbTouchGridXY = layoutDebug.addInfo(0x80000080, false);
-
                             layoutLoading.setPercent(100);//百分比进度
 
                             Thread.sleep(100);
 
-                        } catch (java.lang.InterruptedException e) { }
+                        } catch (java.lang.InterruptedException e) {
+                        }
                         return null;
                     }
                 },
@@ -181,7 +177,7 @@ public class FeLayoutSection extends FeLayout{
                     public void run(FeLayoutSection obj, String result) {
 
                         //初始化失败
-                        if(result != null){
+                        if (result != null) {
                             Toast.makeText(feData.activity, result, Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -220,28 +216,28 @@ public class FeLayoutSection extends FeLayout{
     /* ---------- 触屏回调,提取事件 ---------- */
 
     public boolean onTouchEvent(MotionEvent event) {
-        if(sectionOperation != null)
+        if (sectionOperation != null)
             return sectionOperation.onTouchEvent(event);
         return false;
     }
 
     /* ---------- 控件事件回调 ---------- */
 
-    public FeSectionCallback sectionCallback = new FeSectionCallback()
-    {
-        public void addHeartUnit(FeHeartUnit heartUnit){
+    public FeSectionCallback sectionCallback = new FeSectionCallback() {
+        public void addHeartUnit(FeHeartUnit heartUnit) {
             feData.addHeartUnit(heartUnit);
         }
-        public void removeHeartUnit(FeHeartUnit heartUnit){
+
+        public void removeHeartUnit(FeHeartUnit heartUnit) {
             feData.removeHeartUnit(heartUnit);
         }
 
         /* ------------------------------- */
 
-        public void refreshSectionMap(int section){
+        public void refreshSectionMap(int section) {
             //不重复初始化
-            if(sectionMap != null)
-                if(sectionMap.section == section)
+            if (sectionMap != null)
+                if (sectionMap.section == section)
                     return;
             //获取屏幕宽高信息
             DisplayMetrics dm = new DisplayMetrics();
@@ -249,7 +245,8 @@ public class FeLayoutSection extends FeLayout{
             //重新初始化map
             sectionMap = new FeSectionMap(section, feData.assets.map.getMap(section), dm.widthPixels, dm.heightPixels);
         }
-        public void refresh(){
+
+        public void refresh() {
             //更新地图
             layoutMap.refresh();
             //更新标记格
@@ -269,165 +266,203 @@ public class FeLayoutSection extends FeLayout{
             //debug图层
             // layoutDebug.refresh();
         }
-        public FeFlagHit checkHit(float x, float y){
+
+        public FeFlagHit checkHit(float x, float y) {
             FeFlagHit flag = new FeFlagHit();
             //先清空
             flag.cleanFlagAll();
             //点击:系统菜单中?
-            if(layoutSysMenu.checkHit(x, y))
+            if (layoutSysMenu.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_SYS_MENU);
             //点击:正在对话?
-            if(layoutChat.checkHit(x, y))
+            if (layoutChat.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_CHAT);
             //点击:人物菜单中?
-            if(layoutUnitMenu.checkHit(x, y))
+            if (layoutUnitMenu.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_UNIT_MENU);
             //点击:选中人物?
-            if(layoutUnit.checkHit(x, y))
+            if (layoutUnit.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_UNIT);
             //点击:标记格
-            if(layoutMark.checkHit(x, y))
+            if (layoutMark.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_MARK);
             //点击:敌军标记格
-            if(layoutMarkEnemy.checkHit(x, y))
+            if (layoutMarkEnemy.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_MARK_ENEMY);
             //点击:地图信息?
-            if(layoutMapInfo.checkHit(x, y))
+            if (layoutMapInfo.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_MAP_INFO);
             //点击:地图?
-            if(layoutMap.checkHit(x, y))
+            if (layoutMap.checkHit(x, y))
                 flag.setFlag(FeFlagHit.HIT_MAP);
-            //debug
-            // dbTouchXY.setText(String.format("Touch XY: %.2f, %.2f", x, y));
-            // dbTouchGridXY.setText(String.format("Touch Grid XY: %d, %d", sectionMap.selectSite.xGrid, sectionMap.selectSite.yGrid));
             return flag;
+        }
+
+        public void debug(String key, int color, String val) {
+            layoutDebug.show(key, color, val);
+        }
+
+        public void debug2(String key, int color, String val) {
+            layoutDebug.show2(key, color, val);
         }
 
         /* ------------------------------- */
 
-        public FeAssets getAssets(){
+        public FeAssets getAssets() {
             return feData.assets;
         }
-				public FeAssetsSX getAssetsSX(){
-						return sxData;
-				}
-        public Context getContext(){
+
+        public FeAssetsSX getAssetsSX() {
+            return sxData;
+        }
+
+        public Context getContext() {
             return feData.context;
         }
-        public FeSectionMap getSectionMap(){
+
+        public FeSectionMap getSectionMap() {
             return sectionMap;
         }
-        public FeSectionUnit getSectionUnit(){
+
+        public FeSectionUnit getSectionUnit() {
             return sectionUnit;
         }
-        public FeSectionShader getSectionShader(){
+
+        public FeSectionShader getSectionShader() {
             return sectionShader;
         }
 
         /* ------------------------------- */
 
-        public FeLayoutMap getLayoutMap(){
+        public FeLayoutMap getLayoutMap() {
             return layoutMap;
         }
-        public FeLayoutMarkEnemy getLayoutMarkEnemy(){
+
+        public FeLayoutMarkEnemy getLayoutMarkEnemy() {
             return layoutMarkEnemy;
         }
-        public FeLayoutMark getLayoutMark(){
+
+        public FeLayoutMark getLayoutMark() {
             return layoutMark;
         }
-        public FeLayoutUnit getLayoutUnit(){
+
+        public FeLayoutUnit getLayoutUnit() {
             return layoutUnit;
         }
-        public FeLayoutMapInfo getLayoutMapInfo(){
+
+        public FeLayoutMapInfo getLayoutMapInfo() {
             return layoutMapInfo;
         }
-        public FeLayoutUnitMenu getLayoutUnitMenu(){
+
+        public FeLayoutUnitMenu getLayoutUnitMenu() {
             return layoutUnitMenu;
         }
-        public FeLayoutChat getLayoutChat(){
+
+        public FeLayoutChat getLayoutChat() {
             return layoutChat;
         }
-        public FeLayoutSysMenu getLayoutSysMenu(){
+
+        public FeLayoutSysMenu getLayoutSysMenu() {
             return layoutSysMenu;
         }
-        public FeLayoutInterlude getLayoutInterlude(){
+
+        public FeLayoutInterlude getLayoutInterlude() {
             return layoutInterlude;
         }
-        public FeLayoutDebug getLayoutDebug(){
+
+        public FeLayoutDebug getLayoutDebug() {
             return layoutDebug;
         }
 
         /* ------------------------------- */
 
         private Boolean onTouchDisable = false;
-        public void onTouchDisable(Boolean disable){
+
+        public void onTouchDisable(Boolean disable) {
             onTouchDisable = disable;
         }
-        public Boolean onTouchDisable(){
+
+        public Boolean onTouchDisable() {
             return onTouchDisable;
         }
 
         private Boolean onTouchMov = false;
-        public void onTouchMov(Boolean on){
+
+        public void onTouchMov(Boolean on) {
             onTouchMov = on;
         }
-        public Boolean onTouchMov(){
+
+        public Boolean onTouchMov() {
             return onTouchMov;
         }
 
         private Boolean onMapMove = false;
-        public void onMapMove(Boolean on){
+
+        public void onMapMove(Boolean on) {
             onMapMove = on;
         }
-        public Boolean onMapMove(){
+
+        public Boolean onMapMove() {
             return onMapMove;
         }
 
         private Boolean onMapHit = false;
-        public void onMapHit(Boolean on){
+
+        public void onMapHit(Boolean on) {
             onMapHit = on;
         }
-        public Boolean onMapHit(){
+
+        public Boolean onMapHit() {
             return onMapHit;
         }
 
         private Boolean onUnitSelect = false;
-        public void onUnitSelect(Boolean on){
+
+        public void onUnitSelect(Boolean on) {
             onUnitSelect = on;
         }
-        public Boolean onUnitSelect(){
+
+        public Boolean onUnitSelect() {
             return onUnitSelect;
         }
 
         private Boolean onUnitMove = false;
-        public void onUnitMove(Boolean on){
+
+        public void onUnitMove(Boolean on) {
             onUnitMove = on;
         }
-        public Boolean onUnitMove(){
+
+        public Boolean onUnitMove() {
             return onUnitMove;
         }
 
         private Boolean onUnitMoveing = false;
-        public void onUnitMoveing(Boolean on){
+
+        public void onUnitMoveing(Boolean on) {
             onUnitMoveing = on;
         }
-        public Boolean onUnitMoveing(){
+
+        public Boolean onUnitMoveing() {
             return onUnitMoveing;
         }
 
         private Boolean onUnitMenu = false;
-        public void onUnitMenu(Boolean on){
+
+        public void onUnitMenu(Boolean on) {
             onUnitMenu = on;
         }
-        public Boolean onUnitMenu(){
+
+        public Boolean onUnitMenu() {
             return onUnitMenu;
         }
 
         private Boolean onSysMenu = false;
-        public void onSysMenu(Boolean on){
+
+        public void onSysMenu(Boolean on) {
             onSysMenu = on;
         }
-        public Boolean onSysMenu(){
+
+        public Boolean onSysMenu() {
             return onSysMenu;
         }
     };

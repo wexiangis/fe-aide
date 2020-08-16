@@ -24,11 +24,11 @@ public class FeFileWrite {
     private OutputStreamWriter osw;
 
     // autoCRCL: 是否自动补上"\r\n"
-    public void write(String value, Boolean autoCRCL){
+    public void write(String value, Boolean autoCRCL) {
         try {
-            if (osw != null){
+            if (osw != null) {
                 osw.write(value);
-                if(autoCRCL)
+                if (autoCRCL)
                     osw.write("\r\n");
                 osw.flush();
             }
@@ -38,10 +38,10 @@ public class FeFileWrite {
     }
 
     // 用分隔符 spl 分隔后面输入的 argv.length 个字符串
-    public void writeLine(String spl, String ... argv){
+    public void writeLine(String spl, String... argv) {
         try {
-            if (osw != null){
-                for(int i = 0; i < argv.length; i++){
+            if (osw != null) {
+                for (int i = 0; i < argv.length; i++) {
                     osw.write(argv[i]);
                     osw.write(spl);
                 }
@@ -60,32 +60,32 @@ public class FeFileWrite {
     public FeFileWrite(String folder, String name) {
         //文件夹检查
         File sdFileFolderPath = new File(feSdRootPath + folder);
-        if(!sdFileFolderPath.exists())
+        if (!sdFileFolderPath.exists())
             sdFileFolderPath.mkdirs();
         //文件写到sd卡(内置)存储
         filePath = feSdRootPath + folder + name;
         try {
             fos = new FileOutputStream(filePath);
-            if(fos != null)
+            if (fos != null)
                 osw = new OutputStreamWriter(fos, "UTF-8");
-        }catch (java.io.FileNotFoundException e) {
+        } catch (java.io.FileNotFoundException e) {
             Log.d("FeFileWrite.open", "not found : " + filePath);
-        }catch (java.io.UnsupportedEncodingException e) {
+        } catch (java.io.UnsupportedEncodingException e) {
             Log.d("FeFileWrite.open", "UnsupportedEncodingException : " + filePath);
         }
     }
 
     // 文件打开就绪
-    public Boolean ready(){
-        if(osw != null)
+    public Boolean ready() {
+        if (osw != null)
             return true;
         return false;
     }
 
     // 关闭各种句柄
-    public void exit(){
+    public void exit() {
         try {
-            if(osw != null)
+            if (osw != null)
                 osw.close();
             osw = null;
             if (fos != null)

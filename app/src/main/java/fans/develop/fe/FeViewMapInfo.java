@@ -72,46 +72,46 @@ public class FeViewMapInfo extends FeView {
                 (int) (rectDistInfo.bottom - rectDistInfo.height() / 2 + pixelPowInfo * 4 + paintInfoParam.getTextSize() * 2 + pixelPowInfo * 2));
     }
 
-    public boolean checkHit(float x, float y){
-        if(drawInfo && rectDistInfo.contains((int)x, (int)y))
+    public boolean checkHit(float x, float y) {
+        if (drawInfo && rectDistInfo.contains((int) x, (int) y))
             return true;
         return false;
     }
 
-    public void onDraw(Canvas canvas){
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         //移动中不绘制
-        if(sectionCallback.onMapMove()){
+        if (sectionCallback.onMapMove()) {
             drawInfo = false;
             return;
         }
 
-        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));//抗锯齿
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));//抗锯齿
 
         //选中地图位置
         FeInfoSite mapSite = sectionCallback.getSectionMap().selectSite;
 
         //图像位置自动调整
-        if(mapSite.rect.right > sectionCallback.getSectionMap().screenWidth/2){ //放到左边
-            rectDistInfo.left = (int)(sectionCallback.getSectionMap().xGridPixel/4);
-            rectDistInfo.right = (int)(sectionCallback.getSectionMap().xGridPixel/4 + bitmapInfo.getWidth()*pixelPowInfo);
-        }else{ //放到右边
-            rectDistInfo.left = (int)(sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel/4 - bitmapInfo.getWidth()*pixelPowInfo);
-            rectDistInfo.right = (int)(sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel/4);
+        if (mapSite.rect.right > sectionCallback.getSectionMap().screenWidth / 2) { //放到左边
+            rectDistInfo.left = (int) (sectionCallback.getSectionMap().xGridPixel / 4);
+            rectDistInfo.right = (int) (sectionCallback.getSectionMap().xGridPixel / 4 + bitmapInfo.getWidth() * pixelPowInfo);
+        } else { //放到右边
+            rectDistInfo.left = (int) (sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel / 4 - bitmapInfo.getWidth() * pixelPowInfo);
+            rectDistInfo.right = (int) (sectionCallback.getSectionMap().screenWidth - sectionCallback.getSectionMap().xGridPixel / 4);
         }
-        rectPaintInfo.left = (int)(rectDistInfo.left + rectDistInfo.width()/5);
-        rectPaintInfo.right = (int)(rectDistInfo.right - rectDistInfo.width()/5);
+        rectPaintInfo.left = (int) (rectDistInfo.left + rectDistInfo.width() / 5);
+        rectPaintInfo.right = (int) (rectDistInfo.right - rectDistInfo.width() / 5);
 
         //画地图信息
-        if(sectionCallback.onMapHit()){
+        if (sectionCallback.onMapHit()) {
             drawInfo = true;
             canvas.drawBitmap(bitmapInfo, rectSrcInfo, rectDistInfo, paintBitmap);
             //填地形信息
             canvas.drawText(
                     sectionCallback.getSectionMap().mapInfo.name(mapSite.xGrid, mapSite.yGrid),
-                    rectDistInfo.left + rectDistInfo.width()/2,
-                    rectDistInfo.top + rectDistInfo.height()/2 - pixelPowInfo*1,
+                    rectDistInfo.left + rectDistInfo.width() / 2,
+                    rectDistInfo.top + rectDistInfo.height() / 2 - pixelPowInfo * 1,
                     paintInfoName);
             //地形参数
             paintInfoParam.setColor(Color.BLUE);
@@ -135,13 +135,13 @@ public class FeViewMapInfo extends FeView {
                     rectPaintInfo.right,
                     rectPaintInfo.bottom,
                     paintInfoParam);
-        }else
+        } else
             drawInfo = false;
     }
 
     /* ---------- abstract interface ---------- */
 
-    public void onDestory(){
+    public void onDestory() {
         ;
     }
 }

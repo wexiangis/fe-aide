@@ -9,7 +9,7 @@ import android.widget.TextView;
 /*
     进度加载界面,作为子view在各任务中显示
  */
-public class FeLayoutLoading extends FeLayout{
+public class FeLayoutLoading extends FeLayout {
 
     /*
         界面类型
@@ -19,21 +19,21 @@ public class FeLayoutLoading extends FeLayout{
     /*
         提前结束loading界面, 即结束 DoInBackground
      */
-    public void cancel(){
+    public void cancel() {
         asyncTask.cancel(true);
     }
-    
+
     /*
          检查结束标志, 在 DoInBackground 中使用
      */
-    public boolean isCancelled(){
+    public boolean isCancelled() {
         return asyncTask.isCancelled();
     }
-    
+
     /*
         进度设置接口, 在 DoInBackground 中使用
      */
-    public void setPercent(int percent){
+    public void setPercent(int percent) {
         asyncTask.setPercent(percent);
     }
 
@@ -41,14 +41,14 @@ public class FeLayoutLoading extends FeLayout{
         后台运行任务
         返回: 成功返回null, 失败返回提示
      */
-    public interface DoInBackground<U>{
+    public interface DoInBackground<U> {
         public String run(U obj, FeLayoutLoading layoutLoading);
     }
 
     /*
         UI任务
      */
-    public interface DoInFinal<U>{
+    public interface DoInFinal<U> {
         public void run(U obj, String result);
     }
 
@@ -73,7 +73,7 @@ public class FeLayoutLoading extends FeLayout{
             1.doInBackground 结束后的UI任务,用于界面跳转
             2.携带参数 result 为 doInBackground 最后的返回
      */
-    public FeLayoutLoading(Context context, final int type, Object obj, FeLayoutLoading.DoInBackground doInBackground, FeLayoutLoading.DoInFinal doInFinal){
+    public FeLayoutLoading(Context context, final int type, Object obj, FeLayoutLoading.DoInBackground doInBackground, FeLayoutLoading.DoInFinal doInFinal) {
         super(context);
 
         this.context = context;
@@ -112,7 +112,7 @@ public class FeLayoutLoading extends FeLayout{
 
             @Override
             public String doInBackground(FeLayoutLoading layoutLoading, Integer... integers) {
-                if(layoutLoading.doInBackground != null)
+                if (layoutLoading.doInBackground != null)
                     return layoutLoading.doInBackground.run(layoutLoading.obj, layoutLoading);
                 else
                     return null;
@@ -120,7 +120,7 @@ public class FeLayoutLoading extends FeLayout{
 
             @Override
             public Integer onProgressUpdate(FeLayoutLoading layoutLoading, Integer... values) {
-                if(values.length > 0)
+                if (values.length > 0)
                     textView.setText(String.valueOf(values[0]));
                 else
                     textView.setText("error percent !!");
@@ -129,11 +129,11 @@ public class FeLayoutLoading extends FeLayout{
 
             @Override
             public void onPostExecute(FeLayoutLoading layoutLoading, String result) {
-                if(layoutLoading.doInFinal != null)
+                if (layoutLoading.doInFinal != null)
                     layoutLoading.doInFinal.run(layoutLoading.obj, result);
                 //从父控件中脱离
-                ViewGroup vg = (ViewGroup)layoutLoading.getParent();
-                if(vg != null)
+                ViewGroup vg = (ViewGroup) layoutLoading.getParent();
+                if (vg != null)
                     vg.removeView(layoutLoading);
             }
         });
@@ -142,15 +142,17 @@ public class FeLayoutLoading extends FeLayout{
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         ;
     }
 }

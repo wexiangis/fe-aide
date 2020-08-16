@@ -10,11 +10,11 @@ public class FeInfoSite {
     //方格梯形
     public Path path = new Path();
     //方格
-    public Rect rect = new Rect(0,0,0,0);
+    public Rect rect = new Rect(0, 0, 0, 0);
     //方格横纵格数
     public int xGrid, yGrid;
 
-    public void clean(){
+    public void clean() {
         path.reset();
     }
 

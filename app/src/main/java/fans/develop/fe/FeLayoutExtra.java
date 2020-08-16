@@ -25,18 +25,17 @@ public class FeLayoutExtra extends FeLayout {
     LinearLayout.LayoutParams bnLayoutParams = null;
 
     //触屏事件回调函数
-    private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 //按下反馈
                 v.setAlpha(0.5f);
-            }
-            else if(event.getAction() == MotionEvent.ACTION_UP) {
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 //松开反馈
                 v.setAlpha(1.0f);
                 //遍历检查目标条目
-                for(int i = 0; i < bnSaveList.length; i++){
-                    if(v == bnSaveList[i])
+                for (int i = 0; i < bnSaveList.length; i++) {
+                    if (v == bnSaveList[i])
                         ;
                 }
             }
@@ -45,7 +44,7 @@ public class FeLayoutExtra extends FeLayout {
         }
     };
 
-    private Button buildButtonStyle(String text){
+    private Button buildButtonStyle(String text) {
         Button button = new Button(feData.context);
         button.setText(text);
         button.setTextColor(0xFFFFFFFF);
@@ -57,7 +56,7 @@ public class FeLayoutExtra extends FeLayout {
         return button;
     }
 
-    public void reload(){
+    public void reload() {
 
         this._removeViewAll(this);
 
@@ -72,7 +71,7 @@ public class FeLayoutExtra extends FeLayout {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         //创建线性布局窗体参数
         bnLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        bnLayoutParams.setMargins(0,0, 0, 30);
+        bnLayoutParams.setMargins(0, 0, 0, 30);
         //线性布局窗体相对主界面位置参数
         linearLayoutParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         linearLayoutParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -80,7 +79,7 @@ public class FeLayoutExtra extends FeLayout {
 
         //添加条目到视图
         linearLayout.removeAllViews();
-        for(int i = 0; i < bnSaveList.length; i++)
+        for (int i = 0; i < bnSaveList.length; i++)
             linearLayout.addView(bnSaveList[i], bnLayoutParams);
 
         /* ----- 装载界面 -----*/
@@ -91,21 +90,23 @@ public class FeLayoutExtra extends FeLayout {
         this.setBackgroundColor(0x80408040);
     }
 
-    public FeLayoutExtra(FeData feData){
+    public FeLayoutExtra(FeData feData) {
         super(feData.context);
         this.feData = feData;
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         this.reload();
     }
 }

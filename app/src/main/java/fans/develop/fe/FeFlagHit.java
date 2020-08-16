@@ -14,7 +14,7 @@ public class FeFlagHit extends FeFlag {
     public static final int HIT_CHAT = 6;//选中对话信息
     public static final int HIT_SYS_MENU = 7;//选中系统菜单
 
-    public FeFlagHit(){
+    public FeFlagHit() {
         //类型数量
         super(10);
     }

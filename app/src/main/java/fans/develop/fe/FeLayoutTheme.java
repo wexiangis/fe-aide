@@ -16,17 +16,17 @@ public class FeLayoutTheme extends FeLayout {
     private RelativeLayout.LayoutParams layoutParams;
 
     //触屏事件回调函数
-    private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             //触屏UP时
-            if(event.getAction() == MotionEvent.ACTION_UP)
+            if (event.getAction() == MotionEvent.ACTION_UP)
                 feData.flow.loadMainMenu();
             //不返回true的话ACTION_DOWN之后的事件都会被丢弃
             return true;
         }
     };
 
-    public void reload(){
+    public void reload() {
 
         this._removeViewAll(this);
 
@@ -54,22 +54,23 @@ public class FeLayoutTheme extends FeLayout {
         this.setOnTouchListener(onTouchListener);
     }
 
-    public FeLayoutTheme(FeData feData)
-    {
+    public FeLayoutTheme(FeData feData) {
         super(feData.context);
         this.feData = feData;
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         this.reload();
     }
 }

@@ -24,32 +24,31 @@ public class FeLayoutMainMenu extends FeLayout {
     private LinearLayout.LayoutParams tvLayoutParams = null;
 
     //触屏事件回调函数
-    private View.OnTouchListener onTouchListener  = new View.OnTouchListener (){
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 //按下反馈
                 v.setAlpha(0.5f);
-            }
-            else if(event.getAction() == MotionEvent.ACTION_UP) {
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 //松开反馈
                 v.setAlpha(1.0f);
                 //点击:创建存档
-                if(v == tvNew)
+                if (v == tvNew)
                     feData.flow.loadSaveMenu(0);
-                //点击:继续
-                else if(v == tvContinue)
+                    //点击:继续
+                else if (v == tvContinue)
                     feData.flow.loadSaveMenu(1);
-                //点击:加载存档
-                else if(v == tvLoad)
+                    //点击:加载存档
+                else if (v == tvLoad)
                     feData.flow.loadSaveMenu(2);
                     //点击:删除存档
-                else if(v == tvDel)
+                else if (v == tvDel)
                     feData.flow.loadSaveMenu(3);
                     //点击:复制存档
-                else if(v == tvCopy)
+                else if (v == tvCopy)
                     feData.flow.loadSaveMenu(4);
                     //点击:附加内容
-                else if(v == tvElse)
+                else if (v == tvElse)
                     feData.flow.loadExtraMenu();
             }
             //不返回true的话ACTION_DOWN之后的事件都会被丢弃
@@ -57,34 +56,34 @@ public class FeLayoutMainMenu extends FeLayout {
         }
     };
 
-    private void loadMenu(){
+    private void loadMenu() {
         //更新存档状态(saveState[][]的状态)
         int[][] saveState = feData.saveLoad();
         //检查是否存在记录
         boolean findRecord = false, findContinue = false;
-        for(int i = 0; i < feData.saveNum(); i++) {
+        for (int i = 0; i < feData.saveNum(); i++) {
             if (saveState[i][0] >= 0) {
                 findRecord = true;
-                if(saveState[i][1] > 0)
+                if (saveState[i][1] > 0)
                     findContinue = true;
                 break;
             }
         }
         //按特定参数添加各项到线性布局
         linearLayout.removeAllViews();
-        if(findContinue)
+        if (findContinue)
             linearLayout.addView(tvContinue, tvLayoutParams);
-        if(findRecord)
+        if (findRecord)
             linearLayout.addView(tvLoad, tvLayoutParams);
         linearLayout.addView(tvNew, tvLayoutParams);
-        if(findRecord)
+        if (findRecord)
             linearLayout.addView(tvCopy, tvLayoutParams);
-        if(findRecord)
+        if (findRecord)
             linearLayout.addView(tvDel, tvLayoutParams);
         linearLayout.addView(tvElse, tvLayoutParams);
     }
 
-    private Button buildButtonStyle(String text){
+    private Button buildButtonStyle(String text) {
         Button button = new Button(feData.context);
         button.setText(text);
         button.setTextColor(0xFFFFFFFF);
@@ -97,7 +96,7 @@ public class FeLayoutMainMenu extends FeLayout {
         return button;
     }
 
-    public void reload(){
+    public void reload() {
 
         this._removeViewAll(this);
 
@@ -115,7 +114,7 @@ public class FeLayoutMainMenu extends FeLayout {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         //创建线性布局窗体参数
         tvLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        tvLayoutParams.setMargins(0,0, 0, 30);
+        tvLayoutParams.setMargins(0, 0, 0, 30);
         //线性布局窗体相对主界面位置参数
         linearLayoutParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         linearLayoutParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -131,21 +130,23 @@ public class FeLayoutMainMenu extends FeLayout {
         this.setBackgroundColor(0x80408040);
     }
 
-    public FeLayoutMainMenu(FeData feData){
+    public FeLayoutMainMenu(FeData feData) {
         super(feData.context);
         this.feData = feData;
     }
 
     /* ---------- abstract interface ---------- */
-    public boolean onKeyBack(){
+    public boolean onKeyBack() {
         return false;
     }
-    public boolean onDestory(){
+
+    public boolean onDestory() {
         //释放子view
         _removeViewAll(this);
         return true;
     }
-    public void onReload(){
+
+    public void onReload() {
         this.reload();
     }
 }

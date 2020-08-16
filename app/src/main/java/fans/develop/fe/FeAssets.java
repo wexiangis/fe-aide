@@ -13,7 +13,7 @@ public class FeAssets {
     public FeAssetsSave save;
     public FeAssetsEvent event;
 
-    public FeAssets(){
+    public FeAssets() {
         map = new FeAssetsMap();
         menu = new FeAssetsMenu();
         param = new FeAssetsParam();
