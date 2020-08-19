@@ -264,7 +264,7 @@ public class FeLayoutSection extends FeLayout {
             //更新系统菜单
             layoutSysMenu.refresh();
             //debug图层
-            // layoutDebug.refresh();
+            layoutDebug.refresh();
         }
 
         public FeFlagHit checkHit(float x, float y) {

@@ -24,7 +24,8 @@ public class FeViewMap extends FeView {
         sectionCallback.getSectionMap().getRectByLocation(0, 0, sectionCallback.getSectionMap().selectSite);
         //画笔
         paintMap = new Paint();
-        paintMap.setColor(Color.BLUE);
+        //paintMap.setColor(0x8000FFFF);
+        //paintMap.setStrokeWidth(3.0f);
         //引入心跳
         sectionCallback.addHeartUnit(heartMapMov);
     }
@@ -85,7 +86,7 @@ public class FeViewMap extends FeView {
     //动画心跳回调
     private FeHeartUnit heartMapMov = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART_QUICK, new FeHeartUnit.TimeOutTask() {
         public void run(int count) {
-            float div = 0.25f;
+            float div = 0.20f;
             //需要挪图?
             if (Math.abs(xGridErr) >= div || Math.abs(yGridErr) >= div) {
                 FeSectionMap sectionMap = sectionCallback.getSectionMap();
@@ -127,19 +128,17 @@ public class FeViewMap extends FeView {
                 FeViewMap.this.invalidate();
             } else if (!sectionCallback.onTouchMov()) {
                 //剩余的一点差值丢弃
-                if (Math.abs(xGridErr) > 0) {
+                if (Math.abs(xGridErr) > 0)
                     xGridErr = 0;
-                    //sectionCallback.getSectionMap().xGridErr = Math.round(sectionCallback.getSectionMap().xGridErr);
-                }
-                if (Math.abs(yGridErr) > 0) {
+                if (Math.abs(yGridErr) > 0)
                     yGridErr = 0;
-                    //sectionCallback.getSectionMap().yGridErr = Math.round(sectionCallback.getSectionMap().yGridErr);
-                }
                 //结束移动时，地图偏移量必须为整数格
-                if (sectionCallback.getSectionMap().xGridErr % 1 != 0)
+                if (sectionCallback.getSectionMap().xGridErr % 1 != 0 || sectionCallback.getSectionMap().yGridErr % 1 != 0) {
                     sectionCallback.getSectionMap().xGridErr = Math.round(sectionCallback.getSectionMap().xGridErr);
-                if (sectionCallback.getSectionMap().yGridErr % 1 != 0)
                     sectionCallback.getSectionMap().yGridErr = Math.round(sectionCallback.getSectionMap().yGridErr);
+                    //调用一次onDraw
+                    FeViewMap.this.invalidate();
+                }
                 //清状态
                 sectionCallback.onMapMove(false);
             }
@@ -150,24 +149,12 @@ public class FeViewMap extends FeView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         FeSectionMap sectionMap = sectionCallback.getSectionMap();
-        //相对布局位置偏移
-        sectionMap.mapDist.left = (int) (sectionMap.xGridErr * sectionMap.xGridPixel);
-        sectionMap.mapDist.top = (int) (sectionMap.yGridErr * sectionMap.yGridPixel);
-        sectionMap.mapDist.right = sectionMap.mapDist.left + sectionMap.width;
-        sectionMap.mapDist.bottom = sectionMap.mapDist.top + sectionMap.height;
         //更新梯形变换信息
         sectionMap.upgradeMatrix();
         //显示地图
         canvas.drawBitmap(sectionMap.bitmap, sectionMap.matrix, paintMap);
         //地图移动了,刷新其他信息
         sectionCallback.refresh();
-        sectionCallback.debug("reduceGrid", 0xFFFF0000, String.valueOf(sectionMap.reduceGrid));
-        sectionCallback.debug("xStart", 0xFFFF0000, String.valueOf(sectionMap.trapGrid.xStart()));
-        sectionCallback.debug("yStart", 0xFFFF0000, String.valueOf(sectionMap.trapGrid.yStart()));
-        sectionCallback.debug("xErr", 0xFFFF0000, String.valueOf(sectionMap.xGridErr));
-        sectionCallback.debug("yErr", 0xFFFF0000, String.valueOf(sectionMap.yGridErr));
-        sectionCallback.debug2("xErrRed", 0xFFFF0000, String.valueOf(sectionMap.xGridErrRed));
-        sectionCallback.debug2("yErrRed", 0xFFFF0000, String.valueOf(sectionMap.yGridErrRed));
     }
 
     /* ---------- abstract interface ---------- */

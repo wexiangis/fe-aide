@@ -79,7 +79,7 @@ public class FeHeart {
     public static final int TYPE_TOTAL = 4;
 
     //高速type定义
-    public static final int TYPE_FRAME_HEART_QUICK = 11;//高速帧动画心跳,不限帧数,周期30ms
+    public static final int TYPE_FRAME_HEART_QUICK = 11;//高速帧动画心跳,不限帧数,周期25ms
     public static final int TYPE_QUICK_TOTAL = 1;
 
     // ---------- 心跳间隔数组和计数 ----------
@@ -111,7 +111,7 @@ public class FeHeart {
     private Timer[] timer = new Timer[TYPE_TOTAL];
     private TimerTask[] timerTask = new TimerTask[TYPE_TOTAL];
     //高速定时器
-    private final int TIMER_QUICK_PERIOD = 30;//高速定时器周期ms
+    private final int TIMER_QUICK_PERIOD = 25;//高速定时器周期ms
     private Timer[] timerQuick = new Timer[TYPE_QUICK_TOTAL];
     private TimerTask[] timerTaskQuick = new TimerTask[TYPE_QUICK_TOTAL];
 

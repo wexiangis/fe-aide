@@ -44,6 +44,8 @@ public class FeViewUnit extends FeView {
     private int movPathCount = 0;
     //在原有站位基础上微调位置,该值达到佚格时则移动一格,该计数清零
     private int movX = 0, movY = 0;
+    //移动速度
+    private int movDiv = 64;
 
     /*
         order: 地图人物唯一order
@@ -176,6 +178,8 @@ public class FeViewUnit extends FeView {
         //准备
         movPathCount = movX = movY = 0;
         movPath = path;
+        //移动速度
+        movDiv = (int)(sectionCallback.getSectionMap().xGridPixel / 5);
         //禁止全局触屏
         sectionCallback.onTouchDisable(true);
         sectionCallback.onUnitMoveing(true);
@@ -209,6 +213,10 @@ public class FeViewUnit extends FeView {
             //参数检查
             if (movPath == null)
                 return;
+            //地图跟着移动
+            FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
+            if (layoutMap != null)
+                layoutMap.moveCenter(site.xGrid, site.yGrid);
             //已到达预定点?准备下一个点
             if (site.xGrid == movPath[movPathCount][0] && site.yGrid == movPath[movPathCount][1] && movX == 0 && movY == 0) {
                 movPathCount += 1;
@@ -216,53 +224,55 @@ public class FeViewUnit extends FeView {
                 if (movPathCount >= movPath.length) {
                     movPath = null;
                     movPathCount = 0;
-                    //地图跟着移动
-                    FeLayoutMap layoutMap = sectionCallback.getLayoutMap();
-                    if (layoutMap != null)
-                        layoutMap.moveCenter(site.xGrid, site.yGrid);
                     return;
                 }
             }
-            //移动速度
-            int div = site.rect.width() / 5;
             //根据目标点与当前点的位置,移动 movX, movY
             if (site.yGrid != movPath[movPathCount][1]) {
                 movX = 0;
                 //目标点在上边
                 if (site.yGrid > movPath[movPathCount][1]) {
-                    movY -= div;
+                    movY -= movDiv;
                     anim(FeTypeAnim.UP);
                 }
                 //目标点在下边
                 else {
-                    movY += div;
+                    movY += movDiv;
                     anim(FeTypeAnim.DOWN);
                 }
             } else if (site.xGrid != movPath[movPathCount][0]) {
                 movY = 0;
                 //目标点在左边
                 if (site.xGrid > movPath[movPathCount][0]) {
-                    movX -= div;
+                    movX -= movDiv;
                     anim(FeTypeAnim.LEFT);
                 }
                 //目标点在右边
                 else {
-                    movX += div;
+                    movX += movDiv;
                     anim(FeTypeAnim.RIGHT);
                 }
             }
+            else if(movX > 0)
+                movX -= movDiv;
+            else if(movX < 0)
+                movX += movDiv;
+            else if(movY > 0)
+                movY -= movDiv;
+            else if(movY < 0)
+                movY += movDiv;
             //移动量满一格的时候,跳动一格
-            if (movX > site.rect.width()) {
+            if (movX >= site.rect.width()) {
                 unit.x(site.xGrid + 1);
                 movX = 0;
-            } else if (movX < -site.rect.width()) {
+            } else if (movX <= -site.rect.width()) {
                 unit.x(site.xGrid - 1);
                 movX = 0;
             }
-            if (movY > site.rect.height()) {
+            if (movY >= site.rect.height()) {
                 unit.y(site.yGrid + 1);
                 movY = 0;
-            } else if (movY < -site.rect.height()) {
+            } else if (movY <= -site.rect.height()) {
                 unit.y(site.yGrid - 1);
                 movY = 0;
             }

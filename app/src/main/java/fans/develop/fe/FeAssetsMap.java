@@ -9,7 +9,7 @@ public class FeAssetsMap {
 
     public FeInfoMap getMap(int section) {
         FeInfoMap mapInfo = new FeInfoMap(section);
-        mapReader.getFeMapInfo(mapInfo, 99);
+        mapReader.getFeMapInfo(mapInfo, section);
         return mapInfo;
     }
 }

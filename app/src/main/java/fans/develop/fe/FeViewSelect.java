@@ -35,6 +35,7 @@ public class FeViewSelect extends FeView {
         //
         paintSelct = new Paint();
         paintSelct.setColor(Color.BLUE);
+//        paintSelct.setColor(0x800000FF);
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);
     }
@@ -75,21 +76,8 @@ public class FeViewSelect extends FeView {
         super.onDraw(canvas);
 
         //移动中不绘制
-        if (sectionCallback.onMapMove() || sectionCallback.onUnitMoveing()) {
-            //选中地图位置
-            FeInfoSite mapSite = sectionCallback.getSectionMap().getRectByGrid(15, 15);
-            //计算输出位置
-            rectDistSelect.left = mapSite.rect.left - mapSite.rect.width() / 4;
-            rectDistSelect.right = mapSite.rect.right + mapSite.rect.width() / 4;
-            rectDistSelect.top = mapSite.rect.top - mapSite.rect.height() / 4;
-            rectDistSelect.bottom = mapSite.rect.bottom + mapSite.rect.height() / 4;
-            //抗锯齿
-            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-            //画图
-            paintSelct.setColor(0x800000FF);
-            canvas.drawPath(mapSite.path, paintSelct);
+        if (sectionCallback.onMapMove() || sectionCallback.onUnitMoveing())
             return;
-        }
 
         //画选中框
         if (sectionCallback.onMapHit() && !sectionCallback.onUnitSelect()) {
@@ -103,9 +91,8 @@ public class FeViewSelect extends FeView {
             //抗锯齿
             canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
             //画图
-            paintSelct.setColor(0x800000FF);
-            canvas.drawPath(mapSite.path, paintSelct);
-//            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
+//            canvas.drawPath(mapSite.path, paintSelct);
+            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
         } else if (sectionCallback.onUnitSelect() && sectionCallback.getSectionUnit().viewUnit != null) {
             //选中人物位置
             FeInfoSite unitSite = sectionCallback.getSectionUnit().viewUnit.site();
@@ -120,9 +107,8 @@ public class FeViewSelect extends FeView {
             //抗锯齿
             canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
             //画图
-            paintSelct.setColor(0x800000FF);
-            canvas.drawPath(unitSite.path, paintSelct);
-//            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
+//            canvas.drawPath(unitSite.path, paintSelct);
+            canvas.drawBitmap(bitmapSelect, rectSrcSelect, rectDistSelect, paintSelct);
         }
     }
 
