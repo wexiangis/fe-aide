@@ -171,15 +171,30 @@ public class FeViewMark extends FeView {
         //剩余移动力不足
         if(mov <= 0)
             return;
+        //引入乱数,打乱每次递归上下左右的顺序,以实现每次行走路径不同
+        int[] order = new int[4];
+        FeRandom.getArray2(order, 1);//不重复的把[1,4]中的整数填到数组中
         //递归上下左右的点
-        if (dir != 2)
-            getPathLoop(x, y - 1, mov, 1, map, target, current, count + 1, result);
-        if (dir != 1)
-            getPathLoop(x, y + 1, mov, 2, map, target, current, count + 1, result);
-        if (dir != 4)
-            getPathLoop(x - 1, y, mov, 3, map, target, current, count + 1, result);
-        if (dir != 3)
-            getPathLoop(x + 1, y, mov, 4, map, target, current, count + 1, result);
+        for(int i = 0; i < order.length; i++){
+            if(dir != order[i]){
+                if(order[i] == 2)
+                    getPathLoop(x, y - 1, mov, 1, map, target, current, count + 1, result);
+                else if(order[i] == 1)
+                    getPathLoop(x, y + 1, mov, 2, map, target, current, count + 1, result);
+                else if(order[i] == 4)
+                    getPathLoop(x - 1, y, mov, 3, map, target, current, count + 1, result);
+                else if(order[i] == 3)
+                    getPathLoop(x + 1, y, mov, 4, map, target, current, count + 1, result);
+            }
+        }
+        // if (dir != 2)
+        //     getPathLoop(x, y - 1, mov, 1, map, target, current, count + 1, result);
+        // if (dir != 1)
+        //     getPathLoop(x, y + 1, mov, 2, map, target, current, count + 1, result);
+        // if (dir != 4)
+        //     getPathLoop(x - 1, y, mov, 3, map, target, current, count + 1, result);
+        // if (dir != 3)
+        //     getPathLoop(x + 1, y, mov, 4, map, target, current, count + 1, result);
     }
 
     /*
