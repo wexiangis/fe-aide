@@ -3,7 +3,7 @@ package fans.develop.fe;
 import android.graphics.*;
 
 /*
-    各个图层画图所需着色器都从这里取
+    各个图层画图所需着色器都从这里取(主要用于移动、攻击和特效范围的绘制)
  */
 public class FeSectionShader {
 

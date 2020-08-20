@@ -25,14 +25,16 @@ public class MainActivity extends Activity {
             return;
         }
 
-//        //存储权限检查和申请
-//        if (ContextCompat.checkSelfPermission(
-//        this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-//        {
-//            //发起权限申请询问
-//            ActivityCompat.requestPermissions(
-//        this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-//        }
+        /*
+        //存储权限检查和申请
+        if (ContextCompat.checkSelfPermission(
+        this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+        {
+            //发起权限申请询问
+            ActivityCompat.requestPermissions(
+        this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
+        */
 
         //半透明系统虚拟按键
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);

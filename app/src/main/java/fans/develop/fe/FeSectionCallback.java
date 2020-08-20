@@ -2,6 +2,10 @@ package fans.develop.fe;
 
 import android.content.Context;
 
+/*
+    各个图层(FeLayoutXXX)及其子view(FeViewXXX)运行时所需的接口都在这里
+    当需要显示某个图层或view时,需先实现下列接口
+ */
 public interface FeSectionCallback {
 
     void addHeartUnit(FeHeartUnit heartUnit);

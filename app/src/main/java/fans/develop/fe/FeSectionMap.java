@@ -7,7 +7,7 @@ import android.graphics.Rect;
 
 /*
     加载地图、地图移动和变形后所产生的一系列关键参数, 各个
-    图层在绘图时获取某个方格位置、方格和地图长宽都从这里来.
+    图层在绘图时获取某个方格位置、方格和地图长宽都从这里拿.
  */
 public class FeSectionMap {
 
@@ -17,7 +17,7 @@ public class FeSectionMap {
     public int section;
     //地图缩放、梯形变换矩阵
     public Matrix matrix = new Matrix();
-    //地图信息
+    //地图详细信息
     public FeInfoMap mapInfo;
     //地图
     public Bitmap bitmap = null;

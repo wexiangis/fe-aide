@@ -3,7 +3,8 @@ package fans.develop.fe;
 import android.view.MotionEvent;
 
 /*
-    系统事件流: 触屏事件 -> 分发事件到各控件 -> 控件变更
+    触屏操作事件流的管理
+    系统事件流: 触屏事件 -> 分发事件到各控件 -> 控件自动变更
  */
 public class FeSectionOperation {
 

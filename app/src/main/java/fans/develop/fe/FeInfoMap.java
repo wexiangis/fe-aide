@@ -13,14 +13,15 @@ public class FeInfoMap {
     public Bitmap bitmap = null;
 
     //基本参数: size.txt
-    public int width = 10, height = 10;
+    public int width = 10, height = 10;//横纵向格子数
     public int pixelPerGrid = 104;//每个格子推荐的宽高像素
     public int transferGrid = 0;//梯形变换缩进格子数(0表示不变换)
 
     //矩阵: grid.txt
-    public short[][] grid;
+    public short[][] grid;//地图矩阵,记录了每个格子的地形序号
 
     //方格类型信息: grid_info.txt
+    //根据上面矩阵中的序号,到下面数组中取值,可得到地形的各项参数
     public String[] name;
     public short[] defend;
     public short[] avoid;
@@ -30,6 +31,10 @@ public class FeInfoMap {
     public int[] typeFirst;
     public String[] info;
 
+    /*
+        光初始化是得不到地图数据的
+        要配合使用 FeReaderMap 的 getFeMapInfo 方法
+     */
     public FeInfoMap(int section) {
         this.section = section;
     }
@@ -76,7 +81,7 @@ public class FeInfoMap {
         //超出地图范围
         if (xGrid < 0 || yGrid < 0 || xGrid >= width || yGrid >= height)
             return 9999;
-        //
+        //地图本身的移动力减损量
         int reduce = mov(xGrid, yGrid);
         //是否地图禁进入typeProfession?
         if ((type(xGrid, yGrid) & (0x00000001 << typeProfession)) != 0)
