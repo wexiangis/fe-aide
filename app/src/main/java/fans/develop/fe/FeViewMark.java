@@ -51,11 +51,7 @@ public class FeViewMark extends FeView {
         //引入心跳
         sectionCallback.addHeartUnit(heartUnit);
         //初始化标记绘制范围
-        FeInfoMap mapInfo = sectionCallback.getSectionMap().mapInfo;
-        markMap = new int[mapInfo.height][mapInfo.width];
-        for (int x = 0; x < markMap[0].length; x++)
-            for (int y = 0; y < markMap.length; y++)
-                markMap[y][x] = -1;
+        cleanMarkMap();
     }
 
     public void setTypeMark(int typeMark) {
@@ -118,7 +114,7 @@ public class FeViewMark extends FeView {
             for (int j = 0; j < result[0].length; j++)
                 result[i][j] = current[i][j] = -1;
         //递归
-        getPathLoop(start[0], start[1], 0, markMap, end, current, 0, result);
+        getPathLoop(start[0], start[1], mov, 0, markMap, end, current, 0, result);
         //检查结果数组并得到实际长度
         int resultLen = result.length;
         for (int i = 0; i < result.length; i++) {
@@ -140,6 +136,7 @@ public class FeViewMark extends FeView {
 
     /*
         x, y: 当前递归坐标
+        mov: 剩余移动力
         dir: 上一次从哪来, 0/投放点 1/上 2/下 3/左 4/右
         map[height][width]: 画了移动范围的矩阵
         target[2]: 到达目标点
@@ -149,7 +146,7 @@ public class FeViewMark extends FeView {
 
         关于"[N][2]": N表示最多N个点, [2]表示xy坐标
      */
-    private void getPathLoop(int x, int y, int dir, int[][] map, int[] target, int[][] current, int count, int[][] result) {
+    private void getPathLoop(int x, int y, int mov, int dir, int[][] map, int[] target, int[][] current, int count, int[][] result) {
         //当前点不在移动范围内?
         if (x < 0 || x >= map[0].length || y < 0 || y >= map.length || map[y][x] != FeTypeMark.BLUE)
             return;
@@ -168,15 +165,21 @@ public class FeViewMark extends FeView {
             _loopEnd(current, count, result);
             return;
         }
+        //移动力削减(投放点不算入移动力削减)
+        if(dir != 0)
+            mov -= mark.movReduce(x, y);
+        //剩余移动力不足
+        if(mov <= 0)
+            return;
         //递归上下左右的点
         if (dir != 2)
-            getPathLoop(x, y - 1, 1, map, target, current, count + 1, result);
+            getPathLoop(x, y - 1, mov, 1, map, target, current, count + 1, result);
         if (dir != 1)
-            getPathLoop(x, y + 1, 2, map, target, current, count + 1, result);
+            getPathLoop(x, y + 1, mov, 2, map, target, current, count + 1, result);
         if (dir != 4)
-            getPathLoop(x - 1, y, 3, map, target, current, count + 1, result);
+            getPathLoop(x - 1, y, mov, 3, map, target, current, count + 1, result);
         if (dir != 3)
-            getPathLoop(x + 1, y, 4, map, target, current, count + 1, result);
+            getPathLoop(x + 1, y, mov, 4, map, target, current, count + 1, result);
     }
 
     /*
@@ -247,7 +250,7 @@ public class FeViewMark extends FeView {
         return null;
     }
 
-    //动画心跳回调
+    //动画心跳回调(网格光条变动效果)
     private FeHeartUnit heartUnit = new FeHeartUnit(FeHeart.TYPE_FRAME_HEART, new FeHeartUnit.TimeOutTask() {
         public void run(int count) {
             FeViewMark.this.invalidate();
@@ -258,6 +261,12 @@ public class FeViewMark extends FeView {
         擦除自己画过的格子
      */
     private void cleanMarkMap() {
+        //第一次初始化
+        if(markMap == null){
+            FeInfoMap mapInfo = sectionCallback.getSectionMap().mapInfo;
+            markMap = new int[mapInfo.height][mapInfo.width];
+        }
+        //清数组
         for (int x = 0; x < markMap[0].length; x++)
             for (int y = 0; y < markMap.length; y++)
                 markMap[y][x] = -1;
