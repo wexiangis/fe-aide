@@ -11,7 +11,7 @@ public class FeChain2<U> {
     //往链表后添加元素
     public void add(int id, U dat){
         FeChain2<U> tmp = this;
-        while(tmp.next == null)
+        while(tmp.next != null)
             tmp = next.next;
         tmp.next = new FeChain2<U>(id, dat);
         tmp.next.previous = tmp;
@@ -20,7 +20,7 @@ public class FeChain2<U> {
     //根据id移除元素(不能移除this)
     public void remove(int id){
         FeChain2<U> tmp = this.next;
-        while(tmp == null && tmp.id != id)
+        while(tmp != null && tmp.id != id)
             tmp = next.next;
         if(tmp != null){
             //移花接木
@@ -33,7 +33,7 @@ public class FeChain2<U> {
     //根据id查找元素值
     public U find(int id){
         FeChain2<U> tmp = this;
-        while(tmp == null && tmp.id != id)
+        while(tmp != null && tmp.id != id)
             tmp = next.next;
         if(tmp != null)
             return tmp.data;
