@@ -12,7 +12,7 @@ public class FeChain2<U> {
     public void add(int id, U dat){
         FeChain2<U> tmp = this;
         while(tmp.next != null)
-            tmp = next.next;
+            tmp = tmp.next;
         tmp.next = new FeChain2<U>(id, dat);
         tmp.next.previous = tmp;
     }
@@ -21,7 +21,7 @@ public class FeChain2<U> {
     public void remove(int id){
         FeChain2<U> tmp = this.next;
         while(tmp != null && tmp.id != id)
-            tmp = next.next;
+            tmp = tmp.next;
         if(tmp != null){
             //移花接木
             tmp.previous.next = tmp.next;
@@ -34,7 +34,7 @@ public class FeChain2<U> {
     public U find(int id){
         FeChain2<U> tmp = this;
         while(tmp != null && tmp.id != id)
-            tmp = next.next;
+            tmp = tmp.next;
         if(tmp != null)
             return tmp.data;
         return null;

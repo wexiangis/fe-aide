@@ -130,6 +130,8 @@ public class FeViewUnitInfo extends FeView {
             canvas.drawBitmap(bitmapHeadBg, rectSrcHeadBg, rectDistHeadBg, paintHeadBg);
             //人物变动或第一次初始化
             if(unitView != this.unitView || bitmapHead == null){
+                //更新人物
+                this.unitView = unitView;
                 //重新加载头像
                 bitmapHead = unitView.unit.getHead();
                 //确定头像源位置
@@ -142,8 +144,6 @@ public class FeViewUnitInfo extends FeView {
                     rectSrcHead.bottom = 79;
                 }
                 rectDistHead.right = rectDistHead.left + rectSrcHead.height() * rectSrcHead.width() / sizeHead;
-                //更新人物
-                this.unitView = unitView;
             }
             //画头像
             //canvas.drawRect(rectDistHead, paintHead);
