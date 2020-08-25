@@ -1,5 +1,5 @@
 0;0;0;0;0;0;none;
-0;0;0;0;1;0;yongbin;
+0;100;0;0;1;0;yongbin;
 0;0;1;0;1;0;yongbinnv;
 0;1;2;0;1;0;yongzhe;
 0;1;3;0;1;0;yongzhenv;
