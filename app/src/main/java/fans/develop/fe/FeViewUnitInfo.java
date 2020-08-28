@@ -170,10 +170,12 @@ public class FeViewUnitInfo extends FeView {
                 //确定头像源位置
                 if(bitmapHead.getWidth() == bitmapHead.getHeight()){//杂兵的等比例头像,切掉底部一块使用
                     rectSrcHead.right = bitmapHead.getWidth();
+										rectSrcHead.left = 0;
                     rectSrcHead.bottom = 73;
                 }
                 else{//特殊人物的头像,需抠图
                     rectSrcHead.right = 95;
+										rectSrcHead.left = 7;
                     rectSrcHead.bottom = 79;
                 }
                 rectDistHead.right = rectDistHead.left + rectSrcHead.height() * rectSrcHead.width() / headHeight;
