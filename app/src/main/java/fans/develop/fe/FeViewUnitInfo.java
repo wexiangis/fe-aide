@@ -92,10 +92,12 @@ public class FeViewUnitInfo extends FeView {
             return;
         }
 
-        //选中人物位置
-        if (sectionCallback.getSectionUnit().viewUnit == null)
+        //选中人物
+        FeViewUnit unitView = this.unitView;
+        if (sectionCallback.getSectionUnit().viewUnit != null)
+            unitView = sectionCallback.getSectionUnit().viewUnit;
+        if(unitView == null)
             return;
-        FeViewUnit unitView = sectionCallback.getSectionUnit().viewUnit;
         FeInfoSite unitSite = unitView.site();
 
         //图像位置自动调整
