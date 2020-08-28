@@ -1,12 +1,7 @@
 package fans.develop.fe;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.Rect;
-import android.graphics.Typeface;
+import android.content.*;
+import android.graphics.*;
 
 /*
     地图上的人物头像等信息框
@@ -21,6 +16,8 @@ public class FeViewUnitInfo extends FeView {
     private Rect rectSrcHead, rectDistHead;
     //名称和参数文字书写范围
     private Rect rectDistName, rectDistParam;
+		//血条框
+		private Rect rectDistHp;
     //头像图片,头像背景框
     private Bitmap bitmapHead, bitmapHeadBg;
     //头像背景框,头像,名称文字,参数文字,背景血条的画笔
@@ -72,11 +69,12 @@ public class FeViewUnitInfo extends FeView {
                 rectDistHeadBg.left + edge + headHeight,
                 rectDistHeadBg.top + edge + headHeight);
         //
-        textWdith = 42 * pixelPowBitmap;
+        textWdith = (int)(42 * pixelPowBitmap);
         nameHeight = paramHeight = headHeight / 2;
         //
         rectDistName = new Rect(0, 0, 1, 1);
         rectDistParam = new Rect(0, 0, 1, 1);
+				rectDistHp = new Rect(0, 0, 1, 1);
         //
         paintHeadBg = new Paint();
         paintHeadBg.setColor(0xE0FF0000);//半透明
@@ -85,17 +83,17 @@ public class FeViewUnitInfo extends FeView {
         //
         paintName = new Paint();
         paintName.setColor(Color.WHITE);
-        paintName.setTextSize(rectDistHeadBg.height() / 8);
+        paintName.setTextSize(headHeight / 4);
         paintName.setTypeface(Typeface.DEFAULT_BOLD);
         paintName.setTextAlign(Paint.Align.CENTER);
         //
         paintParam = new Paint();
-        paintParam.setTextSize(rectDistHeadBg.height() / 8);
+        paintParam.setTextSize(headHeight / 4);
         paintParam.setTypeface(Typeface.DEFAULT_BOLD);
         paintParam.setTextAlign(Paint.Align.CENTER);
         //
         paintHp = new Paint();
-        paintHp.setColor(0x400000FF);//半透明
+        paintHp.setColor(0x40404040);//半透明
     }
 
     public boolean checkHit(float x, float y) {
@@ -144,6 +142,11 @@ public class FeViewUnitInfo extends FeView {
         rectDistParam.right = rectDistHeadBg.right - edge;
         rectDistParam.top = rectDistParam.bottom - paramHeight;
         rectDistParam.left = rectDistParam.right - textWdith;
+				//更新血条框
+				rectDistHp.left = rectDistHeadBg.left + edge;
+				rectDistHp.top = rectDistHeadBg.top + edge;
+				rectDistHp.right = rectDistHeadBg.right - edge;
+				rectDistHp.bottom = rectDistHeadBg.bottom - edge;
 
         //非地图人物第一次选中状态,不画人物信息框
         if (!sectionCallback.onMapHit() ||
@@ -179,17 +182,17 @@ public class FeViewUnitInfo extends FeView {
             //canvas.drawRect(rectDistHeadBg, paintHeadBg);
             canvas.drawBitmap(bitmapHeadBg, rectSrcHeadBg, rectDistHeadBg, paintHeadBg);
             //画血条
-            int hpRes = unitView.unit.hpRes();
+            int hpRes = 15;//unitView.unit.hpRes();
             int hpTotal = unitView.unit.hp();
             float precent = (float)hpRes / hpTotal;
             if(precent <= 0.2)
-                paintHp.setColor(0x40FF0000);//20%红色
+                paintParam.setColor(0xB0FF0000);//20%红色
             else if(precent <= 0.5)
-                paintHp.setColor(0x40FF0000);//50%黄色
+                paintParam.setColor(0xB0FFFF00);//50%黄色
             else
-                paintHp.setColor(0x40808080);//白色
-            rectDistHeadBg.right = (int)(rectDistHeadBg.left + rectDistHeadBg.width() * precent);
-            canvas.drawRect(rectDistHeadBg, paintHp);
+                paintParam.setColor(0xB0FFFFFF);//白色
+            rectDistHp.top = (int)(rectDistHp.bottom - rectDistHp.height() * precent);
+            canvas.drawRect(rectDistHp, paintHp);
             //画头像
             //canvas.drawRect(rectDistHead, paintHead);
             canvas.drawBitmap(bitmapHead, rectSrcHead, rectDistHead, paintHead);
@@ -197,13 +200,13 @@ public class FeViewUnitInfo extends FeView {
             canvas.drawText(
                     sectionCallback.getAssets().unit.getName(0),
                     rectDistName.left + rectDistName.width() / 2,
-                    rectDistName.top + rectDistName.height() / 2 + paintName.getTextSize() / 4,
+                    rectDistName.top + rectDistName.height() / 2 + paintName.getTextSize(),
                     paintName);
             //填人物参数
             canvas.drawText(
                     String.format("%d / %d", hpRes, hpTotal),
                     rectDistParam.left + rectDistParam.width() / 2,
-                    rectDistParam.top + rectDistParam.height() / 2 + paintParam.getTextSize() / 4,
+                    rectDistParam.top + rectDistParam.height() / 2 + paintParam.getTextSize() / 2,
                     paintParam);
         }
     }
