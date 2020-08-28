@@ -76,12 +76,11 @@ public class FeSectionOperation {
                     //更新坐标
                     tDownX = tMoveX;
                     tDownY = tMoveY;
-                    //置标志
-                    sectionCallback.onTouchMov(true);
                 }
                 //否则无移动量
                 else {
                     xErr = yErr = 0;
+										break;
                 }
                 //谁需要拖动事件?
                 if (flagMove.checkFlag(FeFlagHit.HIT_SYS_MENU)) {
