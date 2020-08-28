@@ -58,8 +58,7 @@ public class FeAssetsSX {
         saveCache = new FeAssetsSaveCache(unit, saveUnit, sX);
         //根据 section 的site加载 saveUnit 人物到 saveCache
         for (int siteCount = 0, saveUnitCount = 0;
-             siteCount < section.site.total() &&
-                     saveUnitCount < saveUnit.unit.total();
+             siteCount < section.site.total() && saveUnitCount < saveUnit.unit.total();
              siteCount++) {
             //触发方式为回合触发,且回合为0
             if (section.site.getTrigger(siteCount) == 0 &&

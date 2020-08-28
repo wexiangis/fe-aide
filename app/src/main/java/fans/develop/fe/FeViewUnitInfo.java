@@ -19,7 +19,7 @@ public class FeViewUnitInfo extends FeView {
 		//血条框
 		private Rect rectDistHp;
     //头像图片,头像背景框
-    private Bitmap bitmapHead, bitmapHeadBg;
+    private Bitmap bitmapHead, bitmapHeadBg, bitmapHeadBgDraw = null;
     //头像背景框,头像,名称文字,参数文字,背景血条的画笔
     private Paint paintHeadBg;
     private Paint paintHead;
@@ -40,6 +40,8 @@ public class FeViewUnitInfo extends FeView {
     private boolean drawHead = false;
     //缓存当前人物,若变动则重新加载参数和头像
     private FeViewUnit unitView = null;
+    //和新的人物阵营比较,用来更新bitmapHeadBgDraw
+    private int camp = -1;
 
     public FeViewUnitInfo(Context context, FeSectionCallback sectionCallback) {
         super(context);
@@ -180,9 +182,13 @@ public class FeViewUnitInfo extends FeView {
                 }
                 rectDistHead.right = rectDistHead.left + rectSrcHead.height() * rectSrcHead.width() / headHeight;
             }
-            //画背景框
+            //画背景框,根据不同阵营调整背景色
+            if(bitmapHeadBgDraw == null || camp != unitView.camp()) {
+                camp = unitView.camp();
+                bitmapHeadBgDraw = FePallet.replace(bitmapHeadBg, camp);
+            }
             //canvas.drawRect(rectDistHeadBg, paintHeadBg);
-            canvas.drawBitmap(bitmapHeadBg, rectSrcHeadBg, rectDistHeadBg, paintHeadBg);
+            canvas.drawBitmap(bitmapHeadBgDraw, rectSrcHeadBg, rectDistHeadBg, paintHeadBg);
             //画血条
             int hpRes = 15;//unitView.unit.hpRes();
             int hpTotal = unitView.unit.hp();

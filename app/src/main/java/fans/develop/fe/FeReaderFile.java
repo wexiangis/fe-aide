@@ -204,12 +204,12 @@ public class FeReaderFile {
         } else {
             int count = 1;
             Data dat = data;
-            while (dat != null && dat.next != null) {
+            while (dat.next != null) {
                 dat = dat.next;
                 count += 1;
             }
             dat.next = new Data(strings);
-            line = count;
+            line = count + 1;
             return count;
         }
     }
