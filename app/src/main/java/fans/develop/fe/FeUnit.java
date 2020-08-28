@@ -126,6 +126,14 @@ public class FeUnit {
         return campUnit.getExp();
     }
 
+    public void hpRes(int hpRes) {
+        campUnit.setHpRes(hpRes);
+    }
+
+    public int hpRes() {
+        return campUnit.getHpRes();
+    }
+
     // ability
     public int[] ability() {
         return campUnit.getLineInt(1);

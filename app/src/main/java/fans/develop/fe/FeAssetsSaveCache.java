@@ -90,6 +90,7 @@ public class FeAssetsSaveCache {
             campUnit.setState(0);
             campUnit.setLevel(_saveUnit.getLevel(line));
             campUnit.setExp(_saveUnit.getExp(line));
+            campUnit.setHpRes(_saveUnit.getAbilityHp(line));
             //行1 (整行拷贝)
             campUnit.setLine(1, _saveUnit.ability.getLine(_saveUnit.unit.getAbility(line)));
             //行2 (默认为0)
@@ -116,6 +117,7 @@ public class FeAssetsSaveCache {
             campUnit.setState(0);
             campUnit.setLevel(_unit.getLevel(id));
             campUnit.setExp(0);
+            campUnit.setHpRes(_unit.getProfessionAbilityHp(id));
             //行1 (整行拷贝)
             campUnit.setLine(1, _unit.getProfessionAbility(id));
             //行2 (默认为0)
@@ -411,6 +413,10 @@ public class FeAssetsSaveCache {
             return getInt(0, 3);
         }
 
+        public int getHpRes() {
+            return getInt(0, 4);
+        }
+
         public void setStandby(int standby) {
             setValue(standby, 0, 0);
         }
@@ -425,6 +431,10 @@ public class FeAssetsSaveCache {
 
         public void setExp(int exp) {
             setValue(exp, 0, 3);
+        }
+
+        public void setHpRes(int hpRes) {
+            setValue(hpRes, 0, 4);
         }
 
         // line 1

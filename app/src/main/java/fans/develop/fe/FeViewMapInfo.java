@@ -23,7 +23,9 @@ public class FeViewMapInfo extends FeView {
     //打印信息的大致输出范围
     private Rect rectPaintInfo;
     //背景框图片,地图类型,参数 画笔
-    private Paint paintBitmap, paintInfoName, paintInfoParam;
+    private Paint paintBitmap;
+    private Paint paintInfoName;
+    private Paint paintInfoParam;
     //像素比例
     private float pixelPowInfo;
     //是否绘制了图片?没有则不参与 checkHit()
