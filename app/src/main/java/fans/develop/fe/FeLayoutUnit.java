@@ -13,11 +13,17 @@ public class FeLayoutUnit extends FeLayout {
     private FeSectionCallback sectionCallback;
     //缓存checkHit选中
     private FeViewUnit hitViewUnit = null;
+		//viewUnit数组,方便通过order快速定位view
+		private FeChain2<FeViewUnit> array = new FeChain2<FeViewUnit>(-1, null);
+		//本次绘制子view顺序数组,长度为[子view总数],值为yyyxxxooo,其中y、x为坐标,o为调换过的子view序号
+		private int[] drawOrder;
 
     public FeLayoutUnit(Context context, FeSectionCallback sectionCallback) {
         super(context);
         this.context = context;
         this.sectionCallback = sectionCallback;
+				//启用手动控制绘图顺序,即启用重写 getChildDrawingOrder 方法
+				setChildrenDrawingOrderEnabled(true);
     }
 
     /* ---------- function ---------- */
@@ -45,14 +51,7 @@ public class FeLayoutUnit extends FeLayout {
         根据order找人物
      */
     public FeViewUnit getViewUnit(int order) {
-        FeViewUnit viewUnit;
-        //遍历所有子view
-        for (int i = 0; i < getChildCount(); i++) {
-            viewUnit = (FeViewUnit) getChildAt(i);
-            if (viewUnit.order() == order)
-                return viewUnit;
-        }
-        return null;
+        return array.find(order);
     }
 
     /*
@@ -79,11 +78,14 @@ public class FeLayoutUnit extends FeLayout {
         人员增删
      */
     public void addUnit(int order, int y, int x) {
-        addView(new FeViewUnit(context, order, sectionCallback));
+				FeViewUnit viewUnit = new FeViewUnit(context, order, sectionCallback);
+				array.add(order, viewUnit);
+        addView(viewUnit);
     }
 
     public void removeUnit(int order) {
-        ;
+        _removeView(this, array.find(order));
+				array.remove(order);
     }
 
     /*
@@ -276,6 +278,56 @@ public class FeLayoutUnit extends FeLayout {
         }
     }
 
+		/*
+				手动控制人物绘制顺序,以实现前排人物不会被后排遮挡的效果
+				total: 当前ViewGroup的子view总数
+				count: 系统会依次传入0,1,2...,(total-1)总调用total次
+				返回: 本次绘制的子view序号,系统默认返回count
+		 */
+		@Override
+		protected int getChildDrawingOrder(int total, int count){
+				//新的一轮绘制已开始,更新顺序数组
+				if(count == 0)
+						refreshDrawOrder();
+				//取yyyxxxooo中的序号o
+				return drawOrder[count] % 1000;
+		}
+		
+		/*
+				更新绘制顺序数组drawOrder
+		 */
+		private void refreshDrawOrder(){
+				int len = getChildCount();
+				if(drawOrder == null || drawOrder.length < len)
+						drawOrder = new int[len];
+				//排序
+				FeChain2<FeViewUnit> a = array.next;//遍历链表,链表头不参与
+				int n = 0;//遍历到第几个了
+				while(a != null){
+						//位置数值,越小的排在前面
+						int yyyxxxooo = a.data.unit.y() * 1000000;
+						//当前人物为选中状态,则他在同一行人物中最突出
+						if(a.data.anim() != FeTypeAnim.STAY)
+								yyyxxxooo += 999 * 1000;
+						else
+								yyyxxxooo += a.data.unit.x() * 1000;
+						yyyxxxooo += n;
+						for(int i = 0; i < n; i++){
+								if(drawOrder[i] > yyyxxxooo){
+										//交换
+										int t = drawOrder[i];
+										drawOrder[i] = yyyxxxooo;
+										yyyxxxooo = t;
+								}
+						}
+						//把最大的放到最后面
+						drawOrder[n] = yyyxxxooo;
+						//取下一个
+						a = a.next;
+						n += 1;
+				}
+		}
+		
     /* ---------- abstract interface ---------- */
 
     public boolean onKeyBack() {

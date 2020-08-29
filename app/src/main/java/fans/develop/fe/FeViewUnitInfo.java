@@ -227,9 +227,8 @@ public class FeViewUnitInfo extends FeView {
                 rectDistName.top + rectDistName.height() / 2 + paintName.getTextSize() / 2,
 								paintName);
             //填人物level
-						int lv = unitView.unit.level();
             canvas.drawText(
-								String.format("Lv%d", lv),
+								String.format("Lv%d", unitView.unit.level()),
 								rectDistLv.left + rectDistLv.width() / 2,
 								rectDistLv.top + rectDistLv.height() / 2 + paintLv.getTextSize() / 2,
 								paintLv);

@@ -105,7 +105,9 @@ public class FeViewUnit extends FeView {
         //更新地图位置
         sectionCallback.getSectionMap().getRectByGrid(unit.x(), unit.y(), site);
         //更新动画
-        invalidate();
+        //invalidate();
+				//人物移动可能设计绘图顺序变更
+				sectionCallback.getLayoutUnit().invalidate();
     }
 
     public int x() {
@@ -142,6 +144,8 @@ public class FeViewUnit extends FeView {
             this.anim = anim;
             upgradeHeartType(anim);
         }
+				//更新一下人物图层顺序(选中人物在同一行中突出显示)
+				sectionCallback.getLayoutUnit().invalidate();
     }
 
     public FeTypeAnim anim() {
@@ -277,7 +281,9 @@ public class FeViewUnit extends FeView {
                 movY = 0;
             }
             //刷新
-            FeViewUnit.this.invalidate();
+            //FeViewUnit.this.invalidate();
+						//人物移动可能设计绘图顺序变更
+						sectionCallback.getLayoutUnit().invalidate();
         }
     });
 
