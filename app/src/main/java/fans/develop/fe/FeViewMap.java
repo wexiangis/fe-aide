@@ -88,10 +88,14 @@ public class FeViewMap extends FeView {
         public void run(int count) {
             float div = 0.20f;
             //需要挪图?
-            if (Math.abs(xGridErr) >= div || Math.abs(yGridErr) >= div) {
+						float xErrAbs = Math.abs(xGridErr);
+						float yErrAbs = Math.abs(yGridErr);
+            if (xErrAbs >= div || yErrAbs >= div) {
                 FeSectionMap sectionMap = sectionCallback.getSectionMap();
                 //倍数移动
-                ;
+                float minAbs = Math.min(xErrAbs, yErrAbs);
+								if(minAbs >= 3)
+										div = 0.5f;
                 //每次移动1/4格
                 if (xGridErr >= div) {
                     xGridErr -= div;
