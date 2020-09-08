@@ -41,9 +41,9 @@ public class FeInfoItems {
             if (items[i] == 0)
                 continue;
             //物品id
-            int id = items[i] % 1000;
+            int id = FeFormat.itemId(items[i]);
             //已使用次数
-            int use = items[i] / 1000;
+            int use = FeFormat.itemUse(items[i]);
             //超过使用次数?
             int capacity = param.getItemsCapacity(id);
             if (use >= capacity) {

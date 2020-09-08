@@ -40,4 +40,17 @@ public class FeFormat {
         }
         return ret;
     }
+		
+		/*
+		    获取物品id、使用次数和杀敌数
+		 */
+		public static int itemId(int it){
+				return it % 1000;
+		}
+		public static int itemUse(int it){
+				return it / 1000 % 1000;
+		}
+		public static int itemKill(int it){
+				return it / 1000000 % 1000;
+		}
 }
