@@ -71,10 +71,13 @@ public class FeLayoutMapInfo extends FeLayout {
         hitType: 具体点击目标,查看 FeFlagHit.java
      */
     public void click(float x, float y, FeFlagHit flag) {
-        //点击头像,展开人物信息菜单
-				FeLayoutUnitMenu layoutUnitMenu = sectionCallback.getLayoutUnitMenu();
-				if(layoutUnitMenu != null)
-						layoutUnitMenu.showUnit(viewUnitInfo.order());
+				//命中自己
+				if(flag.checkFlag(FeFlagHit.HIT_MAP_INFO)) {
+            //点击头像,展开人物信息菜单
+				    FeLayoutUnitMenu layoutUnitMenu = sectionCallback.getLayoutUnitMenu();
+				    if(layoutUnitMenu != null)
+						    layoutUnitMenu.showUnit(viewUnitInfo.order());
+				}
     }
 
     /* ---------- abstract interface ---------- */

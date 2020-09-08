@@ -327,6 +327,10 @@ class FeAssetsSaveUnit {
         return item.getIt6(unit.getItem(count));
     }
 
+    public int getEquip(int count) {
+        return item.getEquip(unit.getItem(count));
+    }
+
     // unit.txt
     public int getCamp(int count) {
         return unit.getCamp(count);
