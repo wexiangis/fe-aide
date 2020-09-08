@@ -108,6 +108,12 @@ public class FeViewUnitInfo extends FeView {
         paintHp = new Paint();
         paintHp.setColor(0x40404040);//半透明
     }
+		
+		public int order(){
+				if(unitView != null)
+						return unitView.unit.order();
+				return 0;
+		}
 
     public boolean checkHit(float x, float y) {
         if (drawHead && rectDistHeadBg.contains((int) x, (int) y))

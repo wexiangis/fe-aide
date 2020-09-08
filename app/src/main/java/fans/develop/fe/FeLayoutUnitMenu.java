@@ -23,6 +23,10 @@ public class FeLayoutUnitMenu extends FeLayout {
         for (int i = 0; i < getChildCount(); i++)
             getChildAt(i).invalidate();
     }
+		
+		public void showUnit(int order){
+				;
+		}
 
     /*
         接收点击事件

@@ -46,6 +46,11 @@ public class FeLayoutSection extends FeLayout {
 
     /* ---------- abstract interface ---------- */
     public boolean onKeyBack() {
+				//子控件中,一般只有菜单用到返回键
+				if(layoutSysMenu.onKeyBack())
+						return true;
+				else if(layoutUnitMenu.onKeyBack())
+						return true;
         return false;
     }
 
