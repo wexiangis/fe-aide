@@ -33,15 +33,18 @@ public class FeLayoutUnitMenu extends FeLayout {
             getChildAt(i).invalidate();
     }
 		
+		/*
+		    显示人物菜单
+		 */
 		public void showUnit(int order){
 				if(showUnitMenu)
 						return;
 				showUnitMenu = true;
 				//初始化
 				if(viewUnitMenu == null)
-						viewUnitMenu = new FeViewUnitMenu(sectionCallback.getContext(), sectionCallback);
+						viewUnitMenu = new FeViewUnitMenu(sectionCallback.getContext(), sectionCallback, order);
 				viewUnitMenu.order(order);
-				//移除其它
+				//移除其它人物菜单
 				_removeViewAll(this);
 				//开始显示
 				addView(viewUnitMenu);

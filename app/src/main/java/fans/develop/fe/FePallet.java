@@ -6,6 +6,44 @@ import android.graphics.Bitmap;
     bitmap调色板
  */
 public class FePallet {
+		
+		//获取阵营颜色数值
+		public static int color(int baseColor, int camp){
+				int tcolor = baseColor & 0xff000000;
+				int r = (baseColor & 0x00ff0000) >> 16;
+				int g = (baseColor & 0x0000ff00) >> 8;
+				int b = baseColor & 0x000000ff;
+				int tmp;
+				if (camp == FeTypeCamp.RED) {          //蓝色 换 红色
+						tcolor |= (int) (b * 1.0) << 16;
+						tcolor |= (int) (g * 0.5) << 8;
+						tcolor |= (int) (r * 0.5) << 0;
+				} else if (camp == FeTypeCamp.GREEN) {    //蓝色 换 绿色
+						tcolor |= (int) (r * 0.5) << 16;
+						tcolor |= (int) (b * 0.9) << 8;
+						tcolor |= (int) (g * 0.5) << 0;
+				} else if (camp == FeTypeCamp.GRAY) {    //蓝色 换 黑色
+						tmp = r + g + b;
+						r = g = b = tmp / 4;
+						tcolor |= (int) (r * 1.0) << 16;
+						tcolor |= (int) (g * 1.0) << 8;
+						tcolor |= (int) (b * 1.0) << 0;
+				} else if (camp == FeTypeCamp.ORANGE) {    //蓝色 换 橙色
+						tcolor |= (int) (b * 1.0) << 16;
+						tcolor |= (int) (g * 1.0) << 8;
+						tcolor |= (int) (r * 0.5) << 0;
+				} else if (camp == FeTypeCamp.PURPLE) {    //蓝色 换 红紫色
+						tcolor |= (int) (b * 0.8) << 16;
+						tcolor |= (int) (r * 0.5) << 8;
+						tcolor |= (int) (g * 1.0) << 0;
+				} else if (camp == FeTypeCamp.BLUE_GREEN) {    //蓝色 换 不蓝不绿
+						tcolor |= (int) (r * 0.8) << 16;
+						tcolor |= (int) (b * 0.8) << 8;
+						tcolor |= (int) (b * 0.8) << 0;
+				} else
+				    tcolor = baseColor;
+				return tcolor;
+		}
 
     //camp: 0/原色 1/红色 2/绿色 3/灰色 4/橙色 5/紫色 6/不蓝不绿
     public static Bitmap replace(Bitmap oldBitmap, int camp) {
