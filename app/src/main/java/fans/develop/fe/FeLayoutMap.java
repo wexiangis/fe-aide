@@ -27,7 +27,7 @@ public class FeLayoutMap extends FeLayout {
     /* ---------- function ---------- */
 
     public boolean checkHit(float x, float y) {
-				//屏霸打底
+        //屏霸打底
         if (viewMap != null)
             return true;
         return false;
@@ -140,12 +140,12 @@ public class FeLayoutMap extends FeLayout {
     public void click(float x, float y, FeFlagHit flag) {
         //点击对象不是自己 或 点击的unit不是第一次点击操作
         if (!flag.checkFlag(FeFlagHit.HIT_MAP)) {
-						//第一次点击人物
+            //第一次点击人物
             if(flag.checkFlag(FeFlagHit.HIT_UNIT) && !sectionCallback.onUnitMove())
                 ;
-					  else
-								return;
-				}
+            else
+                return;
+        }
         if (viewMap != null)
             hitMap(x, y);
     }

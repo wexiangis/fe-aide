@@ -80,7 +80,7 @@ public class FeSectionOperation {
                 //否则无移动量
                 else {
                     xErr = yErr = 0;
-					break;
+          break;
                 }
                 //谁需要拖动事件?
                 if (flagMove.checkFlag(FeFlagHit.HIT_SYS_MENU)) {

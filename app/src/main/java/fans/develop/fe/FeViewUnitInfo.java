@@ -16,8 +16,8 @@ public class FeViewUnitInfo extends FeView {
     private Rect rectSrcHead, rectDistHead;
     //名称和参数文字书写范围
     private Rect rectDistName, rectDistParam;
-		//血条框
-		private Rect rectDistLv, rectDistHp;
+    //血条框
+    private Rect rectDistLv, rectDistHp;
     //头像图片,头像背景框
     private Bitmap bitmapHead, bitmapHeadBg, bitmapHeadBgDraw = null;
     //头像背景框,头像,名称文字,参数文字,背景血条的画笔
@@ -26,7 +26,7 @@ public class FeViewUnitInfo extends FeView {
     private Paint paintName;
     private Paint paintParam;
     private Paint paintHp;
-		private Paint paintLv;
+    private Paint paintLv;
     //素材边框在屏幕中的尺寸(约占图片高度的2/38)
     private int edge;
     //背景框参数
@@ -74,13 +74,13 @@ public class FeViewUnitInfo extends FeView {
         //
         textWdith = (int)(45 * pixelPowBitmap);
         nameHeight = headHeight * 2 / 5;
-				lvHeight = headHeight / 5;
-				paramHeight = headHeight * 2 / 5;
+        lvHeight = headHeight / 5;
+        paramHeight = headHeight * 2 / 5;
         //
         rectDistName = new Rect(0, 0, 1, 1);
         rectDistParam = new Rect(0, 0, 1, 1);
-				rectDistHp = new Rect(0, 0, 1, 1);
-				rectDistLv = new Rect(0, 0, 1, 1);
+        rectDistHp = new Rect(0, 0, 1, 1);
+        rectDistLv = new Rect(0, 0, 1, 1);
         //
         paintHeadBg = new Paint();
         paintHeadBg.setColor(0xE0FF0000);//半透明
@@ -93,14 +93,14 @@ public class FeViewUnitInfo extends FeView {
         paintName.setTypeface(Typeface.DEFAULT_BOLD);
         paintName.setTextAlign(Paint.Align.CENTER);
         //
-				paintLv = new Paint();
-				paintLv.setColor(0xFFFFFFFF);
+        paintLv = new Paint();
+        paintLv.setColor(0xFFFFFFFF);
         paintLv.setTextSize(headHeight / 5);
         paintLv.setTypeface(Typeface.SANS_SERIF);
         paintLv.setTextAlign(Paint.Align.CENTER);
         //
         paintParam = new Paint();
-				paintParam.setColor(0xFFFFFFFF);
+        paintParam.setColor(0xFFFFFFFF);
         paintParam.setTextSize(headHeight / 4);
         paintParam.setTypeface(Typeface.SANS_SERIF);
         paintParam.setTextAlign(Paint.Align.CENTER);
@@ -108,12 +108,12 @@ public class FeViewUnitInfo extends FeView {
         paintHp = new Paint();
         paintHp.setColor(0x40404040);//半透明
     }
-		
-		public int order(){
-				if(unitView != null)
-						return unitView.unit.order();
-				return 0;
-		}
+    
+    public int order(){
+        if(unitView != null)
+            return unitView.unit.order();
+        return 0;
+    }
 
     public boolean checkHit(float x, float y) {
         if (drawHead && rectDistHeadBg.contains((int) x, (int) y))
@@ -161,16 +161,16 @@ public class FeViewUnitInfo extends FeView {
         rectDistParam.right = rectDistHeadBg.right - edge;
         rectDistParam.top = rectDistParam.bottom - paramHeight;
         rectDistParam.left = rectDistParam.right - textWdith;
-				//更新等级框
-				rectDistLv.bottom = rectDistParam.top;
-				rectDistLv.top = rectDistLv.bottom - lvHeight;
-				rectDistLv.right = rectDistParam.right;
-				rectDistLv.left = rectDistParam.left;
-				//更新血条框
-				rectDistHp.left = rectDistHeadBg.left + edge;
-				rectDistHp.top = rectDistHeadBg.top + edge;
-				rectDistHp.right = rectDistHeadBg.right - edge;
-				rectDistHp.bottom = rectDistHeadBg.bottom - edge;
+        //更新等级框
+        rectDistLv.bottom = rectDistParam.top;
+        rectDistLv.top = rectDistLv.bottom - lvHeight;
+        rectDistLv.right = rectDistParam.right;
+        rectDistLv.left = rectDistParam.left;
+        //更新血条框
+        rectDistHp.left = rectDistHeadBg.left + edge;
+        rectDistHp.top = rectDistHeadBg.top + edge;
+        rectDistHp.right = rectDistHeadBg.right - edge;
+        rectDistHp.bottom = rectDistHeadBg.bottom - edge;
 
         //非地图人物第一次选中状态,不画人物信息框
         if (!sectionCallback.onMapHit() ||
@@ -194,12 +194,12 @@ public class FeViewUnitInfo extends FeView {
                 //确定头像源位置
                 if(bitmapHead.getWidth() == bitmapHead.getHeight()){//杂兵的等比例头像,切掉底部一块使用
                     rectSrcHead.right = bitmapHead.getWidth();
-										rectSrcHead.left = 0;
+                    rectSrcHead.left = 0;
                     rectSrcHead.bottom = 73;
                 }
                 else{//特殊人物的头像,需抠图
                     rectSrcHead.right = 95;
-										rectSrcHead.left = 7;
+                    rectSrcHead.left = 7;
                     rectSrcHead.bottom = 79;
                 }
                 rectDistHead.right = rectDistHead.left + rectSrcHead.height() * rectSrcHead.width() / headHeight;
@@ -229,15 +229,15 @@ public class FeViewUnitInfo extends FeView {
             //填人物名称
             canvas.drawText(
                 sectionCallback.getAssets().unit.getName(0),
-								rectDistName.left + rectDistName.width() / 2,
+                rectDistName.left + rectDistName.width() / 2,
                 rectDistName.top + rectDistName.height() / 2 + paintName.getTextSize() / 2,
-								paintName);
+                paintName);
             //填人物level
             canvas.drawText(
-								String.format("Lv%d", unitView.unit.level()),
-								rectDistLv.left + rectDistLv.width() / 2,
-								rectDistLv.top + rectDistLv.height() / 2 + paintLv.getTextSize() / 2,
-								paintLv);
+                String.format("Lv%d", unitView.unit.level()),
+                rectDistLv.left + rectDistLv.width() / 2,
+                rectDistLv.top + rectDistLv.height() / 2 + paintLv.getTextSize() / 2,
+                paintLv);
             //填人物参数
             canvas.drawText(
                 String.format("%d / %d", hpRes, hpTotal),

@@ -145,8 +145,8 @@ public class FeSectionMap {
         public int width, height;
         //网格产生的交叉点的坐标
         public float[][][] grid;
-				
-				public float xErr = 999, yErr = 999;
+        
+        public float xErr = 999, yErr = 999;
 
         public Trapezoid(int mapXGrid, int mapYGrid){
             //WxH 矩阵网格会产生 (W+1)x(H+1) 个交叉点坐标
@@ -220,11 +220,11 @@ public class FeSectionMap {
 
     //获取梯形转换矩阵,用于绘制
     public void upgradeMatrix() {
-				//只在必要时更新矩阵
-				if(trap.xErr == xGridErr && trap.yErr == yGridErr)
-						return;
-				trap.xErr = xGridErr;
-				trap.yErr = yGridErr;
+        //只在必要时更新矩阵
+        if(trap.xErr == xGridErr && trap.yErr == yGridErr)
+            return;
+        trap.xErr = xGridErr;
+        trap.yErr = yGridErr;
         //mapDist为当前地图显示区域 (点顺序左上、左下、右下、右上)
         srcPoint[0] = (- xGridErr) * xGridPixel;
         srcPoint[1] = (- yGridErr) * yGridPixel;

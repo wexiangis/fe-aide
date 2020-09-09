@@ -20,7 +20,7 @@ public class FeAssetsUnit {
 
     // /head/xx.png
     public Bitmap getHead(int id) {
-				id = unit.getHead(id);
+        id = unit.getHead(id);
         //先从缓冲区(链表)中找
         Bitmap ret = headChain.find(id);
         //没有再从assets中加载
